@@ -6,7 +6,6 @@
 <title>섹스 사주</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/korean-lunar-calendar@0.3.6/dist/korean-lunar-calendar.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{--bg:#f7f7f3;--card:#fff;--t1:#1a1a1a;--t2:#666;--t3:#999;--mint:#2EC4B6;--mint-light:#e8faf7;--mint-dark:#1da899;--coral:#FF6B6B;--purple:#A78BFA;--gold:#F59E0B;--blue:#60A5FA;--r:14px;--shadow:0 2px 16px rgba(0,0,0,.06)}
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:"Noto Sans KR",sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased}.wrap{max-width:480px;margin:auto;padding:0 20px 80px;min-height:100vh}
@@ -157,133 +156,63 @@
 .action-btn.share{background:var(--t1);color:#fff;border-color:var(--t1)}
 .action-btn.reset{background:#fff;color:var(--t2)}
 
+/* 결과 공유 안내 카드 */
+.share-hero{
+  position:relative;overflow:hidden;
+  border-radius:18px;padding:24px 20px;margin:20px 0 16px;
+  background:linear-gradient(135deg,#1a0b2e 0%,#2d1b4e 50%,#0f172a 100%);
+  box-shadow:0 10px 30px rgba(139,92,246,.25);
+  text-align:center;
+}
+.share-hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%,rgba(236,72,153,.4) 0%,transparent 55%),
+    radial-gradient(ellipse 70% 50% at 80% 80%,rgba(46,196,182,.35) 0%,transparent 55%);
+  pointer-events:none;
+}
+.share-hero-inner{position:relative;z-index:2}
+.share-hero-emoji{font-size:32px;margin-bottom:8px;display:block}
+.share-hero-title{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:4px}
+.share-hero-sub{font-size:12px;color:rgba(255,255,255,.7);line-height:1.5;margin-bottom:16px}
+.share-hero-url{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.08);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:10px;padding:10px 12px;margin-bottom:10px;
+}
+.share-hero-url-text{
+  flex:1;font-size:11px;color:rgba(255,255,255,.8);font-family:monospace;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;
+}
+.share-hero-copy{
+  border:none;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;
+  font-size:11px;font-weight:700;padding:6px 12px;border-radius:8px;
+  cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0;
+}
+.share-hero-copy:active{transform:scale(.95)}
+.share-hero-btns{display:flex;gap:8px}
+.share-hero-btn{
+  flex:1;padding:12px 8px;border:none;border-radius:10px;
+  font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  transition:.15s;
+}
+.share-hero-btn:active{transform:scale(.97)}
+.share-hero-btn.kakao{background:#FEE500;color:#1a1a1a}
+.share-hero-btn.share-sys{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.share-hero-btn.insta{background:linear-gradient(135deg,#833AB4,#FD1D1D,#FCB045);color:#fff}
+
 .correction-info{background:var(--mint-light);border-radius:10px;padding:14px 16px;margin-bottom:12px}.correction-info-title{font-size:12px;font-weight:600;color:var(--mint-dark);margin-bottom:4px}.correction-info-row{font-size:11px;color:var(--t2);line-height:1.5}
 footer{text-align:center;padding:24px 0;margin-top:40px}
 .accuracy-badge{display:inline-flex;align-items:center;gap:4px;background:#E8F5E9;color:#2E7D32;font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;margin-bottom:12px}
 .score-color-high{color:#DC2626}.score-color-mid{color:var(--gold)}.score-color-low{color:var(--blue)}
 
-/* ═══════════════════════════════════════════
-   공유 이미지용 캔버스 (오프스크린)
-   9:16 비율 — 450x800 (화면에서 숨김)
-   ═══════════════════════════════════════════ */
-#share-canvas{
-  position:fixed;left:-99999px;top:0;
-  width:450px;height:800px;
-  background:#0a0e1a;overflow:hidden;
-  font-family:"Noto Sans KR",sans-serif;
-  color:#fff;-webkit-font-smoothing:antialiased;
-}
-.sc-bg{
-  position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 70% 50% at 15% 20%,rgba(236,72,153,.6) 0%,transparent 55%),
-    radial-gradient(ellipse 80% 55% at 85% 25%,rgba(139,92,246,.55) 0%,transparent 55%),
-    radial-gradient(ellipse 90% 50% at 50% 90%,rgba(46,196,182,.45) 0%,transparent 55%),
-    linear-gradient(135deg,#1a0b2e 0%,#2d1b4e 45%,#0f172a 100%);
-}
-.sc-stars{position:absolute;inset:0;pointer-events:none}
-.sc-stars svg{width:100%;height:100%}
-.sc-inner{position:relative;z-index:2;padding:40px 30px;height:100%;display:flex;flex-direction:column}
-.sc-brand{
-  font-family:"Playfair Display",serif;font-size:11px;letter-spacing:4px;
-  text-transform:uppercase;color:rgba(255,255,255,.55);text-align:center;
-  margin-bottom:4px;
-}
-.sc-title{
-  font-size:26px;font-weight:900;letter-spacing:-1px;text-align:center;
-  color:#fff;margin-bottom:6px;
-}
-.sc-title .accent{background:linear-gradient(135deg,#ec4899,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sc-divider{width:40px;height:2px;background:linear-gradient(90deg,#ec4899,#8b5cf6);margin:8px auto 22px;border-radius:2px}
-
-/* 프로필 카드 (내 사주용) */
-.sc-profile{
-  background:rgba(255,255,255,.08);backdrop-filter:blur(16px);
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:24px;padding:32px 24px;text-align:center;
-  flex:1;display:flex;flex-direction:column;justify-content:center;
-  box-shadow:0 20px 60px rgba(0,0,0,.3);
-}
-.sc-profile-emoji{font-size:80px;line-height:1;margin-bottom:18px;filter:drop-shadow(0 8px 24px rgba(236,72,153,.4))}
-.sc-profile-title{font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:6px}
-.sc-profile-sub{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:22px}
-.sc-profile-desc{
-  font-size:13px;line-height:1.8;color:rgba(255,255,255,.85);
-  text-align:left;padding:16px 18px;
-  background:rgba(0,0,0,.2);border-radius:14px;
-  border:1px solid rgba(255,255,255,.08);
-}
-.sc-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
-.sc-pill{
-  padding:7px 14px;border-radius:100px;
-  background:linear-gradient(135deg,rgba(236,72,153,.2),rgba(139,92,246,.2));
-  border:1px solid rgba(236,72,153,.4);
-  font-size:11px;font-weight:700;color:#fff;
-}
-
-/* 궁합용 */
-.sc-cp-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
-.sc-cp-persons{display:flex;align-items:center;gap:6px;margin-bottom:8px}
-.sc-cp-p{text-align:center;min-width:100px}
-.sc-cp-p-emoji{
-  font-size:52px;line-height:1;margin-bottom:8px;
-  filter:drop-shadow(0 4px 16px rgba(236,72,153,.4));
-}
-.sc-cp-p-name{font-size:12px;font-weight:700;color:#fff}
-.sc-cp-heart{font-size:28px;margin:0 4px}
-.sc-cp-score-circle{
-  width:220px;height:220px;position:relative;
-  display:flex;align-items:center;justify-content:center;
-}
-.sc-cp-score-num{
-  font-family:"Playfair Display",serif;
-  font-size:88px;font-weight:900;line-height:.9;
-  background:linear-gradient(135deg,#fff 0%,#fde047 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  text-shadow:0 0 40px rgba(236,72,153,.6);
-}
-.sc-cp-score-unit{font-size:20px;color:rgba(255,255,255,.7);font-weight:700;margin-left:4px}
-.sc-cp-grade{
-  padding:10px 24px;border-radius:100px;
-  background:linear-gradient(135deg,#ec4899,#8b5cf6);
-  font-size:16px;font-weight:800;color:#fff;
-  box-shadow:0 8px 24px rgba(236,72,153,.5);
-  margin-top:4px;
-}
-.sc-cp-stars{color:#fde047;font-size:18px;letter-spacing:4px;margin-top:8px}
-.sc-cp-tag{
-  padding:10px 16px;margin-top:8px;
-  background:rgba(255,255,255,.08);backdrop-filter:blur(10px);
-  border-radius:12px;border:1px solid rgba(255,255,255,.12);
-  font-size:12px;color:rgba(255,255,255,.85);line-height:1.6;text-align:center;
-}
-
-.sc-footer{
-  text-align:center;margin-top:auto;padding-top:20px;
-}
-.sc-footer-url{
-  font-family:"Playfair Display",serif;
-  font-size:14px;font-weight:700;color:#fff;letter-spacing:1px;
-}
-.sc-footer-sub{font-size:10px;color:rgba(255,255,255,.5);margin-top:3px;letter-spacing:2px}
-
-/* 저장중 로딩 */
-.save-loading{
-  position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:10000;
-  display:none;align-items:center;justify-content:center;flex-direction:column;color:#fff;
-}
-.save-loading.show{display:flex}
-.save-loading .spin{width:40px;height:40px;border:3px solid rgba(255,255,255,.2);border-top-color:#ec4899;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:14px}
-.save-loading-text{font-size:14px;font-weight:600}
 </style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
-<div class="save-loading" id="save-loading"><div class="spin"></div><div class="save-loading-text">이미지를 만들고 있어요...</div></div>
 <div class="loading-overlay" id="loading"><div class="loading-spinner"></div><div id="loading-text">사주를 분석하고 있어요</div><div id="loading-sub">정밀 보정 적용 중</div><div class="loading-steps" id="loading-steps"></div></div>
-
-<!-- 공유 이미지 생성용 캔버스 -->
-<div id="share-canvas"></div>
 
 <div class="wrap">
   <div class="hero" id="hero"><div class="hero-badge">사주명리학 기반 · 정밀 보정 엔진</div><h1>섹스 <span class="accent">사주</span></h1><p>태어난 순간의 네 기둥에 숨겨진<br>성적 에너지와 관계 패턴을 읽어드려요</p></div>
@@ -496,11 +425,30 @@ function renderStarsHTML(){
   return html;
 }
 
-function renderMy(saju){
+function renderMy(saju, isShared){
   lastMySaju=saju;
   const els=aEl(saju),sc=calcScores(saju),prof=PROF[saju.day.s],months=getMonths(saju),best=BEST_M[saju.day.s];
   const mDef=[{name:'정열도 🔥',key:'passion',color:'var(--coral)',h:'불꽃 에너지! 끌리면 직진, 한번 시작하면 멈추기 어려운 타입이에요.',m:'스위치만 켜지면 뜨겁게 달라질 잠재력이 충분해요.',l:'급하게 타오르기보다 천천히 깊게 가는 스타일이에요.'},{name:'지구력 💪',key:'stamina',color:'var(--gold)',h:'마라토너 타입! 체력과 꾸준함이 최고 무기예요.',m:'컨디션만 좋으면 오래 갈 수 있어요. 관리가 곧 실력!',l:'양보다 질! 짧지만 강렬한 경험에 집중하는 게 맞아요.'},{name:'표현력 💋',key:'expression',color:'var(--purple)',h:'원하는 걸 확실히 표현하고 상대를 리드하는 능력이 탁월해요!',m:'편한 상대 앞에서 진짜 모습이 나오는 타입이에요.',l:'말보다 터치와 눈빛으로 소통하는 스타일이에요.'},{name:'호기심 🧭',key:'curiosity',color:'var(--blue)',h:'새로운 시도에 주저함이 없는 탐험가! 다양한 경험이 에너지원이에요.',m:'적당한 모험심. 검증된 새로움을 즐기는 편이에요.',l:'익숙한 패턴에서 편안함을 느끼는 안정 추구형이에요.'},{name:'매력도 ✨',key:'charm',color:'var(--mint)',h:'존재만으로 끌리게 만드는 천생 매력 보유자!',m:'알면 알수록 빠져드는 반전 매력이에요.',l:'가식 없는 솔직함이 가장 큰 무기예요.'}];
+
+  // 공유 링크 생성 (입력값 기반)
+  let payload;
+  if(isShared){
+    // 공유링크 접근이면 현재 해시의 데이터 그대로 유지
+    const h=location.hash;
+    if(h&&h.startsWith('#r=')){
+      const json=b64urlDecode(h.slice(3));
+      try{payload=JSON.parse(json);}catch(e){}
+    }
+  }else{
+    payload=encodeMyInput();
+    updateHashForResult(payload);
+  }
+  if(payload) currentShareUrl=buildShareUrl(payload);
+
   let html='';
+  // 맨 위에 공유 안내 카드
+  if(payload) html+=renderShareCard(payload);
+
   if(!saju.ut){const c=saju.corrected;html+=`<div class="correction-info"><div class="correction-info-title">✨ 더 정확한 결과를 위해 시간 보정을 적용했어요</div><div class="correction-info-row">한국의 실제 위치에 맞춰 시간을 보정했어요${c.dst?' (서머타임 기간이라 추가 보정도 적용!)':''}.${saju.isYaja?' 밤 11시 이후 출생이라 날짜도 함께 조정했어요.':''}</div></div>`;}
   else html+=`<div class="correction-info"><div class="correction-info-title">ℹ️ 시간 미입력 — 3주 분석</div><div class="correction-info-row">시간을 모르셔서 년·월·일 세 기둥으로 분석했어요. 시간을 알면 더 정확해져요!</div></div>`;
   const pils=saju.hour?[['시주',saju.hour],['일주',saju.day],['월주',saju.month],['년주',saju.year]]:[['일주',saju.day],['월주',saju.month],['년주',saju.year]];
@@ -527,23 +475,48 @@ function renderMy(saju){
   html+=`<div class="month-card"><div class="month-card-title">📅 월별 성적 에너지 흐름</div><div class="month-grid">`;
   months.forEach(m=>html+=`<div class="month-cell ${m.cls}"><div class="month-cell-emoji">${m.score>=80?'🔥':m.score>=65?'✨':m.score>=50?'🌙':'💤'}</div><div class="month-cell-name">${m.name}</div><div class="month-cell-keyword" style="color:${m.score>=80?'#DC2626':m.score>=65?'#D97706':'#6B7280'}">${m.keyword}</div><div class="month-cell-score">${m.score}점</div></div>`);
   html+=`</div></div>`;
-  html+=`<div class="action-row">
-    <button class="action-btn reset" onclick="resetAll()">다시하기</button>
-    <button class="action-btn save" onclick="saveImage('my')">📸 이미지 저장</button>
-    <button class="action-btn share" onclick="shareLink()">🔗 링크 공유</button>
-  </div>`;
+
+  // 하단 액션 버튼 — 공유 링크는 상단 share-hero에서 처리하므로 여기는 다시하기만
+  if(isShared){
+    html+=`<div class="action-row">
+      <button class="action-btn share" onclick="goToHome()">✨ 나도 테스트 해보기</button>
+    </div>`;
+  }else{
+    html+=`<div class="action-row">
+      <button class="action-btn reset" onclick="resetAll()">다시하기</button>
+      <button class="action-btn share" onclick="shareViaSystem()">🔗 결과 공유</button>
+    </div>`;
+  }
+
   document.getElementById('result').innerHTML=html;window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function renderCp(sA,sB){
+function renderCp(sA,sB, isShared){
   const cp=compat(sA,sB),pA=PROF[sA.day.s],pB=PROF[sB.day.s],bed=getBed(sA,sB),tips=getTips(sA,sB);
   lastCpData={sA,sB,cp,pA,pB};
   const grade=gradeFromScore(cp.score);
   const circumference=2*Math.PI*80; // r=80
   const offset=circumference*(1-cp.score/100);
-  let html='';
 
-  // ═══ 새로운 궁합 점수 카드 ═══
+  // 공유 링크 생성
+  let payload;
+  if(isShared){
+    const h=location.hash;
+    if(h&&h.startsWith('#r=')){
+      const json=b64urlDecode(h.slice(3));
+      try{payload=JSON.parse(json);}catch(e){}
+    }
+  }else{
+    payload=encodeCpInput();
+    updateHashForResult(payload);
+  }
+  if(payload) currentShareUrl=buildShareUrl(payload);
+
+  let html='';
+  // 맨 위에 공유 안내 카드
+  if(payload) html+=renderShareCard(payload);
+
+  // ═══ 궁합 점수 카드 ═══
   html+=`<div class="cp-score-card">
     <div class="cp-score-bg"></div>
     <div class="cp-score-stars">${renderStarsHTML()}</div>
@@ -601,11 +574,16 @@ function renderCp(sA,sB){
   html+=`<div class="tip-card"><div class="tip-card-title">💡 더 좋은 관계를 위한 팁</div>`;tips.forEach(t=>html+=`<div class="tip-item"><div class="tip-item-label">${t.label}</div><div class="tip-item-text">${t.text}</div></div>`);html+=`</div>`;
   [['첫 번째 사람',sA,pA],['두 번째 사람',sB,pB]].forEach(([l,s,p])=>{html+=`<div class="profile-card"><div class="profile-emoji">${p.emoji}</div><div class="profile-title">${l}: ${p.title}</div><div class="profile-sub">${p.emoji} ${HS_EL[s.day.s]}의 에너지를 가진 사람</div><div class="profile-desc">${p.desc}</div></div>`;});
 
-  html+=`<div class="action-row">
-    <button class="action-btn reset" onclick="resetAll()">다시하기</button>
-    <button class="action-btn save" onclick="saveImage('cp')">📸 이미지 저장</button>
-    <button class="action-btn share" onclick="shareLink()">🔗 링크 공유</button>
-  </div>`;
+  if(isShared){
+    html+=`<div class="action-row">
+      <button class="action-btn share" onclick="goToHome()">✨ 나도 테스트 해보기</button>
+    </div>`;
+  }else{
+    html+=`<div class="action-row">
+      <button class="action-btn reset" onclick="resetAll()">다시하기</button>
+      <button class="action-btn share" onclick="shareViaSystem()">🔗 결과 공유</button>
+    </div>`;
+  }
 
   document.getElementById('result').innerHTML=html;
 
@@ -618,173 +596,220 @@ function renderCp(sA,sB){
   setTimeout(()=>{document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});},100);
 }
 
-function resetAll(){document.getElementById('result').innerHTML='';document.getElementById('hero').style.display='';state.genderMy=null;state.genderA=null;state.genderB=null;state.calMy='solar';state.calA='solar';state.calB='solar';lastMySaju=null;lastCpData=null;document.querySelectorAll('.gender-btn,.cal-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.cal-btn[data-c="solar"]').forEach(b=>b.classList.add('active'));['my','a','b'].forEach(t=>{document.getElementById(t+'-y').selectedIndex=0;document.getElementById(t+'-m').selectedIndex=0;refreshDays(t);document.getElementById(t+'-h').selectedIndex=0;});window.scrollTo({top:0,behavior:'smooth'});}
+// 공유 링크 수신자가 "나도 테스트 해보기" 클릭 시 홈으로
+function goToHome(){
+  // 해시 제거 후 홈으로 이동 (입력 화면 복귀)
+  location.hash='';
+  location.reload();
+}
 
-// ═══════════════════════════════════════════
-// 4번 요청: 링크 공유 (love.tryme.im)
-// ═══════════════════════════════════════════
-function shareLink(){
-  const t='섹스 사주 — 사주명리학으로 읽는 나의 성적 에너지 🔥\n'+SITE_URL;
-  if(navigator.share){
-    navigator.share({title:'섹스 사주',text:t,url:SITE_URL}).catch(()=>{});
-  }else{
-    navigator.clipboard.writeText(t).then(()=>showToast('🔗 링크가 복사되었어요!')).catch(()=>showToast('공유 기능을 사용할 수 없어요'));
+function resetAll(){
+  // 해시 초기화
+  if(location.hash){
+    history.replaceState(null,'',location.pathname+location.search);
   }
+  // 공유 모드였다면 숨겨진 UI 복원
+  document.querySelector('.tab-wrap').style.display='';
+  document.getElementById('panel-my').style.display='';
+  document.getElementById('panel-cp').style.display='';
+  // 현재 활성 탭에 맞게 panel 표시 조정
+  const isMyActive=document.querySelectorAll('.tab-btn')[0].classList.contains('active');
+  document.getElementById('panel-my').classList.toggle('active',isMyActive);
+  document.getElementById('panel-cp').classList.toggle('active',!isMyActive);
+
+  document.getElementById('result').innerHTML='';
+  document.getElementById('hero').style.display='';
+  state.genderMy=null;state.genderA=null;state.genderB=null;
+  state.calMy='solar';state.calA='solar';state.calB='solar';
+  lastMySaju=null;lastCpData=null;currentShareUrl='';
+  document.querySelectorAll('.gender-btn,.cal-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.cal-btn[data-c="solar"]').forEach(b=>b.classList.add('active'));
+  ['my','a','b'].forEach(t=>{document.getElementById(t+'-y').selectedIndex=0;document.getElementById(t+'-m').selectedIndex=0;refreshDays(t);document.getElementById(t+'-h').selectedIndex=0;});
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 // ═══════════════════════════════════════════
-// 3번 요청: 결과를 9:16 이미지로 저장
+// 결과 공유 시스템 (URL 해시 기반)
 // ═══════════════════════════════════════════
-function buildStars(){
-  let s='';
-  for(let i=0;i<40;i++){
-    const x=Math.random()*100, y=Math.random()*100, r=0.5+Math.random()*1.5, op=0.3+Math.random()*0.7;
-    s+=`<circle cx="${x}%" cy="${y}%" r="${r}" fill="white" opacity="${op}"/>`;
-  }
-  return `<svg>${s}</svg>`;
+// 저장 정보는 최소화된 입력값만. 수신자 브라우저에서 재계산.
+// 해시: #r=<base64url>, 데이터 = {t:'my'|'cp', ...}
+
+function b64urlEncode(str){
+  // UTF-8 safe base64url
+  const bytes=new TextEncoder().encode(str);
+  let bin='';
+  bytes.forEach(b=>bin+=String.fromCharCode(b));
+  return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 }
-
-function buildMyShareCard(saju){
-  const prof=PROF[saju.day.s];
-  const badges=[];
-  if(hDohwa(saju)) badges.push('🌸 도화살');
-  if(hHong(saju)) badges.push('🔥 홍염살');
-  if(hHam(saju)) badges.push('💦 함지살');
-  if(hMok(saju)) badges.push('🛁 목욕살');
-  if(hYeok(saju)) badges.push('🐎 역마살');
-  if(!badges.length) badges.push('✨ 안정형 에너지');
-  // 최대 3개
-  const shownBadges=badges.slice(0,3);
-  return `
-    <div class="sc-bg"></div>
-    <div class="sc-stars">${buildStars()}</div>
-    <div class="sc-inner">
-      <div class="sc-brand">SEX SAJU</div>
-      <div class="sc-title">나의 <span class="accent">섹스 사주</span></div>
-      <div class="sc-divider"></div>
-
-      <div class="sc-profile">
-        <div class="sc-profile-emoji">${prof.emoji}</div>
-        <div class="sc-profile-title">${prof.title}</div>
-        <div class="sc-profile-sub">${HS_EL[saju.day.s]}의 에너지를 가진 사람</div>
-        <div class="sc-profile-desc">${prof.desc}</div>
-        <div class="sc-pills">
-          ${shownBadges.map(b=>`<div class="sc-pill">${b}</div>`).join('')}
-        </div>
-      </div>
-
-      <div class="sc-footer">
-        <div class="sc-footer-url">love.tryme.im</div>
-        <div class="sc-footer-sub">나만의 섹스 사주 보기</div>
-      </div>
-    </div>`;
-}
-
-function buildCpShareCard(d){
-  const grade=gradeFromScore(d.cp.score);
-  return `
-    <div class="sc-bg"></div>
-    <div class="sc-stars">${buildStars()}</div>
-    <div class="sc-inner">
-      <div class="sc-brand">SEX SAJU × COMPATIBILITY</div>
-      <div class="sc-title">우리의 <span class="accent">섹스 궁합</span></div>
-      <div class="sc-divider"></div>
-
-      <div class="sc-cp-hero">
-        <div class="sc-cp-persons">
-          <div class="sc-cp-p">
-            <div class="sc-cp-p-emoji">${d.pA.emoji}</div>
-            <div class="sc-cp-p-name">${d.pA.title}</div>
-          </div>
-          <div class="sc-cp-heart">💕</div>
-          <div class="sc-cp-p">
-            <div class="sc-cp-p-emoji">${d.pB.emoji}</div>
-            <div class="sc-cp-p-name">${d.pB.title}</div>
-          </div>
-        </div>
-
-        <div class="sc-cp-score-circle">
-          <div>
-            <span class="sc-cp-score-num">${d.cp.score}</span><span class="sc-cp-score-unit">점</span>
-          </div>
-        </div>
-
-        <div class="sc-cp-grade">✨ ${grade.label} ✨</div>
-        <div class="sc-cp-stars">${grade.stars}</div>
-        <div class="sc-cp-tag">${grade.msg}</div>
-      </div>
-
-      <div class="sc-footer">
-        <div class="sc-footer-url">love.tryme.im</div>
-        <div class="sc-footer-sub">우리만의 섹스 궁합 보기</div>
-      </div>
-    </div>`;
-}
-
-async function saveImage(type){
-  const data = type==='my'? lastMySaju : lastCpData;
-  if(!data){showToast('결과를 먼저 생성해주세요');return;}
-
-  document.getElementById('save-loading').classList.add('show');
-
-  // 공유 캔버스 준비
-  const canvas=document.getElementById('share-canvas');
-  canvas.innerHTML = type==='my' ? buildMyShareCard(data) : buildCpShareCard(data);
-
-  // 렌더링 시간 확보
-  await new Promise(r=>setTimeout(r,300));
-
+function b64urlDecode(str){
   try{
-    const result=await html2canvas(canvas,{
-      width:450,
-      height:800,
-      scale:2,
-      backgroundColor:'#0a0e1a',
-      useCORS:true,
-      logging:false
-    });
+    str=str.replace(/-/g,'+').replace(/_/g,'/');
+    while(str.length%4)str+='=';
+    const bin=atob(str);
+    const bytes=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }catch(e){return null;}
+}
 
-    const fileName = type==='my' ? `섹스사주_결과_${Date.now()}.png` : `섹스궁합_결과_${Date.now()}.png`;
+// 내 사주 → 공유 데이터 객체
+function encodeMyInput(){
+  // 마지막으로 입력한 필드 값들 — document 에서 읽음
+  const y=document.getElementById('my-y').value,
+        m=document.getElementById('my-m').value,
+        d=document.getElementById('my-d').value,
+        h=document.getElementById('my-h').value,
+        g=state.genderMy,c=state.calMy;
+  return {t:'my',y:+y,m:+m,d:+d,h:h==='unknown'?'u':+h,g,c};
+}
+function encodeCpInput(){
+  const getP=(p)=>({
+    y:+document.getElementById(p+'-y').value,
+    m:+document.getElementById(p+'-m').value,
+    d:+document.getElementById(p+'-d').value,
+    h:document.getElementById(p+'-h').value==='unknown'?'u':+document.getElementById(p+'-h').value,
+    g:state['gender'+p.toUpperCase()],
+    c:state['cal'+p.toUpperCase()]
+  });
+  return {t:'cp',a:getP('a'),b:getP('b')};
+}
 
-    // Web Share API가 파일을 지원하면 공유, 아니면 다운로드
-    result.toBlob(async (blob)=>{
-      document.getElementById('save-loading').classList.remove('show');
-      if(!blob){showToast('이미지 생성 실패');return;}
+function buildShareUrl(payload){
+  const json=JSON.stringify(payload);
+  const enc=b64urlEncode(json);
+  return `${SITE_URL}/#r=${enc}`;
+}
 
-      const file=new File([blob], fileName, {type:'image/png'});
+// 공유 데이터 → 사주 계산
+function personDataToSaju(p){
+  let ch,cm,ut=false;
+  if(p.h==='u'){ch=12;cm=0;ut=true;}
+  else{
+    const h=p.h;
+    if(h===0){ch=0;cm=30;}
+    else{ch=SIJIN[h].hS;cm=SIJIN[h].mS+30;if(cm>=60){ch++;cm-=60;}}
+  }
+  return calcSaju(p.y,p.m,p.d,ch,cm,p.g,p.c||'solar',ut);
+}
 
-      // 모바일: Web Share API로 공유/저장
-      if(navigator.canShare && navigator.canShare({files:[file]})){
-        try{
-          await navigator.share({files:[file], title:'섹스 사주', text:'내 결과 확인하기 '+SITE_URL});
-          showToast('✨ 공유되었어요!');
-        }catch(e){
-          // 사용자가 취소하면 다운로드로 fallback
-          if(e.name!=='AbortError') downloadBlob(blob,fileName);
-        }
-      }else{
-        // PC: 다운로드
-        downloadBlob(blob,fileName);
-        showToast('📸 이미지가 저장되었어요!');
-      }
-    },'image/png',0.95);
-  }catch(err){
-    console.error(err);
-    document.getElementById('save-loading').classList.remove('show');
-    showToast('이미지 생성 중 오류가 발생했어요');
+// URL 해시 체크 & 자동 결과 렌더링
+function tryRestoreFromHash(){
+  const h=location.hash;
+  if(!h||!h.startsWith('#r='))return false;
+  const enc=h.slice(3);
+  const json=b64urlDecode(enc);
+  if(!json)return false;
+  let payload;
+  try{payload=JSON.parse(json);}catch(e){return false;}
+  if(!payload||!payload.t)return false;
+
+  // 결과 화면으로 전환 (입력 폼 숨김)
+  enterSharedMode();
+
+  if(payload.t==='my'){
+    const saju=personDataToSaju({y:payload.y,m:payload.m,d:payload.d,h:payload.h,g:payload.g,c:payload.c});
+    renderMy(saju, /*isShared*/ true);
+  }else if(payload.t==='cp'){
+    const sA=personDataToSaju(payload.a);
+    const sB=personDataToSaju(payload.b);
+    renderCp(sA,sB, /*isShared*/ true);
+  }
+  return true;
+}
+
+// 공유된 링크로 접근 시 입력 폼 숨기기
+function enterSharedMode(){
+  document.getElementById('hero').style.display='none';
+  document.querySelector('.tab-wrap').style.display='none';
+  document.getElementById('panel-my').style.display='none';
+  document.getElementById('panel-cp').style.display='none';
+}
+
+// 공유 카드 HTML 생성 (결과 상단에 삽입)
+function renderShareCard(payload){
+  const url=buildShareUrl(payload);
+  const msg = payload.t==='my'
+    ? '내 결과를 친구에게 링크로 공유하세요!'
+    : '이 궁합 결과 링크를 상대에게 보내보세요!';
+  return `
+    <div class="share-hero">
+      <div class="share-hero-inner">
+        <span class="share-hero-emoji">🔗</span>
+        <div class="share-hero-title">결과 링크 공유하기</div>
+        <div class="share-hero-sub">${msg}<br>링크를 열면 이 결과 화면이 그대로 보여져요</div>
+        <div class="share-hero-url">
+          <div class="share-hero-url-text" id="share-url-text">${url}</div>
+          <button class="share-hero-copy" onclick="copyShareUrl()">복사</button>
+        </div>
+        <div class="share-hero-btns">
+          <button class="share-hero-btn share-sys" onclick="shareViaSystem()">📤 공유</button>
+          <button class="share-hero-btn insta" onclick="openInstagram()">📸 인스타</button>
+          <button class="share-hero-btn kakao" onclick="shareKakao()">💬 카톡</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// 현재 공유 URL 저장소
+let currentShareUrl='';
+
+function copyShareUrl(){
+  if(!currentShareUrl){showToast('공유 링크가 없어요');return;}
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(currentShareUrl)
+      .then(()=>showToast('✨ 링크가 복사되었어요!'))
+      .catch(()=>fallbackCopy(currentShareUrl));
+  }else{
+    fallbackCopy(currentShareUrl);
+  }
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');
+  ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');showToast('✨ 링크가 복사되었어요!');}
+  catch(e){showToast('복사 실패 — 수동으로 복사해주세요');}
+  document.body.removeChild(ta);
+}
+
+function shareViaSystem(){
+  if(!currentShareUrl){showToast('공유 링크가 없어요');return;}
+  const t='섹스 사주 결과 🔥 내 결과 확인해봐!';
+  if(navigator.share){
+    navigator.share({title:'섹스 사주 결과',text:t,url:currentShareUrl}).catch(()=>{});
+  }else{
+    copyShareUrl();
   }
 }
 
-function downloadBlob(blob,name){
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download=name;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},100);
+function shareKakao(){
+  // Kakao SDK 없이 — 링크 복사 후 안내
+  copyShareUrl();
+  setTimeout(()=>showToast('💬 카톡에서 붙여넣기 해주세요!'),800);
 }
 
-document.addEventListener('DOMContentLoaded',()=>{initSelects();});
+function openInstagram(){
+  // 인스타 공식 공유 API는 외부 앱에서 제한적이라 — 링크 복사 후 안내
+  copyShareUrl();
+  setTimeout(()=>showToast('📸 인스타 스토리에서 붙여넣기 해주세요!'),800);
+}
+
+// 결과 새로 계산 시 호출 — 해시 업데이트 (북마크 등에 유리)
+function updateHashForResult(payload){
+  const enc=b64urlEncode(JSON.stringify(payload));
+  // history.replaceState 로 새로고침 없이 해시 변경
+  const newHash='#r='+enc;
+  if(location.hash!==newHash){
+    history.replaceState(null,'',location.pathname+location.search+newHash);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  initSelects();
+  // 해시에 결과가 담겨 있으면 자동 복원
+  setTimeout(()=>{tryRestoreFromHash();},0);
+});
 </script>
 </body>
 </html>
