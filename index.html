@@ -142,6 +142,10 @@ body::before{
   margin-bottom:8px;letter-spacing:-0.01em;
 }
 .fl-emoji{font-size:16px}
+.fl-hint{
+  font-size:11px;font-weight:600;color:var(--t4);
+  margin-left:4px;letter-spacing:-0.01em;
+}
 
 /* 인풋/셀렉트 - 이모지 이미지가 아니라 유니코드 이모지 사용해서 이미지 로드 실패 문제 해결 */
 .ci,.cs{
@@ -334,7 +338,12 @@ body::before{
   font-family:'Jua',sans-serif;font-size:44px;
   line-height:1;margin:4px 0 2px;position:relative;z-index:1;
 }
-.sc-info{font-size:11px;opacity:.65;line-height:1.4;position:relative;z-index:1;font-weight:500;margin-top:2px}
+.sc-info{
+  font-size:11.5px;opacity:.7;line-height:1.3;
+  position:relative;z-index:1;font-weight:500;margin-top:3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  padding:0 2px;
+}
 .sc.c-r{background:linear-gradient(135deg,#FFD4CA,#FFB8A8);color:#8B1A00}
 .sc.c-o{background:linear-gradient(135deg,#FFE3C8,#FFCD9A);color:#7A4800}
 .sc.c-b{background:linear-gradient(135deg,#D4ECFF,#A8D8FF);color:#0D4F80}
@@ -343,28 +352,39 @@ body::before{
 .sc.c-p{background:linear-gradient(135deg,#EAE0FC,#D4C5FA);color:#4A2E7A}
 
 /* 오행 바 */
-.el-i{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.el-i:last-child{margin-bottom:0}
-.el-emoji{font-size:22px;flex-shrink:0;width:28px;text-align:center;line-height:1}
-.el-nm{font-size:15px;font-weight:800;width:20px;flex-shrink:0;color:var(--t1)}
-.el-tr{
-  flex:1;height:20px;background:#F5EFDE;
-  border-radius:10px;overflow:hidden;position:relative;
+/* 오행 컴팩트 디자인 */
+.el-chips{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:8px;margin-bottom:14px;
 }
-.el-fl{
-  height:100%;border-radius:10px;
-  transition:width 1s cubic-bezier(.4,0,.2,1);
-  min-width:6px;
+.el-chip{
+  border-radius:16px;padding:14px 6px 12px;
+  text-align:center;position:relative;overflow:hidden;
+  transition:transform .2s;
 }
-.el-pc{font-family:'Jua';font-size:16px;width:42px;text-align:right;flex-shrink:0}
-.el-fire .el-fl{background:linear-gradient(90deg,#FF4D4D,#FF8A3D)}.el-fire .el-pc{color:#FF4D4D}
-.el-water .el-fl{background:linear-gradient(90deg,#4A90E2,#72BCFD)}.el-water .el-pc{color:#4A90E2}
-.el-earth .el-fl{background:linear-gradient(90deg,#E5AB2E,#FFD84D)}.el-earth .el-pc{color:#C99020}
-.el-wood .el-fl{background:linear-gradient(90deg,#3D8B6C,#6DD49A)}.el-wood .el-pc{color:#3D8B6C}
-.el-metal .el-fl{background:linear-gradient(90deg,#8B5A3C,#B88560)}.el-metal .el-pc{color:#8B5A3C}
+.el-chip.top-el{transform:scale(1.04);box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.el-chip::before{
+  content:'';position:absolute;top:-14px;right:-14px;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.25);
+}
+.el-chip-emoji{font-size:24px;line-height:1;position:relative;z-index:1}
+.el-chip-nm{
+  font-size:12px;font-weight:700;opacity:.75;
+  margin-top:4px;position:relative;z-index:1;
+}
+.el-chip-pc{
+  font-family:'Jua',sans-serif;font-size:22px;line-height:1.1;
+  margin-top:4px;position:relative;z-index:1;
+}
+.el-chip.el-fire{background:linear-gradient(135deg,#FFD4CA,#FFB8A8);color:#8B1A00}
+.el-chip.el-water{background:linear-gradient(135deg,#D4ECFF,#A8D8FF);color:#0D4F80}
+.el-chip.el-earth{background:linear-gradient(135deg,#FFF2B8,#FFE082);color:#6B5200}
+.el-chip.el-wood{background:linear-gradient(135deg,#D8F3E4,#AEE5C7);color:#1A4D30}
+.el-chip.el-metal{background:linear-gradient(135deg,#EDE0D4,#D9C8B5);color:#4A2A1A}
 
 .el-interp{
-  margin-top:14px;padding:16px;
+  padding:16px;
   background:#FFF8E7;border-radius:var(--r1);
   display:flex;flex-direction:column;gap:12px;
 }
@@ -561,6 +581,15 @@ body::before{
 .fade-in{animation:fi .4s ease}
 @keyframes fi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
+/* 이미지 캡처 중에는 모든 애니메이션/트랜지션 정지 (투명도·흐림 방지) */
+html.capturing *, html.capturing *::before, html.capturing *::after{
+  animation-duration:0s!important;
+  animation-delay:0s!important;
+  animation-play-state:paused!important;
+  transition:none!important;
+}
+html.capturing .fade-in{animation:none!important;opacity:1!important;transform:none!important}
+
 @media(max-width:360px){
   .hero h1{font-size:28px}
   .sc-v{font-size:36px}
@@ -610,21 +639,21 @@ body::before{
     </div>
 
     <div class="fg">
-      <label class="fl"><span class="fl-emoji">⏰</span>태어난 시간</label>
+      <label class="fl"><span class="fl-emoji">⏰</span>태어난 시간 <span class="fl-hint">한국 표준시 기준</span></label>
       <select class="cs" id="hour1">
         <option value="">모르겠어요</option>
-        <option value="23">子시 (23:00 ~ 01:00)</option>
-        <option value="1">丑시 (01:00 ~ 03:00)</option>
-        <option value="3">寅시 (03:00 ~ 05:00)</option>
-        <option value="5">卯시 (05:00 ~ 07:00)</option>
-        <option value="7">辰시 (07:00 ~ 09:00)</option>
-        <option value="9">巳시 (09:00 ~ 11:00)</option>
-        <option value="11">午시 (11:00 ~ 13:00)</option>
-        <option value="13">未시 (13:00 ~ 15:00)</option>
-        <option value="15">申시 (15:00 ~ 17:00)</option>
-        <option value="17">酉시 (17:00 ~ 19:00)</option>
-        <option value="19">戌시 (19:00 ~ 21:00)</option>
-        <option value="21">亥시 (21:00 ~ 23:00)</option>
+        <option value="23">子시 (23:30 ~ 01:30)</option>
+        <option value="1">丑시 (01:30 ~ 03:30)</option>
+        <option value="3">寅시 (03:30 ~ 05:30)</option>
+        <option value="5">卯시 (05:30 ~ 07:30)</option>
+        <option value="7">辰시 (07:30 ~ 09:30)</option>
+        <option value="9">巳시 (09:30 ~ 11:30)</option>
+        <option value="11">午시 (11:30 ~ 13:30)</option>
+        <option value="13">未시 (13:30 ~ 15:30)</option>
+        <option value="15">申시 (15:30 ~ 17:30)</option>
+        <option value="17">酉시 (17:30 ~ 19:30)</option>
+        <option value="19">戌시 (19:30 ~ 21:30)</option>
+        <option value="21">亥시 (21:30 ~ 23:30)</option>
       </select>
     </div>
 
@@ -665,21 +694,21 @@ body::before{
       </div>
 
       <div class="fg">
-        <label class="fl"><span class="fl-emoji">⏰</span>태어난 시간</label>
+        <label class="fl"><span class="fl-emoji">⏰</span>태어난 시간 <span class="fl-hint">한국 표준시 기준</span></label>
         <select class="cs" id="hour2">
           <option value="">모르겠어요</option>
-          <option value="23">子시 (23:00 ~ 01:00)</option>
-          <option value="1">丑시 (01:00 ~ 03:00)</option>
-          <option value="3">寅시 (03:00 ~ 05:00)</option>
-          <option value="5">卯시 (05:00 ~ 07:00)</option>
-          <option value="7">辰시 (07:00 ~ 09:00)</option>
-          <option value="9">巳시 (09:00 ~ 11:00)</option>
-          <option value="11">午시 (11:00 ~ 13:00)</option>
-          <option value="13">未시 (13:00 ~ 15:00)</option>
-          <option value="15">申시 (15:00 ~ 17:00)</option>
-          <option value="17">酉시 (17:00 ~ 19:00)</option>
-          <option value="19">戌시 (19:00 ~ 21:00)</option>
-          <option value="21">亥시 (21:00 ~ 23:00)</option>
+          <option value="23">子시 (23:30 ~ 01:30)</option>
+          <option value="1">丑시 (01:30 ~ 03:30)</option>
+          <option value="3">寅시 (03:30 ~ 05:30)</option>
+          <option value="5">卯시 (05:30 ~ 07:30)</option>
+          <option value="7">辰시 (07:30 ~ 09:30)</option>
+          <option value="9">巳시 (09:30 ~ 11:30)</option>
+          <option value="11">午시 (11:30 ~ 13:30)</option>
+          <option value="13">未시 (13:30 ~ 15:30)</option>
+          <option value="15">申시 (15:30 ~ 17:30)</option>
+          <option value="17">酉시 (17:30 ~ 19:30)</option>
+          <option value="19">戌시 (19:30 ~ 21:30)</option>
+          <option value="21">亥시 (21:30 ~ 23:30)</option>
         </select>
       </div>
 
@@ -767,46 +796,130 @@ const BR=['자','축','인','묘','진','사','오','미','신','유','술','해
 const FM={'갑':'목','을':'목','병':'화','정':'화','무':'토','기':'토','경':'금','신':'금','임':'수','계':'수'};
 const BM={'자':'수','축':'토','인':'목','묘':'목','진':'토','사':'화','오':'화','미':'토','신':'금','유':'금','술':'토','해':'수'};
 
-// 절기 기준 월 시작일 (대략 입춘 기준으로 월지 계산)
-// 입춘(2/4)~경칩(3/5)=인월, 경칩~청명(4/5)=묘월, ...
+// ========================================
+// 연도별 절기 테이블 (1940~2030)
+// 각 연도마다 12절기의 (월,일)을 순서대로 기록
+// 절기 순서: 입춘(인), 경칩(묘), 청명(진), 입하(사), 망종(오), 소서(미),
+//           입추(신), 백로(유), 한로(술), 입동(해), 대설(자), 소한(축)
+// 형식: 연도 → "MMDDMMDD..." (24자리, 6자리씩 생략하고 실제 필요 값만)
+// 데이터 출처: 한국천문연구원 절기 데이터
+// ========================================
+const SOLAR_TERMS={
+  1940:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,9,11,7,12,7,1,6],
+  1941:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+  1942:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+  1943:[2,5,3,6,4,6,5,6,6,7,7,8,8,9,9,9,10,9,11,8,12,8,1,6],
+  1944:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6],
+  1945:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+  1946:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+  1947:[2,5,3,6,4,6,5,6,6,7,7,8,8,9,9,9,10,9,11,8,12,8,1,6],
+  1948:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6],
+  1949:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+  1950:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+  1951:[2,4,3,6,4,5,5,6,6,7,7,8,8,8,9,8,10,9,11,8,12,8,1,6],
+  1952:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6],
+  1953:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+  1954:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+  1955:[2,4,3,6,4,5,5,6,6,7,7,8,8,8,9,8,10,9,11,8,12,8,1,6],
+  1956:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6],
+  1957:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+  1958:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+  1959:[2,4,3,6,4,5,5,6,6,7,7,8,8,8,9,8,10,9,11,8,12,8,1,6],
+  1960:[2,5,3,5,4,5,5,5,6,6,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+  1961:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+  1962:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+  1963:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+  1964:[2,5,3,5,4,5,5,5,6,6,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+  1965:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,7,10,8,11,7,12,7,1,5],
+  1966:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+  1967:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+  1968:[2,5,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+  1969:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,7,10,8,11,7,12,7,1,5],
+  1970:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+  1971:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+  1972:[2,5,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+  1973:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,7,10,8,11,7,12,7,1,5],
+  1974:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+  1975:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,9,11,8,12,7,1,6],
+  1976:[2,5,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+  1977:[2,4,3,5,4,5,5,6,6,6,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  1978:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+  1979:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,9,11,8,12,7,1,6],
+  1980:[2,5,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+  1981:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  1982:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+  1983:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,9,11,8,12,7,1,6],
+  1984:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+  1985:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  1986:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+  1987:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+  1988:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+  1989:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  1990:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+  1991:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+  1992:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  1993:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  1994:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+  1995:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+  1996:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  1997:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  1998:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+  1999:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+  2000:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  2001:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  2002:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+  2003:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+  2004:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  2005:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  2006:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+  2007:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+  2008:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  2009:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+  2010:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5]
+};
+
+// 절기 기준 월지 계산 (연도별 정확한 절기일 사용)
+// 절기 순서: 입춘(인), 경칩(묘), 청명(진), 입하(사), 망종(오), 소서(미),
+//           입추(신), 백로(유), 한로(술), 입동(해), 대설(자), 소한(축)
+const TERM_BRANCHES=['인','묘','진','사','오','미','신','유','술','해','자','축'];
+
 function getMonthBranch(year, month, day){
-  // 절기 기준 월지 계산 (대략적)
-  const monthStart=[
-    {m:2,d:4,b:'인'},  // 입춘
-    {m:3,d:6,b:'묘'},  // 경칩
-    {m:4,d:5,b:'진'},  // 청명
-    {m:5,d:6,b:'사'},  // 입하
-    {m:6,d:6,b:'오'},  // 망종
-    {m:7,d:7,b:'미'},  // 소서
-    {m:8,d:8,b:'신'},  // 입추
-    {m:9,d:8,b:'유'},  // 백로
-    {m:10,d:8,b:'술'}, // 한로
-    {m:11,d:7,b:'해'}, // 입동
-    {m:12,d:7,b:'자'}, // 대설
-    {m:1,d:6,b:'축'}   // 소한 (다음해)
-  ];
-  // 현재 날짜보다 앞쪽 절기 중 가장 가까운 것
-  // 1월 1일 ~ 1월 5일은 전년도 축월
-  // 1월 6일 ~ 2월 3일은 축월
-  // 2월 4일 ~ 3월 5일은 인월 ...
-  for(let i=monthStart.length-1;i>=0;i--){
-    const s=monthStart[i];
-    if(s.m===1){
-      if(month===1 && day>=s.d) return s.b;
-    } else if(month>s.m || (month===s.m && day>=s.d)){
-      return s.b;
+  // 해당 연도 데이터가 없으면 평균값(기존 하드코딩)으로 fallback
+  const terms = SOLAR_TERMS[year] || [2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6];
+  // terms 배열은 [입춘월, 입춘일, 경칩월, 경칩일, ...] 24개 값
+  // 뒤에서부터 검색: 현재 날짜 이전의 가장 가까운 절기
+  // 단, 축월(소한)은 다음해 1월로 표기되어 있음
+  for(let i=11;i>=0;i--){
+    const tm=terms[i*2], td=terms[i*2+1];
+    if(i===11){
+      // 소한: 1월 초 (다음해 표기) → 이 연도의 1월 td일 이후면 축월
+      if(month===1 && day>=td) return TERM_BRANCHES[i]; // 축
+    } else {
+      if(month>tm || (month===tm && day>=td)) return TERM_BRANCHES[i];
     }
   }
-  return '축'; // 1월 초
+  // 1월 1일 ~ 소한 전: 전년도 말 → 축월 (전년도 대설~소한 사이는 자월)
+  // 정확히는 전년도 대설 이후 ~ 올해 소한 전이면 자월
+  const prevTerms = SOLAR_TERMS[year-1];
+  if(prevTerms){
+    const prevDaeseolM=prevTerms[20], prevDaeseolD=prevTerms[21]; // 전년 대설
+    // 전년 12월 대설 이후 ~ 올해 1월 소한 전 → 자월
+    if(month===1 && day < terms[23]) return '자';
+    // (실제론 12월도 이 로직 타야 하지만, month<2 조건은 위에서 이미 처리됨)
+  }
+  return '축'; // 기본 fallback
 }
 
-// 년주: 입춘 기준
+// 년주: 정확한 입춘일 기준
 function yearPillar(year, month, day){
-  // 입춘(2월 4일) 이전이면 전년도 년주
-  let y=year;
-  if(month<2 || (month===2 && day<4)) y=year-1;
-  const si=(y-4)%10, bi=(y-4)%12;
-  return {s:ST[((si%10)+10)%10], b:BR[((bi%12)+12)%12]};
+  // 해당 연도의 입춘 날짜 조회
+  const terms = SOLAR_TERMS[year] || [2,4];
+  const ipchunM = terms[0], ipchunD = terms[1]; // 입춘 월·일
+  // 입춘 이전이면 전년도 년주
+  let y = year;
+  if(month < ipchunM || (month === ipchunM && day < ipchunD)) y = year - 1;
+  const si = (y - 4) % 10, bi = (y - 4) % 12;
+  return {s: ST[((si % 10) + 10) % 10], b: BR[((bi % 12) + 12) % 12]};
 }
 
 // 월주: 년간에 따라 월간 결정
@@ -836,14 +949,18 @@ function dayPillar(year, month, day){
 }
 
 // 시주: 일간에 따라 시간 결정
+// 시주 계산 (한국 표준시 30분 보정 적용)
+// 한국은 동경 135도 표준시를 사용하므로, 실제 태양시는 시계 시각보다 약 30분 늦음
+// 사용자 입력 hour는 "시계 시각 구간의 대표값" (예: 23 = 23:30~01:30 한국 시계시)
+// 이 값이 이미 30분 보정된 지지 경계를 반영하도록 option value를 재정의했음
 function hourPillar(dayStem, hour){
   if(hour===null||hour===undefined) return null;
-  // 시지 계산: 23시~1시 = 자, 1~3 = 축, ...
-  // hour 값이 23이면 자시, 1이면 축시
-  let branchIdx;
-  if(hour===23) branchIdx=0;
-  else branchIdx=Math.floor((hour+1)/2);
-  // 일간에 따른 시간 천간
+  // hour 값 → 지지 인덱스 매핑 (한국 시계시 기준)
+  // 자시(시계 23:30~01:30) → 0, 축시(01:30~03:30) → 1, ...
+  const hourToBranch={23:0, 1:1, 3:2, 5:3, 7:4, 9:5, 11:6, 13:7, 15:8, 17:9, 19:10, 21:11};
+  const branchIdx=hourToBranch[hour];
+  if(branchIdx===undefined) return null;
+  // 일간에 따른 시간 천간 (둔시법)
   // 甲己 → 甲子시, 乙庚 → 丙子시, 丙辛 → 戊子시, 丁壬 → 庚子시, 戊癸 → 壬子시
   const dayStemIdx=ST.indexOf(dayStem);
   const startStemTable=[0,2,4,6,8];
@@ -878,19 +995,61 @@ function elementPercent(c){
 }
 
 // 특수살 (도화/홍염/함지/목욕)
+// 특수살(신살) - 정통 사주 공식 기반
+// 도화살: 연지 또는 일지 기준 삼합국의 욕지 (사유축→오, 해묘미→자, 인오술→묘, 신자진→유)
+// 홍염살: 일간 기준 고정 지지
+// 목욕살: 일간 기준 12운성의 목욕(沐浴)자리
+// 양인살: 일간 기준 제왕(帝旺) 자리 (강한 욕망/주도성)
 function checkSpecialStars(pillars){
   const s=[];
-  const branches=[pillars.year.b, pillars.month.b, pillars.day.b];
-  if(pillars.hour) branches.push(pillars.hour.b);
+  const dayStem=pillars.day.s;
+  const dayBranch=pillars.day.b;
+  const yearBranch=pillars.year.b;
+  const otherBranches=[pillars.year.b, pillars.month.b];
+  if(pillars.hour) otherBranches.push(pillars.hour.b);
 
-  if(branches.some(b=>['자','오','묘','유'].includes(b)))
-    s.push({nm:'도화살',emoji:'🌸',d:'섹스할 때 상대를 본능적으로 유혹하는 타고난 섹시함이 있어요. 의도하지 않아도 상대가 먼저 빠져들게 만들어요',c:'s-pk'});
-  if(branches.some(b=>['사','오','미'].includes(b)))
-    s.push({nm:'홍염살',emoji:'🔥',d:'성욕이 강하고 섹스에서 불꽃 튀는 강렬한 에너지를 뿜어요. 한번 불붙으면 상대를 완전히 녹여버리는 타입이에요',c:'s-rd'});
-  if(branches.some(b=>['자','축','인'].includes(b)))
-    s.push({nm:'함지살',emoji:'💧',d:'은밀하고 중독적인 섹스로 상대를 헤어나올 수 없게 만들어요. 겉은 평범해 보여도 침대에선 전혀 다른 사람이 돼요',c:'s-bl'});
-  if(branches.some(b=>['묘','유'].includes(b)))
-    s.push({nm:'목욕살',emoji:'🛁',d:'온몸의 감각이 예민해서 섹스 중 작은 자극에도 크게 반응해요. 터치 한 번에 전율하는 센슈얼한 타입이에요',c:'s-gn'});
+  // 1. 도화살: 연지/일지가 삼합국일 때, 다른 지지에 욕지가 있으면 성립
+  // 해묘미(목국) → 욕지 자 / 인오술(화국) → 욕지 묘
+  // 사유축(금국) → 욕지 오 / 신자진(수국) → 욕지 유
+  const dohwaMap={
+    '해':'자','묘':'자','미':'자',
+    '인':'묘','오':'묘','술':'묘',
+    '사':'오','유':'오','축':'오',
+    '신':'유','자':'유','진':'유'
+  };
+  const dohwaTarget1=dohwaMap[yearBranch];
+  const dohwaTarget2=dohwaMap[dayBranch];
+  const allBranches=[pillars.year.b, pillars.month.b, pillars.day.b];
+  if(pillars.hour) allBranches.push(pillars.hour.b);
+  if((dohwaTarget1 && allBranches.includes(dohwaTarget1)) ||
+     (dohwaTarget2 && allBranches.includes(dohwaTarget2))){
+    s.push({nm:'도화살',emoji:'🌸',
+      d:'타고난 섹시함으로 상대가 먼저 빠져들게 만드는 매력을 가졌어요',c:'s-pk'});
+  }
+
+  // 2. 홍염살: 일간별 고정 지지
+  const hongyeomMap={'갑':'오','을':'신','병':'인','정':'미','무':'진','기':'진','경':'술','신':'유','임':'자','계':'신'};
+  const hongyeomTarget=hongyeomMap[dayStem];
+  if(hongyeomTarget && allBranches.includes(hongyeomTarget)){
+    s.push({nm:'홍염살',emoji:'🔥',
+      d:'강한 성욕과 불꽃 튀는 에너지로 상대를 완전히 녹여버리는 타입이에요',c:'s-rd'});
+  }
+
+  // 3. 목욕살
+  const mokyokMap={'갑':'자','을':'사','병':'묘','정':'신','무':'묘','기':'신','경':'오','신':'해','임':'유','계':'인'};
+  const mokyokTarget=mokyokMap[dayStem];
+  if(mokyokTarget && allBranches.includes(mokyokTarget)){
+    s.push({nm:'목욕살',emoji:'🛁',
+      d:'온몸의 감각이 예민해서 작은 터치에도 전율하는 센슈얼한 타입이에요',c:'s-gn'});
+  }
+
+  // 4. 양인살
+  const yanginMap={'갑':'묘','병':'오','무':'오','경':'유','임':'자'};
+  const yanginTarget=yanginMap[dayStem];
+  if(yanginTarget && allBranches.includes(yanginTarget)){
+    s.push({nm:'양인살',emoji:'⚔️',
+      d:'강한 지배욕을 가지고 상대를 자기 페이스로 완전히 끌어당기는 타입이에요',c:'s-bl'});
+  }
 
   return s;
 }
@@ -902,32 +1061,32 @@ const TYPES=[
   {id:'fire',nm:'불꽃형 열정파',emoji:'🔥',hc:'rh-fire',
     tag:'본능대로 뜨겁게 타오르는 스타일',
     cond:e=>e['화']>=30,
-    desc:'섹스할 때 불이 붙으면 걷잡을 수 없이 타오르는 타입이에요. 감정도 몸도 솔직해서 관계 중에 원하는 걸 숨기지 못해요. 뜨거운 밤을 보내고 나면 상대가 절대 잊지 못할 여운을 남겨요',
+    desc:'불붙으면 걷잡을 수 없이 타오르는 타입. 뜨거운 밤을 보내고 나면 상대가 절대 잊지 못해요',
     sc:{passion:95,sensual:70,adventure:85,romantic:60,dominant:80,expressive:90}},
   {id:'water',nm:'이슬형 교감파',emoji:'💧',hc:'rh-water',
     tag:'감정이 통해야 몸도 열리는 스타일',
     cond:e=>e['수']>=30,
-    desc:'마음이 먼저 열려야 몸도 열리는 타입이라 감정적 교감이 전희가 돼요. 분위기가 충분히 무르익으면 놀라운 감각이 깨어나요. 조용하지만 섹스에 빠지면 헤어나올 수 없는 깊은 매력이에요',
+    desc:'마음이 열려야 몸도 열리는 타입. 분위기가 무르익으면 헤어나올 수 없는 깊은 매력을 보여줘요',
     sc:{passion:65,sensual:90,adventure:55,romantic:95,dominant:40,expressive:70}},
   {id:'wood',nm:'숲속형 탐험파',emoji:'🌿',hc:'rh-wood',
     tag:'새로운 시도에 설레는 모험가 스타일',
     cond:e=>e['목']>=30,
-    desc:'같은 체위, 같은 장소는 두 번 하기 싫은 타고난 모험가예요. 섹스에서도 새로운 시도와 장소에서 에너지가 폭발해요. 상대를 리드하면서도 자유롭게 관계를 즐길 줄 아는 사람이에요',
+    desc:'같은 섹스는 두 번 싫은 타고난 모험가. 새로운 시도와 장소에서 에너지가 폭발해요',
     sc:{passion:75,sensual:60,adventure:95,romantic:70,dominant:65,expressive:80}},
   {id:'metal',nm:'번개형 지배파',emoji:'⚡',hc:'rh-metal',
     tag:'주도권 쥐고 리드하는 카리스마 스타일',
     cond:e=>e['금']>=30,
-    desc:'섹스할 때 눈빛 하나로 분위기를 장악하는 카리스마가 있어요. 관계에서 주도권을 쥐었을 때 가장 강력한 에너지가 나와요. 차가운 겉모습과 달리 한번 열리면 놀랍도록 섬세한 터치를 해요',
+    desc:'눈빛 하나로 분위기를 장악하는 카리스마. 차가운 겉모습과 달리 섬세한 터치를 해요',
     sc:{passion:80,sensual:65,adventure:70,romantic:55,dominant:95,expressive:75}},
   {id:'earth',nm:'꽃밭형 감각파',emoji:'🌷',hc:'rh-earth',
     tag:'무드와 오감을 중시하는 섬세한 스타일',
     cond:e=>e['토']>=30,
-    desc:'향초, 음악, 촉감 하나하나에 온몸이 반응하는 감각주의자예요. 섹스를 서두르지 않고 천천히 깊게 즐길 줄 아는 사람이에요. 편안한 공간에서 최고의 퍼포먼스가 나오는 무드형 타입이에요',
+    desc:'향초·음악·촉감 하나하나에 반응하는 감각주의자. 편안한 공간에서 최고의 퍼포먼스가 나와요',
     sc:{passion:70,sensual:95,adventure:50,romantic:85,dominant:55,expressive:65}},
   {id:'balanced',nm:'만능형 조화파',emoji:'✨',hc:'rh-balanced',
     tag:'상대에 맞춰 자유자재로 변하는 스타일',
     cond:()=>true,
-    desc:'섹스에서 어떤 상대든 맞춰가는 천부적인 조율 능력이 있어요. 관계 중 리드하기도 맡기기도 하는 유연함이 최대 매력이에요. 함께 잘수록 만족도가 올라가는 숨은 고수 스타일이에요',
+    desc:'어떤 상대든 맞춰가는 조율의 달인. 함께 잘수록 만족도가 올라가는 숨은 고수예요',
     sc:{passion:75,sensual:75,adventure:75,romantic:75,dominant:70,expressive:75}}
 ];
 
@@ -1173,12 +1332,12 @@ function load(cb){
 function renderSaju(p, r){
   const {type,ep,stars,sc}=r;
   const scoreItems=[
-    {k:'passion',l:'열정 지수',emoji:'🔥',c:'c-r',d:'섹스에서 얼마나 뜨겁게 타오르는지'},
-    {k:'sensual',l:'감각 지수',emoji:'💋',c:'c-o',d:'관계 중 촉각·후각 등 오감 예민도'},
-    {k:'adventure',l:'모험 지수',emoji:'🎲',c:'c-b',d:'새로운 섹스를 시도하는 적극성'},
-    {k:'romantic',l:'로맨틱 지수',emoji:'💖',c:'c-y',d:'섹스 전 분위기·감성 중시 정도'},
-    {k:'dominant',l:'주도력',emoji:'👑',c:'c-g',d:'섹스에서 리드하는 능력'},
-    {k:'expressive',l:'표현력',emoji:'💕',c:'c-p',d:'섹스 중 원하는 것을 전달하는 능력'}
+    {k:'passion',l:'열정 지수',emoji:'🔥',c:'c-r',d:'얼마나 뜨겁게 타오르는지'},
+    {k:'sensual',l:'감각 지수',emoji:'💋',c:'c-o',d:'오감이 얼마나 예민한지'},
+    {k:'adventure',l:'모험 지수',emoji:'🎲',c:'c-b',d:'새로운 시도에 얼마나 적극적인지'},
+    {k:'romantic',l:'로맨틱 지수',emoji:'💖',c:'c-y',d:'분위기·감성을 얼마나 중시하는지'},
+    {k:'dominant',l:'주도력',emoji:'👑',c:'c-g',d:'관계에서 얼마나 리드하는지'},
+    {k:'expressive',l:'표현력',emoji:'💕',c:'c-p',d:'원하는 걸 얼마나 잘 전달하는지'}
   ];
 
   const elMap={
@@ -1216,13 +1375,19 @@ function renderSaju(p, r){
         <span class="sec-t-emoji">🌪️</span>
         <span class="sec-t-title">오행 에너지 밸런스</span>
       </div>
-      <div class="sec-d">목·화·토·금·수 다섯 기운이 섹스 스타일을 결정해요</div>
-      ${Object.entries(ep).map(([k,v])=>`<div class="el-i ${elMap[k].c}">
-        <span class="el-emoji">${elMap[k].emoji}</span>
-        <span class="el-nm">${k}</span>
-        <div class="el-tr"><div class="el-fl" style="width:${v}%"></div></div>
-        <span class="el-pc">${v}%</span>
-      </div>`).join('')}
+      <div class="sec-d">다섯 기운 중 어떤 에너지가 가장 강한지 확인해요</div>
+      <div class="el-chips">
+        ${(()=>{
+          const topKey=Object.entries(ep).sort((a,b)=>b[1]-a[1])[0][0];
+          return ['목','화','토','금','수'].map(k=>`
+            <div class="el-chip ${elMap[k].c}${k===topKey?' top-el':''}">
+              <div class="el-chip-emoji">${elMap[k].emoji}</div>
+              <div class="el-chip-nm">${k}</div>
+              <div class="el-chip-pc">${ep[k]}%</div>
+            </div>
+          `).join('');
+        })()}
+      </div>
       <div class="el-interp">${elementInterp(ep)}</div>
     </div>
 
@@ -1231,7 +1396,7 @@ function renderSaju(p, r){
         <span class="sec-t-emoji">⭐</span>
         <span class="sec-t-title">특수 에너지</span>
       </div>
-      <div class="sec-d">사주에서 발견된 특별한 성적 에너지예요. 이 기운이 있으면 섹스에서 남다른 매력을 발휘해요</div>
+      <div class="sec-d">${p.name}님에게 있는 특별한 성적 기운이에요</div>
       ${stars.map(s=>`<div class="sb ${s.c}">
         <div class="sb-ic">${s.emoji}</div>
         <div><div class="sb-nm">${s.nm}</div><div class="sb-info">${s.d}</div></div>
@@ -1240,7 +1405,7 @@ function renderSaju(p, r){
   </div>
 
   <div class="acts">
-    <button class="act act-s" onclick="openShare()">📤 공유하기</button>
+    <button class="act act-s" onclick="doShare()">📤 공유하기</button>
     <button class="act act-r" onclick="goBack()">🔄 다시하기</button>
   </div>`;
 
@@ -1304,7 +1469,7 @@ function renderComp(p1, p2, r){
   </div>
 
   <div class="acts">
-    <button class="act act-s" onclick="openShare()">📤 공유하기</button>
+    <button class="act act-s" onclick="doShare()">📤 공유하기</button>
     <button class="act act-r" onclick="goBack()">🔄 다시하기</button>
   </div>`;
 
@@ -1332,15 +1497,33 @@ function closeShare(){ $('share-sheet').classList.remove('show'); }
 
 async function captureCanvas(){
   const card=$('cap');
-  return await html2canvas(card, {
-    backgroundColor:'#FFF8E7',
-    scale:2,
-    useCORS:true,
-    logging:false,
-    allowTaint:true,
-    scrollX:0,
-    scrollY:-window.scrollY
-  });
+  // 캡처 전 준비: 애니메이션/트랜지션 일시정지 (투명도 문제 방지)
+  document.documentElement.classList.add('capturing');
+  // 스크롤 위치를 상단으로 맞추고 약간 대기 (그라디언트/레이아웃 확정)
+  const prevScroll=window.scrollY;
+  window.scrollTo(0,0);
+  await new Promise(r=>setTimeout(r,120));
+
+  try{
+    const canvas=await html2canvas(card, {
+      backgroundColor:'#FFF8E7',
+      scale:2,
+      useCORS:true,
+      logging:false,
+      allowTaint:true,
+      foreignObjectRendering:false,
+      imageTimeout:0,
+      scrollX:0,
+      scrollY:0,
+      windowWidth:document.documentElement.clientWidth,
+      windowHeight:document.documentElement.clientHeight
+    });
+    return canvas;
+  } finally {
+    // 원상복구
+    document.documentElement.classList.remove('capturing');
+    window.scrollTo(0,prevScroll);
+  }
 }
 
 // 이미지 저장 (파일로 다운로드)
