@@ -3,241 +3,555 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>🫣 잠자리 사주</title>
-<meta name="description" content="태어난 순간의 네 기둥에 숨겨진 당신의 성적 에너지를 읽어드려요">
-<meta property="og:title" content="🫣 잠자리 사주">
+<title>🫣 19야스 사주풀이</title>
+<meta name="description" content="사주로 보는 나의 섹스 유형과 잠자리 궁합">
+<meta property="og:title" content="🫣 19야스 사주풀이">
 <meta property="og:description" content="사주로 보는 나의 섹스 유형과 잠자리 궁합">
 <meta property="og:image" content="https://bdsm.tryme.im/logo.png">
 <meta property="og:url" content="https://love.tryme.im">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/korean-lunar-calendar/lib/korean-lunar-calendar.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+
+<!-- 음력 변환: 더 안정적인 CDN (jsdelivr에서 직접) -->
+<script src="https://cdn.jsdelivr.net/npm/korean-lunar-calendar@0.3.1/dist/korean-lunar-calendar.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <style>
 :root{
-  --bg:#FEFADF;
+  /* 당근마켓 스타일 컬러 - 따뜻하고 다채롭지만 일관됨 */
+  --bg:#FFF8E7;
   --card:#FFFFFF;
-  --main:#FEC659;
-  --main-d:#E5AB2E;
-  --red:#F6542E;
-  --orange:#FC935C;
-  --blue:#72BCFD;
-  --brown:#783E30;
-  --forest:#2D5348;
-  --dkred:#541813;
-  --sage:#6CA28E;
-  --pink:#FF8FAB;
-  --t1:#2D2016;
-  --t2:#5C4A3A;
-  --t3:#9C8A76;
-  --sh:0 2px 16px rgba(120,62,48,.06);
-  --sh2:0 6px 28px rgba(120,62,48,.09);
-  --r:16px;--r2:24px;--r3:32px;
+  --carrot:#FF6F0F;
+  --carrot-l:#FFB070;
+  --yellow:#FFD84D;
+  --yellow-l:#FFE98A;
+  --yellow-bg:#FFF2B8;
+  --pink:#FF8DA1;
+  --pink-l:#FFD0DA;
+  --pink-bg:#FFE8EE;
+  --blue:#5AB8FF;
+  --blue-l:#A8D8FF;
+  --blue-bg:#D5EBFF;
+  --green:#6DD49A;
+  --green-l:#AEE5C7;
+  --green-bg:#D8F3E4;
+  --purple:#B196F3;
+  --purple-l:#D4C5FA;
+  --purple-bg:#EAE0FC;
+  --brown:#4A2E1C;
+  --dkred:#8B2E1F;
+  --t1:#1F1A17;
+  --t2:#4A4038;
+  --t3:#8A7E72;
+  --t4:#C5BDB0;
+  --line:#EFE8D9;
+  --sh1:0 2px 8px rgba(92,58,38,.04);
+  --sh2:0 4px 16px rgba(92,58,38,.07);
+  --sh3:0 8px 28px rgba(255,111,15,.14);
+  --r1:14px;--r2:20px;--r3:28px;--r4:36px;
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;-webkit-font-smoothing:antialiased}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{
+  font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--t1);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  font-weight:500;
+  letter-spacing:-0.01em;
+}
+.jua{font-family:'Jua',sans-serif;font-weight:400;letter-spacing:-0.02em}
 
-/* Fluent 3D emoji helper */
-.fe{display:inline-block;vertical-align:middle}
-.fe img{display:block}
+/* 배경 장식 (당근 스타일 은은한 패턴) */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(circle at 10% 15%, rgba(255,216,77,.25) 0, transparent 45%),
+    radial-gradient(circle at 90% 85%, rgba(255,141,161,.18) 0, transparent 45%),
+    radial-gradient(circle at 85% 20%, rgba(90,184,255,.12) 0, transparent 40%);
+}
+.wrap{max-width:440px;margin:0 auto;padding:14px 16px 32px;position:relative;z-index:1}
 
-/* Container */
-.wrap{max-width:420px;margin:0 auto;padding:16px 14px;position:relative;z-index:1}
+/* ============ HERO (원숭이 제거, 당근 스타일로) ============ */
+.hero{text-align:center;padding:24px 8px 20px;position:relative}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#fff;padding:7px 14px;border-radius:999px;
+  font-size:13px;font-weight:700;color:var(--carrot);
+  box-shadow:var(--sh1);margin-bottom:14px;
+}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--carrot);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.hero h1{
+  font-family:'Jua',sans-serif;
+  font-size:34px;font-weight:400;color:var(--brown);
+  line-height:1.2;margin-bottom:10px;letter-spacing:-0.02em;
+}
+.hero h1 .hl{color:var(--carrot)}
+.hero p{font-size:15px;color:var(--t2);line-height:1.6;font-weight:500}
 
-/* Hero */
-.hero{text-align:center;padding:28px 16px 20px}
-.hero-img{width:64px;height:64px;margin:0 auto 8px;animation:hFloat 3s ease-in-out infinite}
-@keyframes hFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.hero h1{font-size:26px;font-weight:900;color:var(--brown);margin-bottom:6px}
-.hero p{font-size:13px;color:var(--t2);line-height:1.5}
+/* ============ TABS (토스 스타일 세그먼트) ============ */
+.tabs{
+  display:flex;gap:4px;margin-bottom:14px;
+  background:#fff;border-radius:var(--r2);padding:5px;
+  box-shadow:var(--sh1);
+}
+.tab{
+  flex:1;padding:13px 0;border:none;border-radius:14px;
+  background:transparent;
+  font-family:'Pretendard Variable',Pretendard,sans-serif;
+  font-size:15px;font-weight:700;color:var(--t3);
+  cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);
+}
+.tab.on{
+  background:linear-gradient(135deg,var(--carrot),#FF8A3D);
+  color:#fff;box-shadow:0 4px 12px rgba(255,111,15,.28);
+}
 
-/* Tabs */
-.tabs{display:flex;gap:4px;margin-bottom:14px;background:var(--card);border-radius:var(--r2);padding:4px;box-shadow:var(--sh)}
-.tab{flex:1;padding:11px 0;border:none;border-radius:var(--r);background:transparent;font-family:inherit;font-size:14px;font-weight:500;color:var(--t3);cursor:pointer;transition:.25s}
-.tab.on{background:var(--main);color:var(--brown);font-weight:700;box-shadow:0 3px 12px rgba(254,198,89,.35)}
+/* ============ INPUT CARD (스트로크 제거, 깔끔하게) ============ */
+.icard{
+  background:#fff;
+  border-radius:var(--r3);
+  padding:22px 20px;
+  box-shadow:var(--sh2);
+  margin-bottom:12px;
+  /* border-top 제거 - 이상한 스트로크 삭제 */
+}
+.ic-label{
+  display:flex;align-items:center;gap:10px;
+  font-size:18px;font-weight:800;color:var(--t1);
+  margin-bottom:18px;letter-spacing:-0.02em;
+}
+.ic-emoji{
+  font-size:24px;line-height:1;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:12px;
+  background:var(--yellow-bg);
+}
+.icard.ic2 .ic-emoji{background:var(--pink-bg)}
 
-/* Input card */
-.icard{background:var(--card);border-radius:var(--r2);padding:20px 16px;box-shadow:var(--sh2);margin-bottom:10px;border-top:3px solid var(--main)}
-.icard.ic2{border-top-color:var(--sage)}
-.ic-label{display:flex;align-items:center;gap:7px;font-size:15px;font-weight:700;margin-bottom:14px}
-.ic-label img{width:24px;height:24px}
-.fg{margin-bottom:10px}
-.fl{display:block;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:5px}
-.ci,.cs{width:100%;padding:11px 12px;border:1.5px solid #EDE0C8;border-radius:var(--r);font-family:inherit;font-size:14px;color:var(--t1);background:#FFFEF5;transition:.25s;outline:none;-webkit-appearance:none}
-.ci:focus,.cs:focus{border-color:var(--main);box-shadow:0 0 0 3px rgba(254,198,89,.18)}
-.cs{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' stroke='%23FEC659' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px}
-.dr{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
-.gp{display:flex;gap:6px}
-.gp-b{flex:1;padding:10px;border:1.5px solid #EDE0C8;border-radius:var(--r);background:#FFFEF5;font-family:inherit;font-size:13px;cursor:pointer;transition:.25s;text-align:center}
-.gp-b.on{border-color:var(--main);background:#FFF8E1;color:var(--brown);font-weight:700}
-.ct{display:flex;gap:6px;margin-bottom:6px}
-.ct-b{flex:1;padding:7px;border:1.5px solid #EDE0C8;border-radius:var(--r);background:#FFFEF5;font-family:inherit;font-size:12px;cursor:pointer;transition:.25s;text-align:center}
-.ct-b.on{border-color:var(--main);background:#FFF8E1;font-weight:700}
+.fg{margin-bottom:14px}
+.fg:last-child{margin-bottom:0}
+.fl{
+  display:flex;align-items:center;gap:6px;
+  font-size:14px;font-weight:700;color:var(--t2);
+  margin-bottom:8px;letter-spacing:-0.01em;
+}
+.fl-emoji{font-size:16px}
+
+/* 인풋/셀렉트 - 이모지 이미지가 아니라 유니코드 이모지 사용해서 이미지 로드 실패 문제 해결 */
+.ci,.cs{
+  width:100%;padding:15px 14px;
+  border:1.5px solid #EEE8D8;
+  border-radius:14px;
+  font-family:inherit;font-size:16px;font-weight:600;
+  color:var(--t1);background:#FAFAF0;
+  transition:all .2s;outline:none;
+  -webkit-appearance:none;appearance:none;
+}
+.ci::placeholder{color:var(--t4);font-weight:500}
+.ci:focus,.cs:focus{
+  border-color:var(--carrot);
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(255,111,15,.12);
+}
+.cs{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23FF6F0F' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  padding-right:36px;cursor:pointer;
+}
+.dr{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:6px}
+
+/* 양력/음력 토글 */
+.ct{display:flex;gap:6px;margin-bottom:8px;background:#F7F1E0;padding:4px;border-radius:12px}
+.ct-b{
+  flex:1;padding:10px;border:none;border-radius:9px;
+  background:transparent;font-family:inherit;
+  font-size:14px;font-weight:700;color:var(--t3);
+  cursor:pointer;transition:all .2s;
+}
+.ct-b.on{background:#fff;color:var(--carrot);box-shadow:var(--sh1)}
+
+/* 성별 */
+.gp{display:flex;gap:8px}
+.gp-b{
+  flex:1;padding:14px;
+  border:1.5px solid #EEE8D8;border-radius:14px;
+  background:#FAFAF0;font-family:inherit;
+  font-size:15px;font-weight:700;color:var(--t2);
+  cursor:pointer;transition:all .2s;
+  text-align:center;
+}
+.gp-b.on{
+  border-color:var(--carrot);
+  background:#FFF3E5;color:var(--carrot);
+  box-shadow:0 2px 8px rgba(255,111,15,.12);
+}
 
 /* VS */
-.vs-d{display:flex;align-items:center;justify-content:center;margin:4px 0}
-.vs-b{width:38px;height:38px;border-radius:50%;background:var(--main);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--brown);box-shadow:0 3px 10px rgba(254,198,89,.35)}
+.vs-d{display:flex;align-items:center;justify-content:center;margin:2px 0 10px}
+.vs-b{
+  width:46px;height:46px;border-radius:50%;
+  background:linear-gradient(135deg,#FF6F0F,#FF8A3D);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Jua';font-size:15px;color:#fff;
+  box-shadow:0 6px 16px rgba(255,111,15,.35);
+  animation:bob 2s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
-/* Main button */
-.mbtn{width:100%;padding:15px;border:none;border-radius:var(--r2);background:var(--main);color:var(--brown);font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;transition:.25s;box-shadow:0 4px 18px rgba(254,198,89,.35);margin-top:4px}
-.mbtn:active{transform:scale(.98)}
+/* 메인 버튼 */
+.mbtn{
+  width:100%;padding:18px;border:none;
+  border-radius:20px;
+  background:linear-gradient(135deg,#FF6F0F,#FF8A3D);
+  color:#fff;
+  font-family:'Pretendard Variable',Pretendard,sans-serif;
+  font-size:18px;font-weight:800;
+  cursor:pointer;transition:all .2s;
+  box-shadow:0 8px 20px rgba(255,111,15,.32);
+  margin-top:8px;letter-spacing:-0.01em;
+}
+.mbtn:active{transform:scale(.97);box-shadow:0 4px 12px rgba(255,111,15,.25)}
 
-/* Loading */
-.ld-ov{display:none;position:fixed;inset:0;background:rgba(254,250,223,.97);z-index:1000;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+/* ============ 메인 페이지 FOOTER (구독 풍선 + 로고) ============ */
+.main-ftr{text-align:center;padding:28px 8px 12px;margin-top:8px}
+.ftr-bub{
+  display:inline-block;
+  background:linear-gradient(135deg,#FF6F0F,#FF4D6D);
+  color:#fff;padding:12px 22px;border-radius:999px;
+  font-size:14px;font-weight:700;
+  margin-bottom:16px;position:relative;
+  cursor:pointer;text-decoration:none;
+  box-shadow:0 6px 16px rgba(255,77,109,.28);
+  transition:transform .2s;
+}
+.ftr-bub:active{transform:scale(.96)}
+.ftr-bub::after{
+  content:'';position:absolute;bottom:-7px;left:50%;
+  transform:translateX(-50%);
+  border-left:7px solid transparent;border-right:7px solid transparent;
+  border-top:7px solid #FF4D6D;
+}
+.ftr-logo{display:inline-block;cursor:pointer;text-decoration:none}
+.ftr-logo img{
+  width:42px;height:42px;border-radius:12px;
+  box-shadow:0 3px 10px rgba(0,0,0,.08);
+  display:block;margin:0 auto 6px;
+}
+.ftr-logo-txt{font-size:12px;color:var(--t3);font-weight:600}
+
+/* ============ LOADING ============ */
+.ld-ov{
+  display:none;position:fixed;inset:0;
+  background:rgba(255,248,231,.97);z-index:1000;
+  flex-direction:column;align-items:center;justify-content:center;gap:16px;
+}
 .ld-ov.show{display:flex}
-.ld-img{width:64px;height:64px;animation:ldR 1.2s ease-in-out infinite}
-@keyframes ldR{0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(10deg) scale(1.1)}}
-.ld-t{font-size:16px;font-weight:700;color:var(--brown)}
-.ld-s{font-size:12px;color:var(--t3)}
-.ld-bar{width:140px;height:6px;background:#EDE0C8;border-radius:3px;overflow:hidden}
-.ld-fill{height:100%;width:0;background:var(--main);border-radius:3px;transition:width .3s}
+.ld-emoji{font-size:64px;animation:ldR 1.4s ease-in-out infinite}
+@keyframes ldR{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(8deg) scale(1.1)}}
+.ld-t{font-family:'Jua';font-size:20px;color:var(--brown)}
+.ld-s{font-size:14px;color:var(--t3);font-weight:600}
+.ld-bar{width:180px;height:8px;background:#F0E6D0;border-radius:4px;overflow:hidden}
+.ld-fill{height:100%;width:0;background:linear-gradient(90deg,var(--carrot),#FFB070);border-radius:4px;transition:width .3s}
 
-/* ===== RESULT ===== */
+/* ============ RESULT ============ */
 #result-area{display:none}
 
-/* -- RESULT CARD (single card for image save) -- */
-.result-card{background:var(--card);border-radius:var(--r3);overflow:hidden;box-shadow:var(--sh2)}
-
-/* Section inside result card */
-.rc-sec{padding:18px 16px;border-bottom:1px solid #F5EDD8}
+.result-card{
+  background:#fff;border-radius:var(--r4);
+  overflow:hidden;box-shadow:var(--sh2);
+}
+.rc-sec{padding:22px 20px;border-bottom:1px solid #F5EFDE}
 .rc-sec:last-child{border-bottom:none}
 
-/* -- Header section (type) -- */
-.rc-header{position:relative;overflow:hidden;padding:28px 20px 22px;text-align:center}
-.rc-header::before{content:'';position:absolute;top:-50px;right:-50px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.15)}
-.rc-header::after{content:'';position:absolute;bottom:-30px;left:-30px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.1)}
+/* 결과 헤더 */
+.rc-header{
+  position:relative;overflow:hidden;
+  padding:32px 22px 26px;text-align:center;
+}
+.rc-header::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:150px;height:150px;border-radius:50%;
+  background:rgba(255,255,255,.14);
+}
+.rc-header::after{
+  content:'';position:absolute;bottom:-40px;left:-40px;
+  width:100px;height:100px;border-radius:50%;
+  background:rgba(255,255,255,.08);
+}
 .rc-header *{position:relative;z-index:1}
-.rc-header .rh-img{width:56px;height:56px;margin:0 auto 6px}
-.rc-header .rh-sub{font-size:13px;margin-bottom:3px}
-.rc-header .rh-type{font-size:28px;font-weight:900;line-height:1.25;margin-bottom:10px}
-.rc-header .rh-desc{font-size:12px;line-height:1.8;max-width:280px;margin:0 auto;text-align:left}
+.rh-emoji{font-size:64px;line-height:1;margin-bottom:10px}
+.rh-sub{font-size:15px;margin-bottom:6px;font-weight:600;opacity:.85}
+.rh-type{
+  font-family:'Jua',sans-serif;font-size:34px;
+  line-height:1.2;margin-bottom:14px;letter-spacing:-0.02em;
+}
+.rh-desc{
+  font-size:15px;line-height:1.75;max-width:320px;
+  margin:0 auto;text-align:left;font-weight:500;
+}
+.rh-fire{background:linear-gradient(135deg,#FF4D4D,#FF8A3D);color:#fff}
+.rh-water{background:linear-gradient(135deg,#4A90E2,#72BCFD);color:#fff}
+.rh-wood{background:linear-gradient(135deg,#3D8B6C,#6DD49A);color:#fff}
+.rh-metal{background:linear-gradient(135deg,#8B5A3C,#B88560);color:#fff}
+.rh-earth{background:linear-gradient(135deg,#E5AB2E,#FFD84D);color:var(--brown)}
+.rh-balanced{background:linear-gradient(135deg,#FF8DA1,#FFB070);color:#fff}
 
-/* Type header colors */
-.rh-fire{background:linear-gradient(135deg,#F6542E,#FC935C);color:#fff}
-.rh-water{background:linear-gradient(135deg,#4A9ADB,#72BCFD);color:#fff}
-.rh-wood{background:linear-gradient(135deg,#2D5348,#6CA28E);color:#fff}
-.rh-metal{background:linear-gradient(135deg,#6E4A3A,#A06850);color:#fff}
-.rh-earth{background:linear-gradient(135deg,#E5AB2E,#FEC659);color:var(--dkred)}
-.rh-balanced{background:linear-gradient(135deg,#FEC659,#FC935C);color:var(--dkred)}
-.rh-fire .rh-sub,.rh-water .rh-sub,.rh-wood .rh-sub,.rh-metal .rh-sub{color:rgba(255,255,255,.8)}
-.rh-earth .rh-sub,.rh-balanced .rh-sub{color:var(--brown)}
+/* 섹션 타이틀 */
+.sec-t{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.sec-t-emoji{
+  font-size:22px;width:38px;height:38px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--yellow-bg);border-radius:12px;
+}
+.sec-t-title{font-family:'Jua',sans-serif;font-size:20px;color:var(--t1)}
+.sec-d{
+  font-size:14px;color:var(--t3);line-height:1.6;
+  margin-bottom:16px;font-weight:500;
+}
 
-/* -- Section title -- */
-.sec-t{display:flex;align-items:center;gap:7px;margin-bottom:4px}
-.sec-t img{width:22px;height:22px}
-.sec-t span{font-size:15px;font-weight:800}
-.sec-d{font-size:11px;color:var(--t3);line-height:1.5;margin-bottom:12px}
-
-/* -- Score grid -- */
-.sg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.sc{border-radius:var(--r);padding:14px 10px;text-align:center;position:relative;overflow:hidden}
-.sc::before{content:'';position:absolute;top:-18px;right:-18px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.3)}
-.sc-img{width:26px;height:26px;margin:0 auto 2px}
-.sc-l{font-size:10px;font-weight:600;opacity:.65}
-.sc-v{font-size:36px;font-weight:900;line-height:1;margin:1px 0}
-.sc-info{font-size:9px;opacity:.5;line-height:1.3}
-
+/* 지수 그리드 (당근 카드 스타일) */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sc{
+  border-radius:var(--r2);padding:18px 14px;
+  text-align:center;position:relative;overflow:hidden;
+}
+.sc::before{
+  content:'';position:absolute;top:-20px;right:-20px;
+  width:56px;height:56px;border-radius:50%;
+  background:rgba(255,255,255,.28);
+}
+.sc-emoji{font-size:30px;margin-bottom:4px;line-height:1;position:relative;z-index:1}
+.sc-l{font-size:13px;font-weight:700;opacity:.75;position:relative;z-index:1}
+.sc-v{
+  font-family:'Jua',sans-serif;font-size:44px;
+  line-height:1;margin:4px 0 2px;position:relative;z-index:1;
+}
+.sc-info{font-size:11px;opacity:.65;line-height:1.4;position:relative;z-index:1;font-weight:500;margin-top:2px}
 .sc.c-r{background:linear-gradient(135deg,#FFD4CA,#FFB8A8);color:#8B1A00}
-.sc.c-o{background:linear-gradient(135deg,#FFE6C8,#FFD4A0);color:#7A4800}
-.sc.c-b{background:linear-gradient(135deg,#D4ECFF,#B8DFFF);color:#0D4F80}
-.sc.c-y{background:linear-gradient(135deg,#FFF5C8,#FFE89A);color:#6B5200}
-.sc.c-g{background:linear-gradient(135deg,#D4F0E0,#AEE4C4);color:#1A4D30}
-.sc.c-br{background:linear-gradient(135deg,#F0DDD0,#E4C8B4);color:#4A2A1A}
+.sc.c-o{background:linear-gradient(135deg,#FFE3C8,#FFCD9A);color:#7A4800}
+.sc.c-b{background:linear-gradient(135deg,#D4ECFF,#A8D8FF);color:#0D4F80}
+.sc.c-y{background:linear-gradient(135deg,#FFF2B8,#FFE082);color:#6B5200}
+.sc.c-g{background:linear-gradient(135deg,#D8F3E4,#AEE5C7);color:#1A4D30}
+.sc.c-p{background:linear-gradient(135deg,#EAE0FC,#D4C5FA);color:#4A2E7A}
 
-/* -- Element bars -- */
-.el-i{display:flex;align-items:center;gap:6px;margin-bottom:6px}
-.el-i img{width:16px;height:16px;flex-shrink:0}
-.el-nm{font-size:11px;font-weight:700;width:16px;flex-shrink:0}
-.el-tr{flex:1;height:14px;background:rgba(0,0,0,.04);border-radius:7px;overflow:hidden}
-.el-fl{height:100%;border-radius:7px;transition:width .8s}
-.el-pc{font-size:13px;font-weight:800;width:36px;text-align:right;flex-shrink:0}
-.el-fire .el-fl{background:linear-gradient(90deg,#F6542E,#FC935C)}.el-fire .el-pc{color:#F6542E}
-.el-water .el-fl{background:linear-gradient(90deg,#4A9ADB,#72BCFD)}.el-water .el-pc{color:#3A8ACC}
-.el-earth .el-fl{background:linear-gradient(90deg,#D4A040,#FEC659)}.el-earth .el-pc{color:#B08A20}
-.el-wood .el-fl{background:linear-gradient(90deg,#2D5348,#6CA28E)}.el-wood .el-pc{color:#2D5348}
-.el-metal .el-fl{background:linear-gradient(90deg,#6E4A3A,#A06850)}.el-metal .el-pc{color:#783E30}
+/* 오행 바 */
+.el-i{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.el-i:last-child{margin-bottom:0}
+.el-emoji{font-size:22px;flex-shrink:0;width:28px;text-align:center;line-height:1}
+.el-nm{font-size:15px;font-weight:800;width:20px;flex-shrink:0;color:var(--t1)}
+.el-tr{
+  flex:1;height:20px;background:#F5EFDE;
+  border-radius:10px;overflow:hidden;position:relative;
+}
+.el-fl{
+  height:100%;border-radius:10px;
+  transition:width 1s cubic-bezier(.4,0,.2,1);
+  min-width:6px;
+}
+.el-pc{font-family:'Jua';font-size:16px;width:42px;text-align:right;flex-shrink:0}
+.el-fire .el-fl{background:linear-gradient(90deg,#FF4D4D,#FF8A3D)}.el-fire .el-pc{color:#FF4D4D}
+.el-water .el-fl{background:linear-gradient(90deg,#4A90E2,#72BCFD)}.el-water .el-pc{color:#4A90E2}
+.el-earth .el-fl{background:linear-gradient(90deg,#E5AB2E,#FFD84D)}.el-earth .el-pc{color:#C99020}
+.el-wood .el-fl{background:linear-gradient(90deg,#3D8B6C,#6DD49A)}.el-wood .el-pc{color:#3D8B6C}
+.el-metal .el-fl{background:linear-gradient(90deg,#8B5A3C,#B88560)}.el-metal .el-pc{color:#8B5A3C}
 
-/* Element interpretation */
-.el-interp{margin-top:10px;padding:10px 12px;background:#FFF8E8;border-radius:var(--r);font-size:11px;color:var(--t2);line-height:1.6}
+.el-interp{
+  margin-top:14px;padding:14px 16px;
+  background:#FFF8E7;border-radius:var(--r1);
+  font-size:14px;color:var(--t2);line-height:1.7;font-weight:500;
+}
+.el-interp b{color:var(--brown);font-weight:800}
 
-/* -- Star badges -- */
-.sb{display:flex;align-items:flex-start;gap:10px;padding:12px;border-radius:var(--r);margin-bottom:6px}
+/* 특수 살 뱃지 */
+.sb{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:16px;border-radius:var(--r2);margin-bottom:8px;
+}
 .sb:last-child{margin-bottom:0}
-.sb-ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.6);flex-shrink:0}
-.sb-ic img{width:22px;height:22px}
-.sb-nm{font-size:13px;font-weight:700;margin-bottom:1px}
-.sb-info{font-size:11px;opacity:.7;line-height:1.4}
-.sb.s-pk{background:#FFE5EE;color:#9A1042}
-.sb.s-rd{background:#FFEBE5;color:var(--dkred)}
-.sb.s-bl{background:#E5F0FF;color:#1A5090}
-.sb.s-gn{background:#E5F5EF;color:var(--forest)}
+.sb-ic{
+  width:44px;height:44px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.7);flex-shrink:0;
+  font-size:24px;line-height:1;
+}
+.sb-nm{font-size:16px;font-weight:800;margin-bottom:4px;letter-spacing:-0.01em}
+.sb-info{font-size:13.5px;line-height:1.55;font-weight:500;opacity:.85}
+.sb.s-pk{background:var(--pink-bg);color:#9A1042}
+.sb.s-rd{background:#FFE3DC;color:#8B1A00}
+.sb.s-bl{background:var(--blue-bg);color:#0D4F80}
+.sb.s-gn{background:var(--green-bg);color:#1A4D30}
 
-/* ===== COMPAT HEADER ===== */
-.rc-ch{background:linear-gradient(135deg,#FEC659,#FFE082,#FC935C);padding:24px 16px 20px;text-align:center;position:relative;overflow:hidden}
-.rc-ch::before{content:'';position:absolute;top:-40px;left:-40px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.1)}
+/* ============ 궁합 헤더 ============ */
+.rc-ch{
+  background:linear-gradient(135deg,#FFD84D,#FFB070,#FF8DA1);
+  padding:28px 20px 24px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.rc-ch::before{
+  content:'';position:absolute;top:-50px;left:-50px;
+  width:130px;height:130px;border-radius:50%;
+  background:rgba(255,255,255,.15);
+}
+.rc-ch::after{
+  content:'';position:absolute;bottom:-40px;right:-40px;
+  width:110px;height:110px;border-radius:50%;
+  background:rgba(255,255,255,.12);
+}
 .rc-ch *{position:relative;z-index:1}
-.cp-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
-.cp-nm{font-size:16px;font-weight:800;color:var(--brown)}
-.cp-h{width:28px;height:28px;animation:hP 1.5s ease-in-out infinite}
+.cp-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:14px}
+.cp-nm{
+  font-family:'Jua';font-size:22px;color:var(--brown);
+  max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.cp-h{font-size:30px;animation:hP 1.3s ease-in-out infinite}
 @keyframes hP{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
-.cp-big{font-size:72px;font-weight:900;color:var(--dkred);line-height:1}
-.cp-big span{font-size:24px;font-weight:700}
-.cp-lbl{font-size:12px;color:var(--brown);margin-top:2px}
+.cp-big{
+  font-family:'Jua';font-size:84px;color:var(--dkred);
+  line-height:1;letter-spacing:-0.03em;
+}
+.cp-big span{font-size:28px}
+.cp-lbl{font-size:15px;color:var(--brown);margin-top:4px;font-weight:700}
 
-/* Compat type badges */
-.cp-tp{display:flex;gap:6px;margin-bottom:0}
-.cp-tb{flex:1;background:#FFF8E1;border-radius:var(--r);padding:10px 8px;text-align:center}
-.cp-tb.t2{background:#E8F5EE}
-.cp-tb-nm{font-size:10px;color:var(--t3);margin-bottom:2px}
-.cp-tb-tp{font-size:12px;font-weight:700}
+.cp-tp{display:flex;gap:8px}
+.cp-tb{
+  flex:1;background:var(--yellow-bg);
+  border-radius:var(--r2);padding:14px 12px;text-align:center;
+}
+.cp-tb.t2{background:var(--pink-bg)}
+.cp-tb-nm{font-size:13px;color:var(--t3);margin-bottom:4px;font-weight:600}
+.cp-tb-tp{font-size:15px;font-weight:800;color:var(--t1)}
 
-/* Factor grid */
-.fc{border-radius:var(--r);padding:14px 8px;text-align:center;position:relative;overflow:hidden}
-.fc::before{content:'';position:absolute;bottom:-14px;left:-14px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2)}
-.fc-img{width:22px;height:22px;margin:0 auto 2px}
-.fc-l{font-size:9px;opacity:.6}
-.fc-g{font-size:30px;font-weight:900;line-height:1.1}
-.fc-s{font-size:10px;font-weight:600;opacity:.7}
-.fc-d{font-size:9px;opacity:.5;margin-top:2px;line-height:1.3}
+/* 궁합 항목 */
+.fc{
+  border-radius:var(--r2);padding:18px 10px;
+  text-align:center;position:relative;overflow:hidden;
+}
+.fc::before{
+  content:'';position:absolute;bottom:-18px;left:-18px;
+  width:50px;height:50px;border-radius:50%;
+  background:rgba(255,255,255,.22);
+}
+.fc-emoji{font-size:26px;margin-bottom:4px;line-height:1;position:relative;z-index:1}
+.fc-l{font-size:12px;opacity:.7;position:relative;z-index:1;font-weight:600}
+.fc-g{font-family:'Jua';font-size:40px;line-height:1.05;position:relative;z-index:1;margin:4px 0 0}
+.fc-s{font-size:13px;font-weight:700;opacity:.8;position:relative;z-index:1}
+.fc-d{font-size:11px;opacity:.6;margin-top:4px;line-height:1.4;position:relative;z-index:1;font-weight:500}
 
-/* Compat summary */
-.cp-sum{padding:12px;background:#FFF8E8;border-radius:var(--r);border-left:3px solid var(--main)}
-.cp-sum-t{font-size:12px;font-weight:700;color:var(--brown);margin-bottom:4px}
-.cp-sum-txt{font-size:11px;color:var(--t2);line-height:1.7}
+.cp-sum{padding:18px;background:#FFF8E7;border-radius:var(--r2)}
+.cp-sum-t{
+  font-family:'Jua';font-size:17px;color:var(--brown);
+  margin-bottom:8px;display:flex;align-items:center;gap:8px;
+}
+.cp-sum-emoji{font-size:22px}
+.cp-sum-txt{font-size:14.5px;color:var(--t2);line-height:1.75;font-weight:500}
 
-/* Actions */
-.acts{display:flex;gap:8px;padding:16px 0 0}
-.act{flex:1;padding:13px;border:none;border-radius:var(--r);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:.25s;display:flex;align-items:center;justify-content:center;gap:4px}
-.act-s{background:var(--main);color:var(--brown);box-shadow:0 3px 12px rgba(254,198,89,.3)}
-.act-r{background:var(--card);color:var(--t1);border:1.5px solid #EDE0C8!important}
+/* 액션 버튼 */
+.acts{display:flex;gap:10px;padding:18px 0 0}
+.act{
+  flex:1;padding:16px;border:none;border-radius:16px;
+  font-family:'Pretendard Variable',Pretendard,sans-serif;
+  font-size:15px;font-weight:800;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  letter-spacing:-0.01em;
+}
+.act-s{background:linear-gradient(135deg,#FF6F0F,#FF8A3D);color:#fff;box-shadow:0 4px 14px rgba(255,111,15,.28)}
+.act-r{background:#fff;color:var(--t1);border:1.5px solid #EEE8D8}
 .act:active{transform:scale(.97)}
 
-/* Footer */
-.ftr{text-align:center;padding:28px 16px 16px}
-.ftr-bub{display:inline-block;background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;padding:8px 16px;border-radius:18px;font-size:12px;font-weight:600;margin-bottom:8px;position:relative;cursor:pointer;text-decoration:none;transition:.25s;box-shadow:0 3px 10px rgba(246,84,46,.2)}
-.ftr-bub::after{content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid var(--orange)}
-.ftr-logo{display:block;margin:0 auto;cursor:pointer}
-.ftr-logo img{width:36px;height:36px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+/* 공유 시트 (iOS/Android 스타일) */
+.share-sheet{
+  display:none;position:fixed;inset:0;z-index:3000;
+  background:rgba(0,0,0,.5);
+  align-items:flex-end;justify-content:center;
+  animation:shf .25s ease;
+}
+.share-sheet.show{display:flex}
+@keyframes shf{from{background:rgba(0,0,0,0)}to{background:rgba(0,0,0,.5)}}
+.share-panel{
+  width:100%;max-width:440px;background:#fff;
+  border-radius:24px 24px 0 0;padding:10px 16px 28px;
+  animation:shp .3s cubic-bezier(.4,0,.2,1);
+}
+@keyframes shp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.share-handle{
+  width:40px;height:4px;background:#E5DDCF;
+  border-radius:2px;margin:8px auto 18px;
+}
+.share-title{
+  font-family:'Jua';font-size:20px;text-align:center;
+  margin-bottom:18px;color:var(--t1);
+}
+.share-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;
+}
+.share-item{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:12px 4px;border-radius:14px;cursor:pointer;
+  transition:background .15s;border:none;background:transparent;
+  font-family:inherit;
+}
+.share-item:active{background:#F5EFDE}
+.share-ic{
+  width:54px;height:54px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;line-height:1;
+}
+.si-save{background:linear-gradient(135deg,#FF6F0F,#FF8A3D);color:#fff}
+.si-share{background:linear-gradient(135deg,#5AB8FF,#72BCFD);color:#fff}
+.si-copy{background:linear-gradient(135deg,#6DD49A,#8DE0B2);color:#fff}
+.si-kakao{background:#FEE500;color:#381E1E}
+.share-label{font-size:12px;color:var(--t2);font-weight:700}
+.share-cancel{
+  width:100%;padding:16px;border:none;
+  background:#F5EFDE;border-radius:14px;
+  font-family:inherit;font-size:16px;font-weight:800;
+  color:var(--t2);cursor:pointer;
+}
 
-/* Toast */
-.toast{position:fixed;bottom:-50px;left:50%;transform:translateX(-50%);background:var(--brown);color:#fff;padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:500;transition:bottom .3s;z-index:2000;white-space:nowrap}
-.toast.show{bottom:32px}
+/* 토스트 */
+.toast{
+  position:fixed;bottom:-60px;left:50%;
+  transform:translateX(-50%);
+  background:var(--brown);color:#fff;
+  padding:13px 22px;border-radius:14px;
+  font-size:14px;font-weight:600;
+  transition:bottom .3s cubic-bezier(.4,0,.2,1);
+  z-index:4000;white-space:nowrap;
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
+}
+.toast.show{bottom:36px}
 
 .hidden{display:none!important}
 #person2-section{display:none}
-.fade-in{animation:fi .4s ease}
-@keyframes fi{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
-@media(max-width:360px){.sc-v{font-size:28px}.cp-big{font-size:54px}.rh-type{font-size:22px}}
+.fade-in{animation:fi .4s ease}
+@keyframes fi{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:360px){
+  .hero h1{font-size:28px}
+  .sc-v{font-size:36px}
+  .cp-big{font-size:68px}
+  .rh-type{font-size:28px}
+  .rh-desc{font-size:14px}
+}
 </style>
 </head>
 <body>
 
+<!-- ============ 정보 입력 페이지 ============ -->
 <div class="wrap" id="input-area">
   <div class="hero">
-    <img class="hero-img" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/See-no-evil%20monkey/3D/see-no-evil_monkey_3d.png" alt="">
-    <h1>잠자리 사주</h1>
-    <p>태어난 순간의 네 기둥에 숨겨진<br>당신의 성적 에너지를 읽어드려요</p>
+    <div class="hero-badge">🔮 2025 사주 리포트</div>
+    <h1>나의 잠자리는<br><span class="hl">어떤 타입</span>일까?</h1>
+    <p>태어난 순간의 네 기둥에 숨겨진<br>나만의 섹스 에너지를 읽어드려요</p>
   </div>
 
   <div class="tabs">
@@ -247,19 +561,53 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t1);
 
   <div class="icard ic1">
     <div class="ic-label">
-      <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Person%20raising%20hand/3D/person_raising_hand_3d_default.png" alt="" style="width:24px;height:24px">
+      <span class="ic-emoji">🙋</span>
       <span id="p1t">당신은 누구인가요?</span>
     </div>
-    <div class="fg"><label class="fl">✏️ 이름 (닉네임)</label><input type="text" class="ci" id="name1" placeholder="이름을 입력하세요" maxlength="10"></div>
-    <div class="fg"><label class="fl">🎂 생년월일</label>
-      <div class="ct"><button class="ct-b on" onclick="setCal(1,'solar',this)">☀️ 양력</button><button class="ct-b" onclick="setCal(1,'lunar',this)">🌙 음력</button></div>
-      <div class="dr"><select class="cs" id="year1"></select><select class="cs" id="month1"></select><select class="cs" id="day1"></select></div>
+
+    <div class="fg">
+      <label class="fl"><span class="fl-emoji">✏️</span>이름 (닉네임)</label>
+      <input type="text" class="ci" id="name1" placeholder="이름을 입력해주세요" maxlength="10">
     </div>
-    <div class="fg"><label class="fl">⏰ 태어난 시간</label>
-      <select class="cs" id="hour1"><option value="">모르겠어요</option><option value="23">子시 (23~01)</option><option value="1">丑시 (01~03)</option><option value="3">寅시 (03~05)</option><option value="5">卯시 (05~07)</option><option value="7">辰시 (07~09)</option><option value="9">巳시 (09~11)</option><option value="11">午시 (11~13)</option><option value="13">未시 (13~15)</option><option value="15">申시 (15~17)</option><option value="17">酉시 (17~19)</option><option value="19">戌시 (19~21)</option><option value="21">亥시 (21~23)</option></select>
+
+    <div class="fg">
+      <label class="fl"><span class="fl-emoji">🎂</span>생년월일</label>
+      <div class="ct">
+        <button class="ct-b on" onclick="setCal(1,'solar',this)">☀️ 양력</button>
+        <button class="ct-b" onclick="setCal(1,'lunar',this)">🌙 음력</button>
+      </div>
+      <div class="dr">
+        <select class="cs" id="year1"></select>
+        <select class="cs" id="month1"></select>
+        <select class="cs" id="day1"></select>
+      </div>
     </div>
-    <div class="fg"><label class="fl">💁 성별</label>
-      <div class="gp"><button class="gp-b" onclick="setG(1,'M',this)">🙋‍♂️ 남성</button><button class="gp-b" onclick="setG(1,'F',this)">🙋‍♀️ 여성</button></div>
+
+    <div class="fg">
+      <label class="fl"><span class="fl-emoji">⏰</span>태어난 시간</label>
+      <select class="cs" id="hour1">
+        <option value="">모르겠어요</option>
+        <option value="23">子시 (23:00 ~ 01:00)</option>
+        <option value="1">丑시 (01:00 ~ 03:00)</option>
+        <option value="3">寅시 (03:00 ~ 05:00)</option>
+        <option value="5">卯시 (05:00 ~ 07:00)</option>
+        <option value="7">辰시 (07:00 ~ 09:00)</option>
+        <option value="9">巳시 (09:00 ~ 11:00)</option>
+        <option value="11">午시 (11:00 ~ 13:00)</option>
+        <option value="13">未시 (13:00 ~ 15:00)</option>
+        <option value="15">申시 (15:00 ~ 17:00)</option>
+        <option value="17">酉시 (17:00 ~ 19:00)</option>
+        <option value="19">戌시 (19:00 ~ 21:00)</option>
+        <option value="21">亥시 (21:00 ~ 23:00)</option>
+      </select>
+    </div>
+
+    <div class="fg">
+      <label class="fl"><span class="fl-emoji">💁</span>성별</label>
+      <div class="gp">
+        <button class="gp-b" onclick="setG(1,'M',this)">🙋‍♂️ 남성</button>
+        <button class="gp-b" onclick="setG(1,'F',this)">🙋‍♀️ 여성</button>
+      </div>
     </div>
   </div>
 
@@ -268,266 +616,606 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t1);
   <div id="person2-section">
     <div class="icard ic2">
       <div class="ic-label">
-        <img src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Two%20hearts/3D/two_hearts_3d.png" alt="" style="width:24px;height:24px">
+        <span class="ic-emoji">💕</span>
         <span>상대방은 누구인가요?</span>
       </div>
-      <div class="fg"><label class="fl">✏️ 이름 (닉네임)</label><input type="text" class="ci" id="name2" placeholder="이름을 입력하세요" maxlength="10"></div>
-      <div class="fg"><label class="fl">🎂 생년월일</label>
-        <div class="ct"><button class="ct-b on" onclick="setCal(2,'solar',this)">☀️ 양력</button><button class="ct-b" onclick="setCal(2,'lunar',this)">🌙 음력</button></div>
-        <div class="dr"><select class="cs" id="year2"></select><select class="cs" id="month2"></select><select class="cs" id="day2"></select></div>
+
+      <div class="fg">
+        <label class="fl"><span class="fl-emoji">✏️</span>이름 (닉네임)</label>
+        <input type="text" class="ci" id="name2" placeholder="이름을 입력해주세요" maxlength="10">
       </div>
-      <div class="fg"><label class="fl">⏰ 태어난 시간</label>
-        <select class="cs" id="hour2"><option value="">모르겠어요</option><option value="23">子시 (23~01)</option><option value="1">丑시 (01~03)</option><option value="3">寅시 (03~05)</option><option value="5">卯시 (05~07)</option><option value="7">辰시 (07~09)</option><option value="9">巳시 (09~11)</option><option value="11">午시 (11~13)</option><option value="13">未시 (13~15)</option><option value="15">申시 (15~17)</option><option value="17">酉시 (17~19)</option><option value="19">戌시 (19~21)</option><option value="21">亥시 (21~23)</option></select>
+
+      <div class="fg">
+        <label class="fl"><span class="fl-emoji">🎂</span>생년월일</label>
+        <div class="ct">
+          <button class="ct-b on" onclick="setCal(2,'solar',this)">☀️ 양력</button>
+          <button class="ct-b" onclick="setCal(2,'lunar',this)">🌙 음력</button>
+        </div>
+        <div class="dr">
+          <select class="cs" id="year2"></select>
+          <select class="cs" id="month2"></select>
+          <select class="cs" id="day2"></select>
+        </div>
       </div>
-      <div class="fg"><label class="fl">💁 성별</label>
-        <div class="gp"><button class="gp-b" onclick="setG(2,'M',this)">🙋‍♂️ 남성</button><button class="gp-b" onclick="setG(2,'F',this)">🙋‍♀️ 여성</button></div>
+
+      <div class="fg">
+        <label class="fl"><span class="fl-emoji">⏰</span>태어난 시간</label>
+        <select class="cs" id="hour2">
+          <option value="">모르겠어요</option>
+          <option value="23">子시 (23:00 ~ 01:00)</option>
+          <option value="1">丑시 (01:00 ~ 03:00)</option>
+          <option value="3">寅시 (03:00 ~ 05:00)</option>
+          <option value="5">卯시 (05:00 ~ 07:00)</option>
+          <option value="7">辰시 (07:00 ~ 09:00)</option>
+          <option value="9">巳시 (09:00 ~ 11:00)</option>
+          <option value="11">午시 (11:00 ~ 13:00)</option>
+          <option value="13">未시 (13:00 ~ 15:00)</option>
+          <option value="15">申시 (15:00 ~ 17:00)</option>
+          <option value="17">酉시 (17:00 ~ 19:00)</option>
+          <option value="19">戌시 (19:00 ~ 21:00)</option>
+          <option value="21">亥시 (21:00 ~ 23:00)</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label class="fl"><span class="fl-emoji">💁</span>성별</label>
+        <div class="gp">
+          <button class="gp-b" onclick="setG(2,'M',this)">🙋‍♂️ 남성</button>
+          <button class="gp-b" onclick="setG(2,'F',this)">🙋‍♀️ 여성</button>
+        </div>
       </div>
     </div>
   </div>
+
   <button class="mbtn" onclick="start()">✨ 사주 보기</button>
+
+  <!-- 메인 페이지 풋터 (구독 풍선 + 로고) -->
+  <div class="main-ftr">
+    <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-bub">💌 섹슈얼 웰니스 매거진 구독하기 →</a>
+    <br>
+    <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-logo">
+      <img src="https://bdsm.tryme.im/logo.png" alt="tryme" onerror="this.style.display='none'">
+      <div class="ftr-logo-txt">tryme.im</div>
+    </a>
+  </div>
 </div>
 
+<!-- ============ 로딩 오버레이 ============ -->
 <div class="ld-ov" id="ld-ov">
-  <img class="ld-img" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Crystal%20ball/3D/crystal_ball_3d.png" alt="">
+  <div class="ld-emoji">🔮</div>
   <div class="ld-t">사주를 분석하고 있어요</div>
   <div class="ld-s" id="ld-s">네 기둥을 살펴보는 중...</div>
   <div class="ld-bar"><div class="ld-fill" id="ld-bar"></div></div>
 </div>
 
+<!-- ============ 결과 영역 ============ -->
 <div class="wrap" id="result-area">
   <div id="rc"></div>
-  <div class="ftr">
-    <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-bub">💌 섹슈얼 웰니스 매거진 구독하기 →</a><br>
-    <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-logo"><img src="https://bdsm.tryme.im/logo.png" alt="tryme"></a>
+  <div class="main-ftr">
+    <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-bub">💌 섹슈얼 웰니스 매거진 구독하기 →</a>
+    <br>
+    <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-logo">
+      <img src="https://bdsm.tryme.im/logo.png" alt="tryme" onerror="this.style.display='none'">
+      <div class="ftr-logo-txt">tryme.im</div>
+    </a>
   </div>
 </div>
+
+<!-- 공유 시트 -->
+<div class="share-sheet" id="share-sheet" onclick="if(event.target===this)closeShare()">
+  <div class="share-panel">
+    <div class="share-handle"></div>
+    <div class="share-title">공유하기</div>
+    <div class="share-grid">
+      <button class="share-item" onclick="doSave()">
+        <div class="share-ic si-save">📥</div>
+        <div class="share-label">이미지 저장</div>
+      </button>
+      <button class="share-item" onclick="doShare()">
+        <div class="share-ic si-share">📤</div>
+        <div class="share-label">공유하기</div>
+      </button>
+      <button class="share-item" onclick="doCopyLink()">
+        <div class="share-ic si-copy">🔗</div>
+        <div class="share-label">링크 복사</div>
+      </button>
+      <button class="share-item" onclick="doShare()">
+        <div class="share-ic si-kakao">💬</div>
+        <div class="share-label">친구에게</div>
+      </button>
+    </div>
+    <button class="share-cancel" onclick="closeShare()">닫기</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-const SITE='https://love.tryme.im';
-const FE='https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/';
-const I={
-  fire:FE+'Fire/3D/fire_3d.png',
-  water:FE+'Droplet/3D/droplet_3d.png',
-  wood:FE+'Herb/3D/herb_3d.png',
-  metal:FE+'High%20voltage/3D/high_voltage_3d.png',
-  earth:FE+'Cherry%20blossom/3D/cherry_blossom_3d.png',
-  sparkle:FE+'Sparkles/3D/sparkles_3d.png',
-  crown:FE+'Crown/3D/crown_3d.png',
-  kiss:FE+'Kiss%20mark/3D/kiss_mark_3d.png',
-  dice:FE+'Game%20die/3D/game_die_3d.png',
-  heart:FE+'Growing%20heart/3D/growing_heart_3d.png',
-  crystal:FE+'Crystal%20ball/3D/crystal_ball_3d.png',
-  chart:FE+'Bar%20chart/3D/bar_chart_3d.png',
-  cyclone:FE+'Cyclone/3D/cyclone_3d.png',
-  star:FE+'Glowing%20star/3D/glowing_star_3d.png',
-  blossom:FE+'Cherry%20blossom/3D/cherry_blossom_3d.png',
-  bath:FE+'Bathtub/3D/bathtub_3d.png',
-  hearts2:FE+'Two%20hearts/3D/two_hearts_3d.png',
-  bolt:FE+'High%20voltage/3D/high_voltage_3d.png',
-  chat:FE+'Speech%20balloon/3D/speech_balloon_3d.png',
-  lips:FE+'Mouth/3D/mouth_3d.png',
-  letter:FE+'Love%20letter/3D/love_letter_3d.png',
-  mountain:FE+'Mountain/3D/mountain_3d.png'
-};
+/* ========================================
+   사주 알고리즘 (정확도 개선)
+   ======================================== */
 
-let mode='saju',calT={1:'solar',2:'solar'},gen={1:'',2:''};
-document.addEventListener('DOMContentLoaded',()=>{popD(1);popD(2)});
-function popD(p){
-  const y=$('year'+p),m=$('month'+p),d=$('day'+p);
-  y.innerHTML='<option value="">년</option>';for(let i=2010;i>=1940;i--)y.innerHTML+=`<option value="${i}">${i}년</option>`;
-  m.innerHTML='<option value="">월</option>';for(let i=1;i<=12;i++)m.innerHTML+=`<option value="${i}">${i}월</option>`;
-  d.innerHTML='<option value="">일</option>';for(let i=1;i<=31;i++)d.innerHTML+=`<option value="${i}">${i}일</option>`;
-}
-function $(id){return document.getElementById(id)}
-function setMode(m){
-  mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  document.querySelector(`[data-mode="${m}"]`).classList.add('on');
-  if(m==='compat'){$('person2-section').style.display='block';$('vs-div').classList.remove('hidden');$('p1t').textContent='첫 번째 사람';document.querySelector('.mbtn').innerHTML='💕 궁합 보기';}
-  else{$('person2-section').style.display='none';$('vs-div').classList.add('hidden');$('p1t').textContent='당신은 누구인가요?';document.querySelector('.mbtn').innerHTML='✨ 사주 보기';}
-}
-function setCal(p,t,el){calT[p]=t;el.parentElement.querySelectorAll('.ct-b').forEach(b=>b.classList.remove('on'));el.classList.add('on')}
-function setG(p,g,el){gen[p]=g;el.parentElement.querySelectorAll('.gp-b').forEach(b=>b.classList.remove('on'));el.classList.add('on')}
+// 천간, 지지
+const ST=['갑','을','병','정','무','기','경','신','임','계'];
+const BR=['자','축','인','묘','진','사','오','미','신','유','술','해'];
 
-function getPD(n){
-  const name=$('name'+n).value.trim(),year=$('year'+n).value,month=$('month'+n).value,day=$('day'+n).value,hour=$('hour'+n).value,g=gen[n],cal=calT[n],l=n===1?'첫 번째':'두 번째';
-  if(!name)return{e:`${l} 사람의 이름을 입력해주세요`};if(!year||!month||!day)return{e:`${l} 사람의 생년월일을 선택해주세요`};if(!g)return{e:`${l} 사람의 성별을 선택해주세요`};
-  let sY=+year,sM=+month,sD=+day;
-  if(cal==='lunar'){try{const lc=new KoreanLunarCalendar();lc.setLunarDate(sY,sM,sD,false);sY=lc.getSolarYear();sM=lc.getSolarMonth();sD=lc.getSolarDay()}catch(e){return{e:'음력 변환 실패'}}}
-  return{name,year:+year,month:+month,day:+day,sY,sM,sD,hour:hour?+hour:null,gender:g}
-}
-function start(){
-  const p1=getPD(1);if(p1.e)return toast(p1.e);
-  if(mode==='compat'){const p2=getPD(2);if(p2.e)return toast(p2.e);load(()=>{renderComp(p1,p2,compAn(p1,p2))})}
-  else load(()=>{renderSaju(p1,sajuAn(p1))})
-}
-function load(cb){
-  const ov=$('ld-ov'),bar=$('ld-bar'),sub=$('ld-s');ov.classList.add('show');
-  const ms=['네 기둥을 살펴보는 중...','음양의 기운을 읽고 있어요...','성적 에너지를 분석하는 중...','숨겨진 매력을 해석하는 중...','거의 다 됐어요! ✨'];
-  let p=0;const iv=setInterval(()=>{p+=Math.random()*22+12;if(p>100)p=100;bar.style.width=p+'%';sub.textContent=ms[Math.min(Math.floor(p/22),ms.length-1)];if(p>=100){clearInterval(iv);setTimeout(()=>{ov.classList.remove('show');bar.style.width='0%';cb()},500)}},420)
-}
-
-// ENGINE
-const ST=['갑','을','병','정','무','기','경','신','임','계'],BR=['자','축','인','묘','진','사','오','미','신','유','술','해'];
+// 천간/지지 → 오행 매핑
 const FM={'갑':'목','을':'목','병':'화','정':'화','무':'토','기':'토','경':'금','신':'금','임':'수','계':'수'};
 const BM={'자':'수','축':'토','인':'목','묘':'목','진':'토','사':'화','오':'화','미':'토','신':'금','유':'금','술':'토','해':'수'};
-function yP(y){return{s:ST[(y-4)%10],b:BR[(y-4)%12]}}
-function mP(ys,m){return{s:ST[((ST.indexOf(ys)%5)*2+m+1)%10],b:BR[(m+1)%12]}}
-function dP(y,m,d){const df=Math.floor((new Date(y,m-1,d)-new Date(2000,0,7))/864e5);return{s:ST[((df%10)+10)%10],b:BR[((df%12)+12)%12]}}
-function hP(ds,h){if(h===null)return null;const bi=Math.floor(((h+1)%24)/2);return{s:ST[((ST.indexOf(ds)%5)*2+bi)%10],b:BR[bi]}}
-function fp(d){const y=yP(d.sY),m=mP(y.s,d.sM),dy=dP(d.sY,d.sM,d.sD),h=hP(dy.s,d.hour);return{year:y,month:m,day:dy,hour:h}}
-function cE(p){const c={'목':0,'화':0,'토':0,'금':0,'수':0},a=[p.year,p.month,p.day];if(p.hour)a.push(p.hour);a.forEach(x=>{c[FM[x.s]]++;c[BM[x.b]]++});return c}
-function eP(c){const t=Object.values(c).reduce((a,b)=>a+b,0)||1;const r={};for(const[k,v] of Object.entries(c))r[k]=Math.round(v/t*100);return r}
-function cS(p){
-  const s=[],br=[p.year.b,p.month.b,p.day.b];if(p.hour)br.push(p.hour.b);
-  if(br.some(b=>['자','오','묘','유'].includes(b)))s.push({nm:'도화살',img:I.blossom,d:'섹스할 때 상대를 본능적으로 유혹하는 타고난 섹시함이 있어요',c:'s-pk'});
-  if(br.some(b=>['사','오','미'].includes(b)))s.push({nm:'홍염살',img:I.fire,d:'성욕이 강하고 섹스에서 불꽃 튀는 강렬한 에너지를 뿜어요',c:'s-rd'});
-  if(br.some(b=>['자','축','인'].includes(b)))s.push({nm:'함지살',img:I.water,d:'은밀하고 중독적인 섹스로 상대를 헤어나올 수 없게 만들어요',c:'s-bl'});
-  if(br.some(b=>['묘','유'].includes(b)))s.push({nm:'목욕살',img:I.bath,d:'온몸의 감각이 예민해서 섹스 중 작은 자극에도 크게 반응해요',c:'s-gn'});
-  return s
+
+// 절기 기준 월 시작일 (대략 입춘 기준으로 월지 계산)
+// 입춘(2/4)~경칩(3/5)=인월, 경칩~청명(4/5)=묘월, ...
+function getMonthBranch(year, month, day){
+  // 절기 기준 월지 계산 (대략적)
+  const monthStart=[
+    {m:2,d:4,b:'인'},  // 입춘
+    {m:3,d:6,b:'묘'},  // 경칩
+    {m:4,d:5,b:'진'},  // 청명
+    {m:5,d:6,b:'사'},  // 입하
+    {m:6,d:6,b:'오'},  // 망종
+    {m:7,d:7,b:'미'},  // 소서
+    {m:8,d:8,b:'신'},  // 입추
+    {m:9,d:8,b:'유'},  // 백로
+    {m:10,d:8,b:'술'}, // 한로
+    {m:11,d:7,b:'해'}, // 입동
+    {m:12,d:7,b:'자'}, // 대설
+    {m:1,d:6,b:'축'}   // 소한 (다음해)
+  ];
+  // 현재 날짜보다 앞쪽 절기 중 가장 가까운 것
+  // 1월 1일 ~ 1월 5일은 전년도 축월
+  // 1월 6일 ~ 2월 3일은 축월
+  // 2월 4일 ~ 3월 5일은 인월 ...
+  for(let i=monthStart.length-1;i>=0;i--){
+    const s=monthStart[i];
+    if(s.m===1){
+      if(month===1 && day>=s.d) return s.b;
+    } else if(month>s.m || (month===s.m && day>=s.d)){
+      return s.b;
+    }
+  }
+  return '축'; // 1월 초
 }
 
+// 년주: 입춘 기준
+function yearPillar(year, month, day){
+  // 입춘(2월 4일) 이전이면 전년도 년주
+  let y=year;
+  if(month<2 || (month===2 && day<4)) y=year-1;
+  const si=(y-4)%10, bi=(y-4)%12;
+  return {s:ST[((si%10)+10)%10], b:BR[((bi%12)+12)%12]};
+}
+
+// 월주: 년간에 따라 월간 결정
+function monthPillar(yearStem, year, month, day){
+  const monthBranch=getMonthBranch(year, month, day);
+  const monthBranchIdx={'인':0,'묘':1,'진':2,'사':3,'오':4,'미':5,'신':6,'유':7,'술':8,'해':9,'자':10,'축':11}[monthBranch];
+  // 월간 공식: 년간이 갑/기이면 인월=병인, 을/경이면 인월=무인, ...
+  // 년간 인덱스에 따라 인월의 간 시작
+  const yearStemIdx=ST.indexOf(yearStem);
+  // 甲己 → 丙寅, 乙庚 → 戊寅, 丙辛 → 庚寅, 丁壬 → 壬寅, 戊癸 → 甲寅
+  const startStemTable=[2,4,6,8,0]; // [갑기,을경,병신,정임,무계] → [병,무,경,임,갑]
+  const startStem=startStemTable[yearStemIdx%5];
+  const monthStemIdx=(startStem+monthBranchIdx)%10;
+  return {s:ST[monthStemIdx], b:monthBranch};
+}
+
+// 일주: 기준일로부터의 일수 계산
+function dayPillar(year, month, day){
+  // 기준: 1900년 1월 1일 = 갑술일 (간 0, 지 10)
+  // 더 정확한 기준: 2000년 1월 7일 = 갑자일 (검증됨)
+  const ref=new Date(2000,0,7); // 갑자일
+  const target=new Date(year,month-1,day);
+  const diffDays=Math.floor((target-ref)/(24*60*60*1000));
+  const si=((diffDays%10)+10)%10;
+  const bi=((diffDays%12)+12)%12;
+  return {s:ST[si], b:BR[bi]};
+}
+
+// 시주: 일간에 따라 시간 결정
+function hourPillar(dayStem, hour){
+  if(hour===null||hour===undefined) return null;
+  // 시지 계산: 23시~1시 = 자, 1~3 = 축, ...
+  // hour 값이 23이면 자시, 1이면 축시
+  let branchIdx;
+  if(hour===23) branchIdx=0;
+  else branchIdx=Math.floor((hour+1)/2);
+  // 일간에 따른 시간 천간
+  // 甲己 → 甲子시, 乙庚 → 丙子시, 丙辛 → 戊子시, 丁壬 → 庚子시, 戊癸 → 壬子시
+  const dayStemIdx=ST.indexOf(dayStem);
+  const startStemTable=[0,2,4,6,8];
+  const startStem=startStemTable[dayStemIdx%5];
+  const hourStemIdx=(startStem+branchIdx)%10;
+  return {s:ST[hourStemIdx], b:BR[branchIdx]};
+}
+
+// 네 기둥 계산
+function fourPillars(data){
+  const y=yearPillar(data.sY, data.sM, data.sD);
+  const m=monthPillar(y.s, data.sY, data.sM, data.sD);
+  const d=dayPillar(data.sY, data.sM, data.sD);
+  const h=hourPillar(d.s, data.hour);
+  return {year:y, month:m, day:d, hour:h};
+}
+
+// 오행 카운트
+function countElements(pillars){
+  const c={'목':0,'화':0,'토':0,'금':0,'수':0};
+  const arr=[pillars.year, pillars.month, pillars.day];
+  if(pillars.hour) arr.push(pillars.hour);
+  arr.forEach(p=>{ c[FM[p.s]]++; c[BM[p.b]]++; });
+  return c;
+}
+
+function elementPercent(c){
+  const total=Object.values(c).reduce((a,b)=>a+b,0)||1;
+  const r={};
+  for(const[k,v] of Object.entries(c)) r[k]=Math.round(v/total*100);
+  return r;
+}
+
+// 특수살 (도화/홍염/함지/목욕)
+function checkSpecialStars(pillars){
+  const s=[];
+  const branches=[pillars.year.b, pillars.month.b, pillars.day.b];
+  if(pillars.hour) branches.push(pillars.hour.b);
+
+  if(branches.some(b=>['자','오','묘','유'].includes(b)))
+    s.push({nm:'도화살',emoji:'🌸',d:'섹스할 때 상대를 본능적으로 유혹하는 타고난 섹시함이 있어요. 의도하지 않아도 상대가 먼저 빠져들게 만들어요',c:'s-pk'});
+  if(branches.some(b=>['사','오','미'].includes(b)))
+    s.push({nm:'홍염살',emoji:'🔥',d:'성욕이 강하고 섹스에서 불꽃 튀는 강렬한 에너지를 뿜어요. 한번 불붙으면 상대를 완전히 녹여버리는 타입이에요',c:'s-rd'});
+  if(branches.some(b=>['자','축','인'].includes(b)))
+    s.push({nm:'함지살',emoji:'💧',d:'은밀하고 중독적인 섹스로 상대를 헤어나올 수 없게 만들어요. 겉은 평범해 보여도 침대에선 전혀 다른 사람이 돼요',c:'s-bl'});
+  if(branches.some(b=>['묘','유'].includes(b)))
+    s.push({nm:'목욕살',emoji:'🛁',d:'온몸의 감각이 예민해서 섹스 중 작은 자극에도 크게 반응해요. 터치 한 번에 전율하는 센슈얼한 타입이에요',c:'s-gn'});
+
+  return s;
+}
+
+/* ========================================
+   타입 정의 (섹스 관점 설명)
+   ======================================== */
 const TYPES=[
-  {id:'fire',nm:'불꽃형 열정파',img:I.fire,hc:'rh-fire',
+  {id:'fire',nm:'불꽃형 열정파',emoji:'🔥',hc:'rh-fire',
     cond:e=>e['화']>=30,
-    desc:'섹스할 때 불이 붙으면 걷잡을 수 없이 타오르는 타입이에요\n감정도 몸도 솔직해서 관계 중에 원하는 걸 숨기지 못해요\n뜨거운 밤을 보내고 나면 상대가 절대 잊지 못할 여운을 남겨요',
+    desc:'섹스할 때 불이 붙으면 걷잡을 수 없이 타오르는 타입이에요. 감정도 몸도 솔직해서 관계 중에 원하는 걸 숨기지 못해요. 뜨거운 밤을 보내고 나면 상대가 절대 잊지 못할 여운을 남겨요',
     sc:{passion:95,sensual:70,adventure:85,romantic:60,dominant:80,expressive:90}},
-  {id:'water',nm:'이슬형 교감파',img:I.water,hc:'rh-water',
+  {id:'water',nm:'이슬형 교감파',emoji:'💧',hc:'rh-water',
     cond:e=>e['수']>=30,
-    desc:'마음이 먼저 열려야 몸도 열리는 타입이라 감정적 교감이 전희가 돼요\n분위기가 충분히 무르익으면 놀라운 감각이 깨어나요\n조용하지만 섹스에 빠지면 헤어나올 수 없는 깊은 매력이에요',
+    desc:'마음이 먼저 열려야 몸도 열리는 타입이라 감정적 교감이 전희가 돼요. 분위기가 충분히 무르익으면 놀라운 감각이 깨어나요. 조용하지만 섹스에 빠지면 헤어나올 수 없는 깊은 매력이에요',
     sc:{passion:65,sensual:90,adventure:55,romantic:95,dominant:40,expressive:70}},
-  {id:'wood',nm:'숲속형 탐험파',img:I.wood,hc:'rh-wood',
+  {id:'wood',nm:'숲속형 탐험파',emoji:'🌿',hc:'rh-wood',
     cond:e=>e['목']>=30,
-    desc:'같은 체위, 같은 장소는 두 번 하기 싫은 타고난 모험가예요\n섹스에서도 새로운 시도와 장소에서 에너지가 폭발해요\n상대를 리드하면서도 자유롭게 관계를 즐길 줄 아는 사람이에요',
+    desc:'같은 체위, 같은 장소는 두 번 하기 싫은 타고난 모험가예요. 섹스에서도 새로운 시도와 장소에서 에너지가 폭발해요. 상대를 리드하면서도 자유롭게 관계를 즐길 줄 아는 사람이에요',
     sc:{passion:75,sensual:60,adventure:95,romantic:70,dominant:65,expressive:80}},
-  {id:'metal',nm:'번개형 지배파',img:I.metal,hc:'rh-metal',
+  {id:'metal',nm:'번개형 지배파',emoji:'⚡',hc:'rh-metal',
     cond:e=>e['금']>=30,
-    desc:'섹스할 때 눈빛 하나로 분위기를 장악하는 카리스마가 있어요\n관계에서 주도권을 쥐었을 때 가장 강력한 에너지가 나와요\n차가운 겉모습과 달리 한번 열리면 놀랍도록 섬세한 터치를 해요',
+    desc:'섹스할 때 눈빛 하나로 분위기를 장악하는 카리스마가 있어요. 관계에서 주도권을 쥐었을 때 가장 강력한 에너지가 나와요. 차가운 겉모습과 달리 한번 열리면 놀랍도록 섬세한 터치를 해요',
     sc:{passion:80,sensual:65,adventure:70,romantic:55,dominant:95,expressive:75}},
-  {id:'earth',nm:'꽃밭형 감각파',img:I.earth,hc:'rh-earth',
+  {id:'earth',nm:'꽃밭형 감각파',emoji:'🌷',hc:'rh-earth',
     cond:e=>e['토']>=30,
-    desc:'향초, 음악, 촉감 하나하나에 온몸이 반응하는 감각주의자예요\n섹스를 서두르지 않고 천천히 깊게 즐길 줄 아는 사람이에요\n편안한 공간에서 최고의 퍼포먼스가 나오는 무드형 타입이에요',
+    desc:'향초, 음악, 촉감 하나하나에 온몸이 반응하는 감각주의자예요. 섹스를 서두르지 않고 천천히 깊게 즐길 줄 아는 사람이에요. 편안한 공간에서 최고의 퍼포먼스가 나오는 무드형 타입이에요',
     sc:{passion:70,sensual:95,adventure:50,romantic:85,dominant:55,expressive:65}},
-  {id:'balanced',nm:'만능형 조화파',img:I.sparkle,hc:'rh-balanced',
+  {id:'balanced',nm:'만능형 조화파',emoji:'✨',hc:'rh-balanced',
     cond:()=>true,
-    desc:'섹스에서 어떤 상대든 맞춰가는 천부적인 조율 능력이 있어요\n관계 중 리드하기도 맡기기도 하는 유연함이 최대 매력이에요\n함께 잘수록 만족도가 올라가는 숨은 고수 스타일이에요',
+    desc:'섹스에서 어떤 상대든 맞춰가는 천부적인 조율 능력이 있어요. 관계 중 리드하기도 맡기기도 하는 유연함이 최대 매력이에요. 함께 잘수록 만족도가 올라가는 숨은 고수 스타일이에요',
     sc:{passion:75,sensual:75,adventure:75,romantic:75,dominant:70,expressive:75}}
 ];
-function dType(ep){for(const t of TYPES)if(t.cond(ep))return t;return TYPES[5]}
 
-function sajuAn(p){
-  const pil=fp(p),ec=cE(pil),ep=eP(ec),type=dType(ep),stars=cS(pil),sc={...type.sc};
-  const de=FM[pil.day.s];
-  if(de==='화')sc.passion=Math.min(99,sc.passion+5);if(de==='수')sc.romantic=Math.min(99,sc.romantic+5);
-  if(de==='목')sc.adventure=Math.min(99,sc.adventure+5);if(de==='금')sc.dominant=Math.min(99,sc.dominant+5);
-  if(de==='토')sc.sensual=Math.min(99,sc.sensual+5);
-  return{pil,ec,ep,type,stars,sc}
+function determineType(ep){
+  // 가장 높은 원소 기준으로 타입 결정
+  const sorted=Object.entries(ep).sort((a,b)=>b[1]-a[1]);
+  const topEl=sorted[0][0], topPct=sorted[0][1];
+
+  if(topEl==='화'&&topPct>=25) return TYPES[0];
+  if(topEl==='수'&&topPct>=25) return TYPES[1];
+  if(topEl==='목'&&topPct>=25) return TYPES[2];
+  if(topEl==='금'&&topPct>=25) return TYPES[3];
+  if(topEl==='토'&&topPct>=25) return TYPES[4];
+  return TYPES[5]; // 균형형
 }
 
-function compAn(p1,p2){
-  const r1=sajuAn(p1),r2=sajuAn(p2),de1=FM[r1.pil.day.s],de2=FM[r2.pil.day.s];
-  const ecm={'목화':90,'화목':90,'화토':85,'토화':85,'토금':80,'금토':80,'금수':88,'수금':88,'수목':92,'목수':92,'목토':55,'토목':55,'화금':50,'금화':50,'토수':45,'수토':45,'목금':60,'금목':60,'화수':48,'수화':48,'목목':70,'화화':75,'토토':72,'금금':65,'수수':78};
-  const base=ecm[de1+de2]||70,sd=Math.abs(r1.sc.passion-r2.sc.passion),chem=Math.max(50,95-sd);
+function sajuAnalyze(p){
+  const pil=fourPillars(p);
+  const ec=countElements(pil);
+  const ep=elementPercent(ec);
+  const type=determineType(ep);
+  const stars=checkSpecialStars(pil);
+  const sc={...type.sc};
+
+  // 일간 기준 보정
+  const dayEl=FM[pil.day.s];
+  if(dayEl==='화') sc.passion=Math.min(99,sc.passion+5);
+  if(dayEl==='수') sc.romantic=Math.min(99,sc.romantic+5);
+  if(dayEl==='목') sc.adventure=Math.min(99,sc.adventure+5);
+  if(dayEl==='금') sc.dominant=Math.min(99,sc.dominant+5);
+  if(dayEl==='토') sc.sensual=Math.min(99,sc.sensual+5);
+
+  return {pil,ep,type,stars,sc};
+}
+
+// 궁합 분석
+function compatibilityAnalyze(p1,p2){
+  const r1=sajuAnalyze(p1), r2=sajuAnalyze(p2);
+  const de1=FM[r1.pil.day.s], de2=FM[r2.pil.day.s];
+
+  // 오행 상생상극 기반 궁합 점수
+  const ecm={
+    // 상생 (생해주는 관계) - 높은 점수
+    '목화':90,'화목':85,'화토':88,'토화':82,'토금':86,'금토':80,
+    '금수':88,'수금':82,'수목':92,'목수':85,
+    // 상극 (극하는 관계) - 낮은 점수, 하지만 긴장감 있음
+    '목토':55,'토목':58,'화금':52,'금화':56,'토수':48,'수토':52,
+    '목금':60,'금목':62,'화수':50,'수화':54,
+    // 비화 (같은 오행)
+    '목목':72,'화화':78,'토토':70,'금금':68,'수수':75
+  };
+  const base=ecm[de1+de2]||70;
+
+  const sd=Math.abs(r1.sc.passion-r2.sc.passion);
+  const chem=Math.max(50,95-sd);
   const comm=Math.max(55,Math.min(98,base+(r1.sc.expressive+r2.sc.expressive)/10-10));
   const phys=Math.max(50,Math.min(99,(r1.sc.sensual+r2.sc.sensual)/2+Math.random()*10));
   const adv=Math.max(50,Math.min(98,(r1.sc.adventure+r2.sc.adventure)/2+Math.random()*8));
   const ov=Math.round(base*.3+chem*.2+comm*.2+phys*.2+adv*.1);
-  function gg(s){if(s>=90)return{g:'S'};if(s>=80)return{g:'A'};if(s>=70)return{g:'B+'};if(s>=60)return{g:'B'};return{g:'C'}}
+
+  function grade(s){
+    if(s>=90)return{g:'S'};
+    if(s>=80)return{g:'A'};
+    if(s>=70)return{g:'B+'};
+    if(s>=60)return{g:'B'};
+    return{g:'C'};
+  }
+
   let sum='';
-  if(ov>=85)sum=`${p1.name}님과 ${p2.name}님은 섹스할 때 눈빛만으로 통하는 사이예요. 서로의 몸과 에너지가 자연스럽게 맞물려서 잠자리에서 환상의 호흡을 보여줘요`;
-  else if(ov>=70)sum=`${p1.name}님과 ${p2.name}님은 서로 다른 섹스 스타일이 절묘하게 어우러지는 관계예요. 약간의 밀당이 오히려 관계를 더 뜨겁게 만들어줘요`;
-  else if(ov>=55)sum=`${p1.name}님과 ${p2.name}님은 섹스 리듬이 조금 다를 수 있어요. 하지만 솔직하게 대화하고 서로의 취향을 탐구하면 의외의 케미가 폭발할 수 있어요`;
+  if(ov>=85) sum=`${p1.name}님과 ${p2.name}님은 섹스할 때 눈빛만으로 통하는 사이예요. 서로의 몸과 에너지가 자연스럽게 맞물려서 잠자리에서 환상의 호흡을 보여줘요`;
+  else if(ov>=70) sum=`${p1.name}님과 ${p2.name}님은 서로 다른 섹스 스타일이 절묘하게 어우러지는 관계예요. 약간의 밀당이 오히려 관계를 더 뜨겁게 만들어줘요`;
+  else if(ov>=55) sum=`${p1.name}님과 ${p2.name}님은 섹스 리듬이 조금 다를 수 있어요. 하지만 솔직하게 대화하고 서로의 취향을 탐구하면 의외의 케미가 폭발할 수 있어요`;
   else sum=`${p1.name}님과 ${p2.name}님은 잠자리 에너지 방향이 달라서 처음엔 어색할 수 있어요. 하지만 서로의 다른 점을 탐구하면 새로운 쾌감을 발견할 수도 있어요`;
-  return{r1,r2,ov,fac:{
-    chem:{s:Math.round(chem),...gg(chem),nm:'케미 지수',img:I.bolt,d:'섹스할 때 본능적으로 끌리는 정도'},
-    comm:{s:Math.round(comm),...gg(comm),nm:'무드 소통',img:I.chat,d:'관계 중 분위기를 맞추는 능력'},
-    phys:{s:Math.round(phys),...gg(phys),nm:'신체 궁합',img:I.lips,d:'섹스 중 몸의 리듬이 맞는 정도'},
-    adv:{s:Math.round(adv),...gg(adv),nm:'모험 궁합',img:I.dice,d:'새로운 섹스를 시도하는 호흡'}
-  },sum}
+
+  return {r1,r2,ov,fac:{
+    chem:{s:Math.round(chem),...grade(chem),nm:'케미 지수',emoji:'⚡',d:'섹스할 때 본능적으로 끌리는 정도'},
+    comm:{s:Math.round(comm),...grade(comm),nm:'무드 소통',emoji:'💬',d:'관계 중 분위기를 맞추는 능력'},
+    phys:{s:Math.round(phys),...grade(phys),nm:'신체 궁합',emoji:'💋',d:'섹스 중 몸의 리듬이 맞는 정도'},
+    adv:{s:Math.round(adv),...grade(adv),nm:'모험 궁합',emoji:'🎲',d:'새로운 섹스를 시도하는 호흡'}
+  },sum};
 }
 
-// ELEMENT INTERPRETATION
-function elInterp(ep){
+function elementInterp(ep){
   const sorted=Object.entries(ep).sort((a,b)=>b[1]-a[1]);
-  const top=sorted[0],low=sorted[sorted.length-1];
-  const topDescs={'목':'새로운 체위와 장소를 시도하려는 탐험적 성향이 강해요','화':'본능적 성욕과 열정이 넘쳐서 섹스에 적극적이에요','토':'오감으로 느끼는 감각적 섹스를 선호해요','금':'주도적이고 리드하는 섹스를 좋아해요','수':'감정적 교감이 충분해야 몸이 열리는 타입이에요'};
-  const lowDescs={'목':'반복적인 패턴의 섹스에 갇히기 쉬워요','화':'가끔 섹스에 소극적일 수 있어요','토':'분위기보다 행위 자체에만 집중할 수 있어요','금':'주도권을 내려놓고 맡기는 연습이 필요해요','수':'감정 없이도 관계를 즐기는 법을 배워보세요'};
-  return `<b>${top[0]}(${top[1]}%)</b>이 가장 강해요 — ${topDescs[top[0]]}<br><b>${low[0]}(${low[1]}%)</b>이 가장 약해요 — ${lowDescs[low[0]]}`;
+  const top=sorted[0], low=sorted[sorted.length-1];
+  const tD={
+    '목':'새로운 체위와 장소를 시도하려는 탐험적 성향이 강해요',
+    '화':'본능적 성욕과 열정이 넘쳐서 섹스에 적극적이에요',
+    '토':'오감으로 느끼는 감각적 섹스를 선호해요',
+    '금':'주도적이고 리드하는 섹스를 좋아해요',
+    '수':'감정적 교감이 충분해야 몸이 열리는 타입이에요'
+  };
+  const lD={
+    '목':'반복적인 패턴의 섹스에 갇히기 쉬워요',
+    '화':'가끔 섹스에 소극적일 수 있어요',
+    '토':'분위기보다 행위 자체에만 집중할 수 있어요',
+    '금':'주도권을 내려놓고 맡기는 연습이 필요해요',
+    '수':'감정 없이도 관계를 즐기는 법을 배워보세요'
+  };
+  return `<b>${top[0]}(${top[1]}%)</b>이 가장 강해요 — ${tD[top[0]]}<br><b>${low[0]}(${low[1]}%)</b>이 가장 약해요 — ${lD[low[0]]}`;
 }
 
-// RENDER SAJU
-function renderSaju(p,r){
+/* ========================================
+   UI 로직
+   ======================================== */
+let mode='saju', calT={1:'solar',2:'solar'}, gen={1:'',2:''};
+const $=id=>document.getElementById(id);
+
+document.addEventListener('DOMContentLoaded',()=>{popD(1);popD(2)});
+
+function popD(p){
+  const y=$('year'+p), m=$('month'+p), d=$('day'+p);
+  y.innerHTML='<option value="">년</option>';
+  for(let i=2010;i>=1940;i--) y.innerHTML+=`<option value="${i}">${i}년</option>`;
+  m.innerHTML='<option value="">월</option>';
+  for(let i=1;i<=12;i++) m.innerHTML+=`<option value="${i}">${i}월</option>`;
+  d.innerHTML='<option value="">일</option>';
+  for(let i=1;i<=31;i++) d.innerHTML+=`<option value="${i}">${i}일</option>`;
+}
+
+function setMode(m){
+  mode=m;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelector(`[data-mode="${m}"]`).classList.add('on');
+  if(m==='compat'){
+    $('person2-section').style.display='block';
+    $('vs-div').classList.remove('hidden');
+    $('p1t').textContent='첫 번째 사람';
+    document.querySelector('.mbtn').innerHTML='💕 궁합 보기';
+  } else {
+    $('person2-section').style.display='none';
+    $('vs-div').classList.add('hidden');
+    $('p1t').textContent='당신은 누구인가요?';
+    document.querySelector('.mbtn').innerHTML='✨ 사주 보기';
+  }
+}
+
+function setCal(p,t,el){
+  calT[p]=t;
+  el.parentElement.querySelectorAll('.ct-b').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function setG(p,g,el){
+  gen[p]=g;
+  el.parentElement.querySelectorAll('.gp-b').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+
+// 음력 → 양력 변환 (수정: 라이브러리 체크 + fallback)
+function lunarToSolar(y, m, d){
+  try{
+    // 전역 KoreanLunarCalendar 체크
+    if(typeof KoreanLunarCalendar==='undefined'){
+      return {error:'음력 변환 라이브러리를 불러오지 못했어요. 양력으로 입력해주세요'};
+    }
+    const lc=new KoreanLunarCalendar();
+    const ok=lc.setLunarDate(y, m, d, false); // false=평달
+    if(ok===false){
+      // 평달로 실패하면 윤달 시도
+      const ok2=lc.setLunarDate(y, m, d, true);
+      if(ok2===false){
+        return {error:'음력 날짜가 올바르지 않아요. 날짜를 확인해주세요'};
+      }
+    }
+    return {
+      sY:lc.getSolarYear(),
+      sM:lc.getSolarMonth(),
+      sD:lc.getSolarDay()
+    };
+  } catch(e){
+    return {error:'음력 변환에 실패했어요. 양력으로 입력해주세요'};
+  }
+}
+
+function getPD(n){
+  const name=$('name'+n).value.trim();
+  const year=$('year'+n).value;
+  const month=$('month'+n).value;
+  const day=$('day'+n).value;
+  const hour=$('hour'+n).value;
+  const g=gen[n];
+  const cal=calT[n];
+  const l=n===1?'첫 번째':'두 번째';
+
+  if(!name) return {e:`${l} 사람의 이름을 입력해주세요`};
+  if(!year||!month||!day) return {e:`${l} 사람의 생년월일을 선택해주세요`};
+  if(!g) return {e:`${l} 사람의 성별을 선택해주세요`};
+
+  let sY=+year, sM=+month, sD=+day;
+  if(cal==='lunar'){
+    const res=lunarToSolar(sY, sM, sD);
+    if(res.error) return {e:res.error};
+    sY=res.sY; sM=res.sM; sD=res.sD;
+  }
+  return {name, sY, sM, sD, hour:hour?+hour:null, gender:g};
+}
+
+function start(){
+  const p1=getPD(1); if(p1.e) return toast(p1.e);
+  if(mode==='compat'){
+    const p2=getPD(2); if(p2.e) return toast(p2.e);
+    load(()=>renderComp(p1,p2,compatibilityAnalyze(p1,p2)));
+  } else {
+    load(()=>renderSaju(p1,sajuAnalyze(p1)));
+  }
+}
+
+function load(cb){
+  const ov=$('ld-ov'), bar=$('ld-bar'), sub=$('ld-s');
+  ov.classList.add('show');
+  const ms=['네 기둥을 살펴보는 중...','음양의 기운을 읽어요...','성적 에너지를 분석해요...','숨겨진 매력을 해석해요...','거의 다 됐어요! ✨'];
+  let p=0;
+  const iv=setInterval(()=>{
+    p+=Math.random()*22+12;
+    if(p>100) p=100;
+    bar.style.width=p+'%';
+    sub.textContent=ms[Math.min(Math.floor(p/22),ms.length-1)];
+    if(p>=100){
+      clearInterval(iv);
+      setTimeout(()=>{
+        ov.classList.remove('show');
+        bar.style.width='0%';
+        cb();
+      },500);
+    }
+  },420);
+}
+
+/* ========================================
+   렌더링
+   ======================================== */
+function renderSaju(p, r){
   const {type,ep,stars,sc}=r;
-  const si=[
-    {k:'passion',l:'열정 지수',img:I.fire,c:'c-r',d:'섹스에서 얼마나 뜨겁게 타오르는지'},
-    {k:'sensual',l:'감각 지수',img:I.lips,c:'c-o',d:'관계 중 촉각·후각 등 오감 예민도'},
-    {k:'adventure',l:'모험 지수',img:I.dice,c:'c-b',d:'새로운 섹스를 시도하는 적극성'},
-    {k:'romantic',l:'로맨틱 지수',img:I.heart,c:'c-y',d:'섹스 전 분위기·감성 중시 정도'},
-    {k:'dominant',l:'주도력',img:I.crown,c:'c-g',d:'섹스에서 리드하는 능력'},
-    {k:'expressive',l:'표현력',img:I.kiss,c:'c-br',d:'섹스 중 원하는 것을 전달하는 능력'}
+  const scoreItems=[
+    {k:'passion',l:'열정 지수',emoji:'🔥',c:'c-r',d:'섹스에서 얼마나 뜨겁게 타오르는지'},
+    {k:'sensual',l:'감각 지수',emoji:'💋',c:'c-o',d:'관계 중 촉각·후각 등 오감 예민도'},
+    {k:'adventure',l:'모험 지수',emoji:'🎲',c:'c-b',d:'새로운 섹스를 시도하는 적극성'},
+    {k:'romantic',l:'로맨틱 지수',emoji:'💖',c:'c-y',d:'섹스 전 분위기·감성 중시 정도'},
+    {k:'dominant',l:'주도력',emoji:'👑',c:'c-g',d:'섹스에서 리드하는 능력'},
+    {k:'expressive',l:'표현력',emoji:'💕',c:'c-p',d:'섹스 중 원하는 것을 전달하는 능력'}
   ];
-  const elD={'목':{img:I.wood,c:'el-wood'},'화':{img:I.fire,c:'el-fire'},'토':{img:I.mountain,c:'el-earth'},'금':{img:I.metal,c:'el-metal'},'수':{img:I.water,c:'el-water'}};
+
+  const elMap={
+    '목':{emoji:'🌿',c:'el-wood'},
+    '화':{emoji:'🔥',c:'el-fire'},
+    '토':{emoji:'⛰️',c:'el-earth'},
+    '금':{emoji:'⚡',c:'el-metal'},
+    '수':{emoji:'💧',c:'el-water'}
+  };
 
   let h=`<div class="result-card fade-in" id="cap">
-    <!-- 카드1: 나의 잠자리 유형 -->
     <div class="rc-header ${type.hc}">
-      <img class="rh-img" src="${type.img}" alt="">
+      <div class="rh-emoji">${type.emoji}</div>
       <div class="rh-sub">${p.name}님의 잠자리 유형</div>
       <div class="rh-type">${type.nm}</div>
-      <div class="rh-desc">${type.desc.replace(/\n/g,'<br>')}</div>
+      <div class="rh-desc">${type.desc}</div>
     </div>
 
-    <!-- 카드2: 잠자리 에너지 분석 -->
     <div class="rc-sec">
-      <div class="sec-t"><img src="${I.chart}" alt=""><span>잠자리 에너지 분석</span></div>
+      <div class="sec-t">
+        <span class="sec-t-emoji">📊</span>
+        <span class="sec-t-title">잠자리 에너지 분석</span>
+      </div>
       <div class="sec-d">${p.name}님의 사주에서 읽어낸 섹스 에너지 수치예요</div>
-      <div class="sg">${si.map(i=>`<div class="sc ${i.c}">
-        <img class="sc-img" src="${i.img}" alt="">
+      <div class="sg">${scoreItems.map(i=>`<div class="sc ${i.c}">
+        <div class="sc-emoji">${i.emoji}</div>
         <div class="sc-l">${i.l}</div>
         <div class="sc-v">${sc[i.k]}</div>
         <div class="sc-info">${i.d}</div>
       </div>`).join('')}</div>
     </div>
 
-    <!-- 카드3: 오행 에너지 밸런스 -->
     <div class="rc-sec">
-      <div class="sec-t"><img src="${I.cyclone}" alt=""><span>오행 에너지 밸런스</span></div>
+      <div class="sec-t">
+        <span class="sec-t-emoji">🌪️</span>
+        <span class="sec-t-title">오행 에너지 밸런스</span>
+      </div>
       <div class="sec-d">목·화·토·금·수 다섯 기운이 섹스 스타일을 결정해요</div>
-      ${Object.entries(ep).map(([k,v])=>`<div class="el-i ${elD[k].c}">
-        <img src="${elD[k].img}" alt="">
+      ${Object.entries(ep).map(([k,v])=>`<div class="el-i ${elMap[k].c}">
+        <span class="el-emoji">${elMap[k].emoji}</span>
         <span class="el-nm">${k}</span>
         <div class="el-tr"><div class="el-fl" style="width:${v}%"></div></div>
         <span class="el-pc">${v}%</span>
       </div>`).join('')}
-      <div class="el-interp">${elInterp(ep)}</div>
+      <div class="el-interp">${elementInterp(ep)}</div>
     </div>
 
-    ${stars.length?`<!-- 카드4: 특수 에너지 -->
-    <div class="rc-sec">
-      <div class="sec-t"><img src="${I.star}" alt=""><span>특수 에너지</span></div>
+    ${stars.length?`<div class="rc-sec">
+      <div class="sec-t">
+        <span class="sec-t-emoji">⭐</span>
+        <span class="sec-t-title">특수 에너지</span>
+      </div>
       <div class="sec-d">사주에서 발견된 특별한 성적 에너지예요. 이 기운이 있으면 섹스에서 남다른 매력을 발휘해요</div>
       ${stars.map(s=>`<div class="sb ${s.c}">
-        <div class="sb-ic"><img src="${s.img}" alt=""></div>
+        <div class="sb-ic">${s.emoji}</div>
         <div><div class="sb-nm">${s.nm}</div><div class="sb-info">${s.d}</div></div>
       </div>`).join('')}
     </div>`:''}
   </div>
+
   <div class="acts">
-    <button class="act act-s" onclick="saveImg()">📸 이미지 저장</button>
+    <button class="act act-s" onclick="openShare()">📤 공유하기</button>
     <button class="act act-r" onclick="goBack()">🔄 다시하기</button>
   </div>`;
-  showR(h)
+
+  showR(h);
 }
 
-// RENDER COMPAT
-function renderComp(p1,p2,r){
+function renderComp(p1, p2, r){
   const {ov,fac,sum,r1,r2}=r;
-  const fClr={chem:'c-r',comm:'c-y',phys:'c-o',adv:'c-b'};
+  const fC={chem:'c-r',comm:'c-y',phys:'c-o',adv:'c-b'};
+
   let h=`<div class="result-card fade-in" id="cap">
     <div class="rc-ch">
       <div class="cp-row">
         <div class="cp-nm">${p1.name}</div>
-        <img class="cp-h" src="${I.hearts2}" alt="">
+        <div class="cp-h">💕</div>
         <div class="cp-nm">${p2.name}</div>
       </div>
       <div class="cp-big">${ov}<span>점</span></div>
@@ -536,16 +1224,25 @@ function renderComp(p1,p2,r){
 
     <div class="rc-sec">
       <div class="cp-tp">
-        <div class="cp-tb"><div class="cp-tb-nm">${p1.name}</div><div class="cp-tb-tp">${r1.type.nm}</div></div>
-        <div class="cp-tb t2"><div class="cp-tb-nm">${p2.name}</div><div class="cp-tb-tp">${r2.type.nm}</div></div>
+        <div class="cp-tb">
+          <div class="cp-tb-nm">${p1.name}</div>
+          <div class="cp-tb-tp">${r1.type.emoji} ${r1.type.nm}</div>
+        </div>
+        <div class="cp-tb t2">
+          <div class="cp-tb-nm">${p2.name}</div>
+          <div class="cp-tb-tp">${r2.type.emoji} ${r2.type.nm}</div>
+        </div>
       </div>
     </div>
 
     <div class="rc-sec">
-      <div class="sec-t"><img src="${I.sparkle}" alt=""><span>상세 궁합 분석</span></div>
+      <div class="sec-t">
+        <span class="sec-t-emoji">✨</span>
+        <span class="sec-t-title">상세 궁합 분석</span>
+      </div>
       <div class="sec-d">두 사람의 섹스 에너지가 어떻게 만나는지 항목별로 분석했어요</div>
-      <div class="sg">${Object.entries(fac).map(([k,f])=>`<div class="fc ${fClr[k]}">
-        <img class="fc-img" src="${f.img}" alt="">
+      <div class="sg">${Object.entries(fac).map(([k,f])=>`<div class="fc ${fC[k]}">
+        <div class="fc-emoji">${f.emoji}</div>
         <div class="fc-l">${f.nm}</div>
         <div class="fc-g">${f.g}</div>
         <div class="fc-s">${f.s}점</div>
@@ -555,38 +1252,149 @@ function renderComp(p1,p2,r){
 
     <div class="rc-sec">
       <div class="cp-sum">
-        <div class="cp-sum-t">💌 종합 풀이</div>
+        <div class="cp-sum-t">
+          <span class="cp-sum-emoji">💌</span>
+          종합 풀이
+        </div>
         <div class="cp-sum-txt">${sum}</div>
       </div>
     </div>
   </div>
+
   <div class="acts">
-    <button class="act act-s" onclick="saveImg()">📸 이미지 저장</button>
+    <button class="act act-s" onclick="openShare()">📤 공유하기</button>
     <button class="act act-r" onclick="goBack()">🔄 다시하기</button>
   </div>`;
-  showR(h)
+
+  showR(h);
 }
 
-function showR(h){$('input-area').style.display='none';$('rc').innerHTML=h;$('result-area').style.display='block';window.scrollTo({top:0,behavior:'smooth'})}
-function goBack(){$('result-area').style.display='none';$('input-area').style.display='block';window.scrollTo({top:0,behavior:'smooth'})}
+function showR(h){
+  $('input-area').style.display='none';
+  $('rc').innerHTML=h;
+  $('result-area').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
-async function saveImg(){
+function goBack(){
+  $('result-area').style.display='none';
+  $('input-area').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ========================================
+   공유 & 이미지 저장 (iOS/Android 네이티브 공유)
+   ======================================== */
+function openShare(){ $('share-sheet').classList.add('show'); }
+function closeShare(){ $('share-sheet').classList.remove('show'); }
+
+async function captureCanvas(){
   const card=$('cap');
+  return await html2canvas(card, {
+    backgroundColor:'#FFF8E7',
+    scale:2,
+    useCORS:true,
+    logging:false,
+    allowTaint:true,
+    scrollX:0,
+    scrollY:-window.scrollY
+  });
+}
+
+// 이미지 저장 (파일로 다운로드)
+async function doSave(){
   try{
-    toast('이미지 생성 중...');
-    const canvas=await html2canvas(card,{backgroundColor:'#FEFADF',scale:2,useCORS:true,logging:false,scrollX:0,scrollY:-window.scrollY,allowTaint:false});
-    const link=document.createElement('a');link.download='jamjari-saju.png';link.href=canvas.toDataURL('image/png');link.click();
-    toast('이미지가 저장되었어요! 📸')
-  }catch(e){
-    try{
-      const canvas=await html2canvas(card,{backgroundColor:'#FEFADF',scale:1.5,useCORS:true,allowTaint:true});
-      const blob=await new Promise(r=>canvas.toBlob(r,'image/png'));
-      if(navigator.share){const file=new File([blob],'jamjari-saju.png',{type:'image/png'});await navigator.share({files:[file],title:'🫣 잠자리 사주'})}
-      else toast('스크린샷을 이용해주세요')
-    }catch(e2){toast('스크린샷을 이용해주세요')}
+    toast('이미지 만드는 중...');
+    const canvas=await captureCanvas();
+    // 모바일에서 data URL 길어서 blob 사용
+    canvas.toBlob(blob=>{
+      if(!blob){ toast('저장 실패. 스크린샷을 이용해주세요'); return; }
+      const url=URL.createObjectURL(blob);
+      const link=document.createElement('a');
+      link.download='19yas-saju.png';
+      link.href=url;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+      toast('이미지가 저장되었어요 📸');
+      closeShare();
+    },'image/png');
+  } catch(e){
+    console.error(e);
+    toast('스크린샷을 이용해주세요');
   }
 }
-function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+
+// 공유하기 (Web Share API - iOS/Android 네이티브 공유시트)
+async function doShare(){
+  try{
+    toast('공유 준비 중...');
+    const canvas=await captureCanvas();
+    canvas.toBlob(async blob=>{
+      if(!blob){ toast('공유 실패'); return; }
+      const file=new File([blob],'19yas-saju.png',{type:'image/png'});
+      // Web Share API 지원 확인
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        try{
+          await navigator.share({
+            files:[file],
+            title:'🫣 19야스 사주풀이',
+            text:'사주로 보는 나의 섹스 유형과 잠자리 궁합'
+          });
+          closeShare();
+        } catch(e){
+          if(e.name!=='AbortError') toast('공유가 취소되었어요');
+        }
+      } else if(navigator.share){
+        // 파일 공유는 안되고 텍스트만 되는 경우
+        try{
+          await navigator.share({
+            title:'🫣 19야스 사주풀이',
+            text:'사주로 보는 나의 섹스 유형과 잠자리 궁합',
+            url:'https://love.tryme.im'
+          });
+          closeShare();
+        } catch(e){
+          if(e.name!=='AbortError') toast('공유가 취소되었어요');
+        }
+      } else {
+        // Web Share API 미지원 → 이미지 다운로드로 대체
+        doSave();
+      }
+    },'image/png');
+  } catch(e){
+    console.error(e);
+    toast('공유 실패. 이미지 저장을 이용해주세요');
+  }
+}
+
+// 링크 복사
+async function doCopyLink(){
+  const url='https://love.tryme.im';
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      await navigator.clipboard.writeText(url);
+      toast('링크가 복사되었어요 🔗');
+    } else {
+      const ta=document.createElement('textarea');
+      ta.value=url; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      toast('링크가 복사되었어요 🔗');
+    }
+    closeShare();
+  } catch(e){
+    toast('복사 실패');
+  }
+}
+
+function toast(m){
+  const t=$('toast');
+  t.textContent=m;
+  t.classList.add('show');
+  clearTimeout(window.__tt);
+  window.__tt=setTimeout(()=>t.classList.remove('show'),2500);
+}
 </script>
 </body>
 </html>
