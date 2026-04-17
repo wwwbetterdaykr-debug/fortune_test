@@ -275,6 +275,10 @@ html.capturing .fade-in{animation:none!important;opacity:1!important;transform:n
   </div>
   <button class="mbtn" onclick="start()">✨ 사주 보기</button>
   <div class="main-ftr">
+  <a href="https://tryme.im?utm_source=saju_test&utm_medium=viral&utm_campaign=19yas" target="_blank" rel="noopener" class="ftr-bub" onclick="gtag('event','click_footer_cta',{event_category:'outbound',event_label:'magazine_bubble'})">💌 섹슈얼 웰니스 매거진 구독하기</a><br>
+  <a href="https://tryme.im?utm_source=saju_test&utm_medium=viral&utm_campaign=19yas" target="_blank" rel="noopener" onclick="gtag('event','click_footer_logo',{event_category:'outbound',event_label:'footer_logo'})"><img src="https://bdsm.tryme.im/logo.png" alt="트라이미" style="height:24px;opacity:.25;display:block;margin:0 auto"></a>
+</div>
+  <div class="main-ftr">
     <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-bub" onclick="gtag('event','click_footer_cta',{event_category:'outbound',event_label:'magazine_bubble'})">💌 섹슈얼 웰니스 매거진 구독하기</a><br>
     <a href="https://tryme.im" target="_blank" rel="noopener" onclick="gtag('event','click_footer_logo',{event_category:'outbound',event_label:'footer_logo'})"><img src="https://bdsm.tryme.im/logo.png" alt="트라이미" style="height:24px;opacity:.25;display:block;margin:0 auto"></a>
   </div>
@@ -282,6 +286,10 @@ html.capturing .fade-in{animation:none!important;opacity:1!important;transform:n
 <div class="ld-ov" id="ld-ov"><div class="ld-emoji">🔮</div><div class="ld-t" id="ld-t">사주를 분석하고 있어요</div><div class="ld-s" id="ld-s">네 기둥을 살펴보는 중...</div><div class="ld-bar"><div class="ld-fill" id="ld-bar"></div></div></div>
 <div class="wrap" id="result-area">
   <div id="rc"></div>
+  <div class="main-ftr">
+  <a href="https://tryme.im?utm_source=saju_test&utm_medium=viral&utm_campaign=19yas" target="_blank" rel="noopener" class="ftr-bub" onclick="gtag('event','click_footer_cta',{event_category:'outbound',event_label:'magazine_bubble_result'})">💌 섹슈얼 웰니스 매거진 구독하기</a><br>
+  <a href="https://tryme.im?utm_source=saju_test&utm_medium=viral&utm_campaign=19yas" target="_blank" rel="noopener" onclick="gtag('event','click_footer_logo',{event_category:'outbound',event_label:'footer_logo_result'})"><img src="https://bdsm.tryme.im/logo.png" alt="트라이미" style="height:24px;opacity:.25;display:block;margin:0 auto"></a>
+</div>
   <div class="main-ftr">
     <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-bub" onclick="gtag('event','click_footer_cta',{event_category:'outbound',event_label:'magazine_bubble_result'})">💌 섹슈얼 웰니스 매거진 구독하기</a><br>
     <a href="https://tryme.im" target="_blank" rel="noopener" onclick="gtag('event','click_footer_logo',{event_category:'outbound',event_label:'footer_logo_result'})"><img src="https://bdsm.tryme.im/logo.png" alt="트라이미" style="height:24px;opacity:.25;display:block;margin:0 auto"></a>
@@ -490,11 +498,17 @@ function showR(h){$('input-area').style.display='none';$('rc').innerHTML=h;$('re
 function goBack(){$('result-area').style.display='none';$('input-area').style.display='block';window.scrollTo({top:0,behavior:'smooth'})}
 function closeShare(){$('share-sheet').classList.remove('show')}
 async function captureCanvas(){const card=$('cap');document.documentElement.classList.add('capturing');const ps=window.scrollY;window.scrollTo(0,0);await new Promise(r=>setTimeout(r,120));try{return await html2canvas(card,{backgroundColor:'#FFF8E7',scale:2,useCORS:true,logging:false,allowTaint:true,foreignObjectRendering:false,imageTimeout:0,scrollX:0,scrollY:0,windowWidth:document.documentElement.clientWidth,windowHeight:document.documentElement.clientHeight})}finally{document.documentElement.classList.remove('capturing');window.scrollTo(0,ps)}}
-async function doSave(){try{toast('이미지 만드는 중...');const c=await captureCanvas();c.toBlob(b=>{if(!b){toast('저장 실패');return}const u=URL.createObjectURL(b),a=document.createElement('a');a.download='19yas-saju.png';a.href=u;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(u),1e3);toast('이미지가 저장되었어요 📸');closeShare()},'image/png')}catch(e){toast('스크린샷을 이용해주세요')}}
+async function doSave(){
+  gtag('event', mode === 'compat' ? 'share_compat' : 'share_saju', { method: 'save_image' });
+  try{toast('이미지 만드는 중...');const c=await captureCanvas();c.toBlob(b=>{if(!b){toast('저장 실패');return}const u=URL.createObjectURL(b),a=document.createElement('a');a.download='19yas-saju.png';a.href=u;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(u),1e3);toast('이미지가 저장되었어요 📸');closeShare()},'image/png')}catch(e){toast('스크린샷을 이용해주세요')}
+}
 function doShareSaju(){gtag('event','share_saju',{event_category:'share',event_label:'saju_result'});doShare()}
 function doShareCompat(){gtag('event','share_compat',{event_category:'share',event_label:'compat_result'});doShare()}
 async function doShare(){try{toast('공유 준비 중...');const c=await captureCanvas();c.toBlob(async b=>{if(!b){toast('공유 실패');return}const f=new File([b],'19yas-saju.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'🫣 19야스 사주풀이',text:'사주로 보는 나의 섹스 유형과 잠자리 궁합'});closeShare()}catch(e){if(e.name!=='AbortError')toast('공유가 취소되었어요')}}else if(navigator.share){try{await navigator.share({title:'🫣 19야스 사주풀이',text:'사주로 보는 나의 섹스 유형과 잠자리 궁합',url:'https://love.tryme.im'});closeShare()}catch(e){if(e.name!=='AbortError')toast('공유가 취소되었어요')}}else doSave()},'image/png')}catch(e){toast('공유 실패')}}
-async function doCopyLink(){try{if(navigator.clipboard)await navigator.clipboard.writeText('https://love.tryme.im');else{const t=document.createElement('textarea');t.value='https://love.tryme.im';document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t)}toast('링크가 복사되었어요 🔗');closeShare()}catch(e){toast('복사 실패')}}
+async function doCopyLink(){
+  gtag('event', mode === 'compat' ? 'share_compat' : 'share_saju', { method: 'copy_link' });
+  try{if(navigator.clipboard)await navigator.clipboard.writeText('https://love.tryme.im');else{const t=document.createElement('textarea');t.value='https://love.tryme.im';document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t)}toast('링크가 복사되었어요 🔗');closeShare()}catch(e){toast('복사 실패')}
+}
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.classList.remove('show'),2500)}
 </script>
 </body>
