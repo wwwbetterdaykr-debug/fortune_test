@@ -244,9 +244,11 @@ body::before{
 }
 .ftr-logo{display:inline-block;cursor:pointer;text-decoration:none}
 .ftr-logo img{
-  width:48px;height:48px;border-radius:14px;
-  box-shadow:0 3px 10px rgba(0,0,0,.08);
-  display:block;margin:0 auto;
+  height:24px;        /* 원하는 높이 */
+  width:auto;         /* 원본 비율 유지 */
+  opacity:.25;        /* 투명도 25% */
+  display:block;
+  margin:0 auto;
   transition:transform .2s;
 }
 .ftr-logo:active img{transform:scale(.94)}
@@ -725,12 +727,12 @@ html.capturing .fade-in{animation:none!important;opacity:1!important;transform:n
 
   <!-- 메인 페이지 풋터 (구독 풍선 + 로고) -->
   <div class="main-ftr">
-    <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-bub">💌 섹슈얼 웰니스 매거진 구독하기 →</a>
-    <br>
-    <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-logo">
-      <img src="https://bdsm.tryme.im/logo.png" alt="tryme" onerror="this.style.display='none'">
-    </a>
-  </div>
+  <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-bub">💌 섹슈얼 웰니스 매거진 구독하기 →</a>
+  <br>
+  <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-logo">
+    <img src="https://bdsm.tryme.im/logo.png" alt="트라이미">
+  </a>
+</div>
 </div>
 
 <!-- ============ 로딩 오버레이 ============ -->
@@ -745,11 +747,11 @@ html.capturing .fade-in{animation:none!important;opacity:1!important;transform:n
 <div class="wrap" id="result-area">
   <div id="rc"></div>
   <div class="main-ftr">
-    <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-bub">💌 섹슈얼 웰니스 매거진 구독하기 →</a>
-    <br>
-    <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-logo">
-      <img src="https://bdsm.tryme.im/logo.png" alt="tryme" onerror="this.style.display='none'">
-    </a>
+  <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-bub">💌 섹슈얼 웰니스 매거진 구독하기 →</a>
+  <br>
+  <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-logo">
+    <img src="https://bdsm.tryme.im/logo.png" alt="트라이미">
+  </a>
   </div>
 </div>
 
