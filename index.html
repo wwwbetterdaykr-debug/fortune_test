@@ -193,17 +193,17 @@ body::before{
   box-shadow:0 2px 8px rgba(255,111,15,.12);
 }
 
-/* VS */
+/* 두 사람 연결 표시 (궁합) */
 .vs-d{display:flex;align-items:center;justify-content:center;margin:2px 0 10px}
 .vs-b{
-  width:46px;height:46px;border-radius:50%;
-  background:linear-gradient(135deg,#FF6F0F,#FF8A3D);
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,#FF8DA1,#FFB070);
   display:flex;align-items:center;justify-content:center;
-  font-family:'Jua';font-size:15px;color:#fff;
-  box-shadow:0 6px 16px rgba(255,111,15,.35);
-  animation:bob 2s ease-in-out infinite;
+  font-size:26px;line-height:1;
+  box-shadow:0 6px 16px rgba(255,141,161,.4);
+  animation:bob 1.8s ease-in-out infinite;
 }
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes bob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.08)}}
 
 /* 메인 버튼 */
 .mbtn{
@@ -240,11 +240,12 @@ body::before{
 }
 .ftr-logo{display:inline-block;cursor:pointer;text-decoration:none}
 .ftr-logo img{
-  width:42px;height:42px;border-radius:12px;
+  width:48px;height:48px;border-radius:14px;
   box-shadow:0 3px 10px rgba(0,0,0,.08);
-  display:block;margin:0 auto 6px;
+  display:block;margin:0 auto;
+  transition:transform .2s;
 }
-.ftr-logo-txt{font-size:12px;color:var(--t3);font-weight:600}
+.ftr-logo:active img{transform:scale(.94)}
 
 /* ============ LOADING ============ */
 .ld-ov{
@@ -363,11 +364,29 @@ body::before{
 .el-metal .el-fl{background:linear-gradient(90deg,#8B5A3C,#B88560)}.el-metal .el-pc{color:#8B5A3C}
 
 .el-interp{
-  margin-top:14px;padding:14px 16px;
+  margin-top:14px;padding:16px;
   background:#FFF8E7;border-radius:var(--r1);
-  font-size:14px;color:var(--t2);line-height:1.7;font-weight:500;
+  display:flex;flex-direction:column;gap:12px;
 }
-.el-interp b{color:var(--brown);font-weight:800}
+.el-ip-row{display:flex;flex-direction:column;gap:6px}
+.el-ip-head{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Jua',sans-serif;font-size:15px;
+  color:var(--brown);letter-spacing:-0.01em;
+}
+.el-ip-tag{
+  font-size:11px;font-weight:800;
+  padding:3px 8px;border-radius:999px;
+  font-family:'Pretendard Variable',Pretendard,sans-serif;
+  letter-spacing:0;
+}
+.el-ip-tag.hi{background:#FFE3DC;color:#8B1A00}
+.el-ip-tag.lo{background:#E8E3F5;color:#5A4780}
+.el-ip-desc{
+  font-size:14px;color:var(--t2);
+  line-height:1.55;font-weight:500;
+  padding-left:2px;
+}
 
 /* 특수 살 뱃지 */
 .sb{
@@ -426,7 +445,14 @@ body::before{
 }
 .cp-tb.t2{background:var(--pink-bg)}
 .cp-tb-nm{font-size:13px;color:var(--t3);margin-bottom:4px;font-weight:600}
-.cp-tb-tp{font-size:15px;font-weight:800;color:var(--t1)}
+.cp-tb-tp{font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-0.01em}
+.cp-tb-tag{
+  font-size:12px;color:var(--t2);
+  line-height:1.45;font-weight:500;
+  margin-top:6px;padding-top:8px;
+  border-top:1px dashed rgba(0,0,0,.08);
+  word-break:keep-all;
+}
 
 /* 궁합 항목 */
 .fc{
@@ -549,7 +575,6 @@ body::before{
 <!-- ============ 정보 입력 페이지 ============ -->
 <div class="wrap" id="input-area">
   <div class="hero">
-    <div class="hero-badge">🔮 2025 사주 리포트</div>
     <h1>나의 잠자리는<br><span class="hl">어떤 타입</span>일까?</h1>
     <p>태어난 순간의 네 기둥에 숨겨진<br>나만의 섹스 에너지를 읽어드려요</p>
   </div>
@@ -603,7 +628,7 @@ body::before{
     </div>
 
     <div class="fg">
-      <label class="fl"><span class="fl-emoji">💁</span>성별</label>
+      <label class="fl"><span class="fl-emoji">💗</span>성별</label>
       <div class="gp">
         <button class="gp-b" onclick="setG(1,'M',this)">🙋‍♂️ 남성</button>
         <button class="gp-b" onclick="setG(1,'F',this)">🙋‍♀️ 여성</button>
@@ -611,7 +636,7 @@ body::before{
     </div>
   </div>
 
-  <div id="vs-div" class="vs-d hidden"><div class="vs-b">VS</div></div>
+  <div id="vs-div" class="vs-d hidden"><div class="vs-b">💕</div></div>
 
   <div id="person2-section">
     <div class="icard ic2">
@@ -658,7 +683,7 @@ body::before{
       </div>
 
       <div class="fg">
-        <label class="fl"><span class="fl-emoji">💁</span>성별</label>
+        <label class="fl"><span class="fl-emoji">💗</span>성별</label>
         <div class="gp">
           <button class="gp-b" onclick="setG(2,'M',this)">🙋‍♂️ 남성</button>
           <button class="gp-b" onclick="setG(2,'F',this)">🙋‍♀️ 여성</button>
@@ -675,7 +700,6 @@ body::before{
     <br>
     <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-logo">
       <img src="https://bdsm.tryme.im/logo.png" alt="tryme" onerror="this.style.display='none'">
-      <div class="ftr-logo-txt">tryme.im</div>
     </a>
   </div>
 </div>
@@ -696,7 +720,6 @@ body::before{
     <br>
     <a href="https://tryme.im" target="_blank" rel="noopener" class="ftr-logo">
       <img src="https://bdsm.tryme.im/logo.png" alt="tryme" onerror="this.style.display='none'">
-      <div class="ftr-logo-txt">tryme.im</div>
     </a>
   </div>
 </div>
@@ -876,26 +899,32 @@ function checkSpecialStars(pillars){
    ======================================== */
 const TYPES=[
   {id:'fire',nm:'불꽃형 열정파',emoji:'🔥',hc:'rh-fire',
+    tag:'본능대로 뜨겁게 타오르는 스타일',
     cond:e=>e['화']>=30,
     desc:'섹스할 때 불이 붙으면 걷잡을 수 없이 타오르는 타입이에요. 감정도 몸도 솔직해서 관계 중에 원하는 걸 숨기지 못해요. 뜨거운 밤을 보내고 나면 상대가 절대 잊지 못할 여운을 남겨요',
     sc:{passion:95,sensual:70,adventure:85,romantic:60,dominant:80,expressive:90}},
   {id:'water',nm:'이슬형 교감파',emoji:'💧',hc:'rh-water',
+    tag:'감정이 통해야 몸도 열리는 스타일',
     cond:e=>e['수']>=30,
     desc:'마음이 먼저 열려야 몸도 열리는 타입이라 감정적 교감이 전희가 돼요. 분위기가 충분히 무르익으면 놀라운 감각이 깨어나요. 조용하지만 섹스에 빠지면 헤어나올 수 없는 깊은 매력이에요',
     sc:{passion:65,sensual:90,adventure:55,romantic:95,dominant:40,expressive:70}},
   {id:'wood',nm:'숲속형 탐험파',emoji:'🌿',hc:'rh-wood',
+    tag:'새로운 시도에 설레는 모험가 스타일',
     cond:e=>e['목']>=30,
     desc:'같은 체위, 같은 장소는 두 번 하기 싫은 타고난 모험가예요. 섹스에서도 새로운 시도와 장소에서 에너지가 폭발해요. 상대를 리드하면서도 자유롭게 관계를 즐길 줄 아는 사람이에요',
     sc:{passion:75,sensual:60,adventure:95,romantic:70,dominant:65,expressive:80}},
   {id:'metal',nm:'번개형 지배파',emoji:'⚡',hc:'rh-metal',
+    tag:'주도권 쥐고 리드하는 카리스마 스타일',
     cond:e=>e['금']>=30,
     desc:'섹스할 때 눈빛 하나로 분위기를 장악하는 카리스마가 있어요. 관계에서 주도권을 쥐었을 때 가장 강력한 에너지가 나와요. 차가운 겉모습과 달리 한번 열리면 놀랍도록 섬세한 터치를 해요',
     sc:{passion:80,sensual:65,adventure:70,romantic:55,dominant:95,expressive:75}},
   {id:'earth',nm:'꽃밭형 감각파',emoji:'🌷',hc:'rh-earth',
+    tag:'무드와 오감을 중시하는 섬세한 스타일',
     cond:e=>e['토']>=30,
     desc:'향초, 음악, 촉감 하나하나에 온몸이 반응하는 감각주의자예요. 섹스를 서두르지 않고 천천히 깊게 즐길 줄 아는 사람이에요. 편안한 공간에서 최고의 퍼포먼스가 나오는 무드형 타입이에요',
     sc:{passion:70,sensual:95,adventure:50,romantic:85,dominant:55,expressive:65}},
   {id:'balanced',nm:'만능형 조화파',emoji:'✨',hc:'rh-balanced',
+    tag:'상대에 맞춰 자유자재로 변하는 스타일',
     cond:()=>true,
     desc:'섹스에서 어떤 상대든 맞춰가는 천부적인 조율 능력이 있어요. 관계 중 리드하기도 맡기기도 하는 유연함이 최대 매력이에요. 함께 잘수록 만족도가 올라가는 숨은 고수 스타일이에요',
     sc:{passion:75,sensual:75,adventure:75,romantic:75,dominant:70,expressive:75}}
@@ -997,7 +1026,16 @@ function elementInterp(ep){
     '금':'주도권을 내려놓고 맡기는 연습이 필요해요',
     '수':'감정 없이도 관계를 즐기는 법을 배워보세요'
   };
-  return `<b>${top[0]}(${top[1]}%)</b>이 가장 강해요 — ${tD[top[0]]}<br><b>${low[0]}(${low[1]}%)</b>이 가장 약해요 — ${lD[low[0]]}`;
+  return `
+    <div class="el-ip-row">
+      <div class="el-ip-head"><span class="el-ip-tag hi">가장 강해요</span> ${top[0]} ${top[1]}%</div>
+      <div class="el-ip-desc">${tD[top[0]]}</div>
+    </div>
+    <div class="el-ip-row">
+      <div class="el-ip-head"><span class="el-ip-tag lo">가장 약해요</span> ${low[0]} ${low[1]}%</div>
+      <div class="el-ip-desc">${lD[low[0]]}</div>
+    </div>
+  `;
 }
 
 /* ========================================
@@ -1081,11 +1119,12 @@ function getPD(n){
   const hour=$('hour'+n).value;
   const g=gen[n];
   const cal=calT[n];
-  const l=n===1?'첫 번째':'두 번째';
+  // 내 사주 모드에서는 프리픽스 없이, 궁합 모드에서만 첫 번째/두 번째 구분
+  const prefix = (mode==='compat') ? (n===1?'첫 번째 사람의 ':'두 번째 사람의 ') : '';
 
-  if(!name) return {e:`${l} 사람의 이름을 입력해주세요`};
-  if(!year||!month||!day) return {e:`${l} 사람의 생년월일을 선택해주세요`};
-  if(!g) return {e:`${l} 사람의 성별을 선택해주세요`};
+  if(!name) return {e:`${prefix}이름을 입력해주세요`};
+  if(!year||!month||!day) return {e:`${prefix}생년월일을 선택해주세요`};
+  if(!g) return {e:`${prefix}성별을 선택해주세요`};
 
   let sY=+year, sM=+month, sD=+day;
   if(cal==='lunar'){
@@ -1227,10 +1266,12 @@ function renderComp(p1, p2, r){
         <div class="cp-tb">
           <div class="cp-tb-nm">${p1.name}</div>
           <div class="cp-tb-tp">${r1.type.emoji} ${r1.type.nm}</div>
+          <div class="cp-tb-tag">${r1.type.tag}</div>
         </div>
         <div class="cp-tb t2">
           <div class="cp-tb-nm">${p2.name}</div>
           <div class="cp-tb-tp">${r2.type.emoji} ${r2.type.nm}</div>
+          <div class="cp-tb-tag">${r2.type.tag}</div>
         </div>
       </div>
     </div>
