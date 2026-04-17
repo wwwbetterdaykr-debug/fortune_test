@@ -446,14 +446,19 @@ function renderMy(saju, isShared){
   if(payload) currentShareUrl=buildShareUrl(payload);
 
   let html='';
-  // 맨 위에 공유 안내 카드
-  if(payload) html+=renderShareCard(payload);
 
+  // 1. 나의 사주 유형 (프로필 카드) — 가장 먼저
+  html+=`<div class="profile-card"><div class="profile-emoji">${prof.emoji}</div><div class="profile-title">${prof.title}</div><div class="profile-sub">${prof.emoji} ${HS_EL[saju.day.s]}의 에너지를 가진 사람</div><div class="profile-desc">${prof.desc}</div></div>`;
+
+  // 2. 시간 보정 안내 배너
   if(!saju.ut){const c=saju.corrected;html+=`<div class="correction-info"><div class="correction-info-title">✨ 더 정확한 결과를 위해 시간 보정을 적용했어요</div><div class="correction-info-row">한국의 실제 위치에 맞춰 시간을 보정했어요${c.dst?' (서머타임 기간이라 추가 보정도 적용!)':''}.${saju.isYaja?' 밤 11시 이후 출생이라 날짜도 함께 조정했어요.':''}</div></div>`;}
   else html+=`<div class="correction-info"><div class="correction-info-title">ℹ️ 시간 미입력 — 3주 분석</div><div class="correction-info-row">시간을 모르셔서 년·월·일 세 기둥으로 분석했어요. 시간을 알면 더 정확해져요!</div></div>`;
+
+  // 3. 나의 사주 (절기 기반 정밀 계산)
   const pils=saju.hour?[['시주',saju.hour],['일주',saju.day],['월주',saju.month],['년주',saju.year]]:[['일주',saju.day],['월주',saju.month],['년주',saju.year]];
   html+=`<div class="pillar-card"><div class="pillar-card-title">📋 나의 사주</div><div class="accuracy-badge">✓ 절기 기반 정밀 계산</div><div class="pillar-grid" style="grid-template-columns:repeat(${pils.length},1fr)">${pils.map(([l,p])=>{const sE=HS_EL[p.s],bE=EB_EL[p.b];return`<div><div class="pillar-col-label">${l}</div><div class="pillar-char">${HS_KR[p.s]}</div><div class="pillar-hanja">${HS_HJ[p.s]}</div><span class="pillar-element el-${EL_EN[sE]}">${sE}</span><div style="margin-top:8px"><div class="pillar-char">${EB_KR[p.b]}</div><div class="pillar-hanja">${EB_HJ[p.b]}</div><span class="pillar-element el-${EL_EN[bE]}">${bE}</span></div></div>`;}).join('')}</div></div>`;
-  html+=`<div class="profile-card"><div class="profile-emoji">${prof.emoji}</div><div class="profile-title">${prof.title}</div><div class="profile-sub">${prof.emoji} ${HS_EL[saju.day.s]}의 에너지를 가진 사람</div><div class="profile-desc">${prof.desc}</div></div>`;
+
+  // 4. 이후 — 성적 에너지 분석, 특수 에너지, 오행, 최적궁합, 월별 흐름
   html+=`<div class="meter-card"><div class="meter-card-title">🔥 성적 에너지 분석</div>`;
   mDef.forEach(m=>{const v=sc[m.key],desc=v>=65?m.h:v>=35?m.m:m.l;html+=`<div class="meter-item"><div class="meter-label"><span class="meter-name">${m.name}</span><span class="meter-val ${sColor(v)}">${v}점 · ${sLabel(v)}</span></div><div class="meter-bar"><div class="meter-fill" style="width:${v}%;background:${m.color}"></div></div><div class="meter-desc">${desc}</div></div>`;});
   html+=`</div>`;
@@ -513,8 +518,6 @@ function renderCp(sA,sB, isShared){
   if(payload) currentShareUrl=buildShareUrl(payload);
 
   let html='';
-  // 맨 위에 공유 안내 카드
-  if(payload) html+=renderShareCard(payload);
 
   // ═══ 궁합 점수 카드 ═══
   html+=`<div class="cp-score-card">
