@@ -6,10 +6,13 @@
 <title>섹스 사주</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/korean-lunar-calendar@0.3.6/dist/korean-lunar-calendar.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{--bg:#f7f7f3;--card:#fff;--t1:#1a1a1a;--t2:#666;--t3:#999;--mint:#2EC4B6;--mint-light:#e8faf7;--mint-dark:#1da899;--coral:#FF6B6B;--purple:#A78BFA;--gold:#F59E0B;--blue:#60A5FA;--r:14px;--shadow:0 2px 16px rgba(0,0,0,.06)}
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:"Noto Sans KR",sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased}.wrap{max-width:480px;margin:auto;padding:0 20px 80px;min-height:100vh}
+
 .hero{text-align:center;padding:44px 0 32px}.hero-badge{display:inline-block;background:var(--mint-light);color:var(--mint-dark);font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;margin-bottom:16px}.hero h1{font-size:32px;font-weight:800;letter-spacing:-1.5px;line-height:1.2;margin-bottom:10px}.hero h1 .accent{color:var(--mint)}.hero p{font-size:14px;color:var(--t2);line-height:1.6}
+
 .tab-wrap{display:flex;gap:8px;margin-bottom:20px}.tab-btn{flex:1;padding:13px 0;border:1.5px solid #e2e0db;border-radius:var(--r);background:#fff;font-size:14px;font-weight:500;color:var(--t2);cursor:pointer;transition:.2s}.tab-btn.active{border-color:var(--t1);color:var(--t1);font-weight:600}
 .panel{display:none}.panel.active{display:block}
 .form-card{background:var(--card);border-radius:var(--r);padding:24px 20px;margin-bottom:12px;box-shadow:var(--shadow)}.form-card-title{font-size:17px;font-weight:700;margin-bottom:16px;letter-spacing:-.5px}
@@ -22,133 +25,149 @@
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:100px;background:var(--t1);color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transition:opacity .3s,bottom .3s;pointer-events:none;max-width:320px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.15)}.toast.show{opacity:1;bottom:120px}
 .loading-overlay{display:none;position:fixed;inset:0;background:rgba(247,247,243,.97);z-index:999;flex-direction:column;align-items:center;justify-content:center}.loading-overlay.show{display:flex}
 @keyframes spin{to{transform:rotate(360deg)}}.loading-spinner{width:48px;height:48px;border:3px solid #e2e0db;border-top-color:var(--mint);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:20px}#loading-text{font-size:16px;font-weight:600}#loading-sub{font-size:13px;color:var(--t3);margin-top:6px}.loading-steps{margin-top:20px;display:flex;flex-direction:column;gap:8px}.loading-step{font-size:12px;color:var(--t3);display:flex;align-items:center;gap:6px}.loading-step.done{color:var(--mint-dark)}.loading-step .check{width:16px;height:16px;border-radius:50%;border:1.5px solid #e2e0db;display:flex;align-items:center;justify-content:center;font-size:10px}.loading-step.done .check{background:var(--mint);border-color:var(--mint);color:#fff}
-#result{margin-top:8px}
-.profile-card{background:var(--card);border-radius:var(--r);padding:28px 20px;box-shadow:var(--shadow);text-align:center;margin-bottom:12px}.profile-emoji{font-size:52px;margin-bottom:12px}.profile-title{font-size:20px;font-weight:800;letter-spacing:-1px;margin-bottom:4px}.profile-sub{font-size:13px;color:var(--t2);margin-bottom:16px}.profile-desc{font-size:14px;color:var(--t2);line-height:1.7;text-align:left}
-.pillar-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}.pillar-card-title{font-size:15px;font-weight:700;margin-bottom:14px}.pillar-grid{display:grid;gap:8px;text-align:center}.pillar-col-label{font-size:11px;color:var(--t3);margin-bottom:6px;font-weight:500}.pillar-char{font-size:22px;font-weight:700;margin-bottom:2px}.pillar-hanja{font-size:12px;color:var(--t2)}.pillar-element{font-size:11px;margin-top:4px;padding:3px 8px;border-radius:6px;display:inline-block;font-weight:500}
-.el-wood{background:#E8F5E9;color:#2E7D32}.el-fire{background:#FFEBEE;color:#C62828}.el-earth{background:#FFF8E1;color:#F57F17}.el-metal{background:#F3E5F5;color:#6A1B9A}.el-water{background:#E3F2FD;color:#1565C0}
-.meter-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}.meter-card-title{font-size:15px;font-weight:700;margin-bottom:16px}.meter-item{margin-bottom:14px}.meter-item:last-child{margin-bottom:0}.meter-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.meter-name{font-size:13px;font-weight:500}.meter-val{font-size:13px;font-weight:600}.meter-bar{height:8px;background:#f0eeea;border-radius:4px;overflow:hidden}.meter-fill{height:100%;border-radius:4px;transition:width .6s ease}.meter-desc{font-size:11px;color:var(--t3);margin-top:4px;line-height:1.4}
-.badge-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}.badge-card-title{font-size:15px;font-weight:700;margin-bottom:12px}.badge-item{padding:14px 16px;border-radius:12px;margin-bottom:8px}.badge-item:last-child{margin-bottom:0}.badge-item-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}.badge-item-name{font-size:14px;font-weight:700}.badge-item-desc{font-size:12px;color:var(--t2);line-height:1.6}
-.el-section{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}
-.el-item{padding:14px 16px;border-radius:12px;margin-bottom:10px}.el-item:last-child{margin-bottom:0}
-.el-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.el-item-left{display:flex;align-items:center;gap:8px}
-.el-item-name{font-size:14px;font-weight:700}
-.el-item-dots{font-size:16px;letter-spacing:2px;line-height:1}
-.el-item-desc{font-size:12px;line-height:1.55;opacity:.85}
-.match-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px;text-align:center}.match-emoji{font-size:40px;margin-bottom:8px}.match-title{font-size:16px;font-weight:700;margin-bottom:4px}.match-sub{font-size:13px;color:var(--t2);line-height:1.5}
-.month-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}.month-card-title{font-size:15px;font-weight:700;margin-bottom:14px}.month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.month-cell{padding:12px 8px;border-radius:10px;background:var(--bg);text-align:center}.month-cell-name{font-size:12px;font-weight:600;margin-bottom:4px}.month-cell-emoji{font-size:18px;margin-bottom:2px}.month-cell-keyword{font-size:11px;font-weight:600;margin-bottom:2px}.month-cell-score{font-size:10px;color:var(--t3)}.month-cell.hot{background:#FFF0F0;border:1px solid #FFD0D0}.month-cell.warm{background:#FFFBEB;border:1px solid #FDE68A}.month-cell.cool{background:#F0F8FF;border:1px solid #D0E8FF}.month-cell.cold{background:#F5F0FF;border:1px solid #E0D5FF}
 
-/* ═══════════════════════════════════════════
-   NEW 궁합 점수 카드 — 화려한 그래픽
-   ═══════════════════════════════════════════ */
-.cp-score-card{
-  position:relative;
+/* ═══ 결과 이미지 카드 스타일 ═══ */
+.result-image-card{
+  background:linear-gradient(160deg,#0f0c1a 0%,#1a1035 30%,#1e0a2e 60%,#0d1520 100%);
   border-radius:24px;
-  padding:0;
-  margin-bottom:12px;
+  padding:36px 24px 28px;
+  color:#fff;
+  position:relative;
   overflow:hidden;
-  background:#0a0e1a;
-  box-shadow:0 12px 40px rgba(236,72,153,.3),0 8px 24px rgba(139,92,246,.2);
-  isolation:isolate;
+  margin-bottom:16px;
 }
-.cp-score-bg{
-  position:absolute;inset:0;z-index:0;
+.result-image-card::before{
+  content:'';position:absolute;inset:0;
   background:
-    radial-gradient(ellipse 60% 50% at 15% 20%,rgba(236,72,153,.55) 0%,transparent 60%),
-    radial-gradient(ellipse 70% 60% at 85% 30%,rgba(139,92,246,.5) 0%,transparent 60%),
-    radial-gradient(ellipse 80% 60% at 50% 100%,rgba(46,196,182,.4) 0%,transparent 55%),
-    linear-gradient(135deg,#1a0b2e 0%,#2d1b4e 50%,#0f172a 100%);
+    radial-gradient(ellipse 50% 40% at 20% 15%,rgba(236,72,153,.25) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 85%,rgba(46,196,182,.2) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 30% at 60% 40%,rgba(139,92,246,.15) 0%,transparent 50%);
+  pointer-events:none;
 }
-.cp-score-stars{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
-.cp-star{position:absolute;background:#fff;border-radius:50%;animation:starTwinkle 3s ease-in-out infinite}
-@keyframes starTwinkle{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
-.cp-sparkle{position:absolute;font-size:16px;animation:sparkleFloat 4s ease-in-out infinite;opacity:.8}
-@keyframes sparkleFloat{0%,100%{transform:translateY(0) rotate(0deg);opacity:.8}50%{transform:translateY(-8px) rotate(180deg);opacity:1}}
+.ric-inner{position:relative;z-index:2}
 
-.cp-score-inner{position:relative;z-index:2;padding:32px 22px 28px;text-align:center}
+/* 헤더 */
+.ric-header{text-align:center;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.ric-badge{display:inline-block;padding:4px 12px;border-radius:100px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.6);margin-bottom:12px;text-transform:uppercase}
+.ric-type-emoji{font-size:48px;margin-bottom:8px;display:block}
+.ric-type-title{font-size:24px;font-weight:900;letter-spacing:-1px;margin-bottom:4px}
+.ric-type-sub{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:10px}
+.ric-type-desc{font-size:12px;color:rgba(255,255,255,.7);line-height:1.7;text-align:left;padding:0 4px}
 
-/* 상단 배지 */
-.cp-top-badge{
-  display:inline-block;padding:5px 14px;border-radius:100px;
-  background:rgba(255,255,255,.12);backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.2);
-  font-size:10px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.9);
-  margin-bottom:16px;text-transform:uppercase;
-}
+/* 사주 4주 간결 */
+.ric-pillars{display:flex;gap:6px;margin-bottom:22px}
+.ric-pillar{flex:1;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 4px 8px}
+.ric-pillar-label{font-size:9px;color:rgba(255,255,255,.4);margin-bottom:6px;font-weight:600}
+.ric-pillar-char{font-size:18px;font-weight:800;line-height:1.1}
+.ric-pillar-hanja{font-size:10px;color:rgba(255,255,255,.35);margin-top:1px}
+.ric-pillar-el{font-size:9px;padding:2px 6px;border-radius:4px;display:inline-block;margin-top:4px;font-weight:600}
+.ric-pillar-divider{height:1px;background:rgba(255,255,255,.06);margin:4px 0}
 
-/* VS 영역 — 두 프로필 */
-.cp-vs-new{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:24px}
-.cp-pp{flex:1;text-align:center}
-.cp-pp-ring{
-  width:72px;height:72px;margin:0 auto 8px;
-  border-radius:50%;position:relative;
-  background:linear-gradient(135deg,rgba(236,72,153,.3),rgba(139,92,246,.3));
-  padding:3px;
-}
-.cp-pp-ring-inner{
-  width:100%;height:100%;border-radius:50%;
-  background:rgba(255,255,255,.08);backdrop-filter:blur(10px);
-  display:flex;align-items:center;justify-content:center;
-  font-size:36px;border:1.5px solid rgba(255,255,255,.25);
-}
-.cp-pp-name{font-size:12px;font-weight:700;color:#fff;margin-top:4px}
-.cp-pp-sub{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
-.cp-vs-heart{
-  width:48px;height:48px;border-radius:50%;
-  background:linear-gradient(135deg,#ec4899,#8b5cf6);
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;box-shadow:0 0 30px rgba(236,72,153,.6);
-  position:relative;margin:0 4px;flex-shrink:0;
-  animation:heartBeat 1.5s ease-in-out infinite;
-}
-@keyframes heartBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-.cp-vs-heart::after{
-  content:'';position:absolute;inset:-6px;border-radius:50%;
-  background:linear-gradient(135deg,#ec4899,#8b5cf6);
-  filter:blur(12px);opacity:.5;z-index:-1;
-}
+/* 섹션 타이틀 */
+.ric-section-title{font-size:12px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.85)}
 
-/* 원형 스코어 */
-.cp-score-ring-wrap{position:relative;width:180px;height:180px;margin:0 auto 14px}
-.cp-ring-svg{width:100%;height:100%;transform:rotate(-90deg)}
-.cp-ring-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:8}
-.cp-ring-fill{fill:none;stroke:url(#scoreGrad);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1)}
-.cp-ring-center{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-}
-.cp-ring-score{
-  font-family:"Playfair Display",serif;
-  font-size:64px;font-weight:900;color:#fff;line-height:.9;
-  letter-spacing:-2px;
-  text-shadow:0 0 30px rgba(236,72,153,.5);
-}
-.cp-ring-unit{font-size:14px;color:rgba(255,255,255,.6);font-weight:600;margin-top:2px}
-.cp-ring-label{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-top:4px;text-transform:uppercase}
+/* 에너지 바 */
+.ric-meters{margin-bottom:22px}
+.ric-meter{margin-bottom:8px}
+.ric-meter-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.ric-meter-name{font-size:11px;font-weight:600;color:rgba(255,255,255,.8)}
+.ric-meter-val{font-size:10px;font-weight:700}
+.ric-meter-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.ric-meter-fill{height:100%;border-radius:3px}
 
-/* 등급 배지 */
-.cp-grade-wrap{margin-bottom:14px}
-.cp-grade-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:8px 18px;border-radius:100px;
-  background:linear-gradient(135deg,#ec4899,#8b5cf6);
-  font-size:13px;font-weight:700;color:#fff;
-  box-shadow:0 6px 20px rgba(236,72,153,.4);
+/* 특수 에너지 */
+.ric-badges{margin-bottom:22px}
+.ric-badge-item{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);margin-bottom:6px}
+.ric-badge-item:last-child{margin-bottom:0}
+.ric-badge-emoji{font-size:18px;flex-shrink:0;margin-top:1px}
+.ric-badge-text{flex:1}
+.ric-badge-name{font-size:11px;font-weight:700;margin-bottom:2px}
+.ric-badge-desc{font-size:10px;color:rgba(255,255,255,.55);line-height:1.5}
+
+/* 오행 */
+.ric-elements{margin-bottom:18px}
+.ric-el-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;margin-bottom:4px}
+.ric-el-item:last-child{margin-bottom:0}
+.ric-el-name{font-size:11px;font-weight:700;width:70px;flex-shrink:0}
+.ric-el-dots{font-size:13px;letter-spacing:1px;flex:1}
+.ric-el-desc{font-size:9px;color:rgba(255,255,255,.5);flex:2;line-height:1.4}
+
+/* 워터마크 */
+.ric-footer{text-align:center;margin-top:20px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
+.ric-footer-text{font-size:9px;color:rgba(255,255,255,.25);letter-spacing:1px}
+
+/* 오행 색상 */
+.el-c-wood{color:#6ee7b7}.el-c-fire{color:#fca5a5}.el-c-earth{color:#fcd34d}.el-c-metal{color:#c4b5fd}.el-c-water{color:#93c5fd}
+.el-bg-wood{background:rgba(110,231,183,.1)}.el-bg-fire{background:rgba(252,165,165,.1)}.el-bg-earth{background:rgba(252,211,77,.1)}.el-bg-metal{background:rgba(196,181,253,.1)}.el-bg-water{background:rgba(147,197,253,.1)}
+
+/* ═══ 궁합 이미지 카드 ═══ */
+.cp-image-card{
+  background:linear-gradient(160deg,#0a0e1a 0%,#1a0b2e 30%,#2d1b4e 60%,#0f172a 100%);
+  border-radius:24px;
+  padding:32px 22px 24px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:16px;
 }
-.cp-grade-stars{color:#fde047;letter-spacing:2px;font-size:12px;margin-top:6px}
-
-/* 하단 문구 */
-.cp-bottom-msg{
-  font-size:12px;color:rgba(255,255,255,.75);line-height:1.6;
-  padding:12px 16px;border-radius:12px;
-  background:rgba(255,255,255,.05);backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.1);
+.cp-image-card::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 20%,rgba(236,72,153,.3) 0%,transparent 60%),
+    radial-gradient(ellipse 70% 60% at 85% 30%,rgba(139,92,246,.25) 0%,transparent 60%),
+    radial-gradient(ellipse 80% 60% at 50% 100%,rgba(46,196,182,.2) 0%,transparent 55%);
+  pointer-events:none;
 }
+.cpic-inner{position:relative;z-index:2}
 
-.factor-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}.factor-title{font-size:15px;font-weight:700;margin-bottom:14px}.factor-item{padding:14px 16px;border-radius:12px;margin-bottom:10px}.factor-item:last-child{margin-bottom:0}.factor-item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.factor-name{font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px}.factor-grade{font-size:12px;font-weight:700;padding:3px 10px;border-radius:8px}.factor-desc{font-size:12px;color:var(--t2);line-height:1.6}
-.tip-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}.tip-card-title{font-size:15px;font-weight:700;margin-bottom:14px}.tip-item{padding:12px 14px;border-radius:10px;background:var(--bg);margin-bottom:8px}.tip-item:last-child{margin-bottom:0}.tip-item-label{font-size:12px;font-weight:700;color:var(--mint-dark);margin-bottom:4px}.tip-item-text{font-size:13px;color:var(--t2);line-height:1.6}
-.bed-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}.bed-card-title{font-size:15px;font-weight:700;margin-bottom:14px}.bed-item{padding:14px 16px;border-radius:12px;margin-bottom:8px}.bed-item:last-child{margin-bottom:0}.bed-item-header{font-size:13px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}.bed-item-text{font-size:12px;color:var(--t2);line-height:1.6}
+/* 궁합 VS */
+.cpic-vs{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:20px}
+.cpic-person{flex:1;text-align:center}
+.cpic-person-emoji{font-size:36px;margin-bottom:4px}
+.cpic-person-name{font-size:11px;font-weight:700}
+.cpic-person-sub{font-size:9px;color:rgba(255,255,255,.4)}
+.cpic-heart{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 6px;flex-shrink:0;box-shadow:0 0 24px rgba(236,72,153,.4)}
 
+/* 점수 원형 */
+.cpic-score-wrap{text-align:center;margin-bottom:18px}
+.cpic-score-ring{width:140px;height:140px;margin:0 auto 8px;position:relative}
+.cpic-ring-svg{width:100%;height:100%;transform:rotate(-90deg)}
+.cpic-ring-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:8}
+.cpic-ring-fill{fill:none;stroke:url(#cpGrad);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1)}
+.cpic-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cpic-ring-num{font-family:"Playfair Display",serif;font-size:52px;font-weight:900;line-height:.9;letter-spacing:-2px}
+.cpic-ring-unit{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;font-weight:600}
+.cpic-grade{display:inline-block;padding:6px 16px;border-radius:100px;background:linear-gradient(135deg,#ec4899,#8b5cf6);font-size:12px;font-weight:700;margin-bottom:4px}
+.cpic-stars{font-size:11px;color:#fde047;letter-spacing:2px}
+
+/* 궁합 팩터 간결 */
+.cpic-factors{margin-bottom:18px}
+.cpic-factor{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);margin-bottom:5px}
+.cpic-factor:last-child{margin-bottom:0}
+.cpic-factor-left{flex-shrink:0;font-size:16px;margin-top:1px}
+.cpic-factor-right{flex:1}
+.cpic-factor-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.cpic-factor-name{font-size:11px;font-weight:700}
+.cpic-factor-grade{font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(255,255,255,.1)}
+.cpic-factor-desc{font-size:10px;color:rgba(255,255,255,.55);line-height:1.5}
+
+/* 침대 위 궁합 간결 */
+.cpic-bed{margin-bottom:18px}
+.cpic-bed-item{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.03);margin-bottom:4px}
+.cpic-bed-item:last-child{margin-bottom:0}
+.cpic-bed-emoji{font-size:14px;flex-shrink:0;margin-top:1px}
+.cpic-bed-right{flex:1}
+.cpic-bed-title{font-size:10px;font-weight:700;margin-bottom:2px}
+.cpic-bed-text{font-size:9px;color:rgba(255,255,255,.5);line-height:1.45}
+
+/* 팁 간결 */
+.cpic-tips{margin-bottom:14px}
+.cpic-tip{padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.03);margin-bottom:4px}
+.cpic-tip:last-child{margin-bottom:0}
+.cpic-tip-label{font-size:9px;font-weight:700;color:var(--mint);margin-bottom:2px}
+.cpic-tip-text{font-size:9px;color:rgba(255,255,255,.5);line-height:1.45}
+
+/* 액션 버튼 (카드 바깥) */
 .action-row{display:flex;gap:8px;margin-top:16px;margin-bottom:24px}
 .action-btn{flex:1;padding:14px 10px;border:1.5px solid #e2e0db;border-radius:var(--r);background:#fff;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:5px}
 .action-btn:active{transform:scale(.98)}
@@ -156,58 +175,7 @@
 .action-btn.share{background:var(--t1);color:#fff;border-color:var(--t1)}
 .action-btn.reset{background:#fff;color:var(--t2)}
 
-/* 결과 공유 안내 카드 */
-.share-hero{
-  position:relative;overflow:hidden;
-  border-radius:18px;padding:24px 20px;margin:20px 0 16px;
-  background:linear-gradient(135deg,#1a0b2e 0%,#2d1b4e 50%,#0f172a 100%);
-  box-shadow:0 10px 30px rgba(139,92,246,.25);
-  text-align:center;
-}
-.share-hero::before{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 60% 50% at 20% 20%,rgba(236,72,153,.4) 0%,transparent 55%),
-    radial-gradient(ellipse 70% 50% at 80% 80%,rgba(46,196,182,.35) 0%,transparent 55%);
-  pointer-events:none;
-}
-.share-hero-inner{position:relative;z-index:2}
-.share-hero-emoji{font-size:32px;margin-bottom:8px;display:block}
-.share-hero-title{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:4px}
-.share-hero-sub{font-size:12px;color:rgba(255,255,255,.7);line-height:1.5;margin-bottom:16px}
-.share-hero-url{
-  display:flex;align-items:center;gap:8px;
-  background:rgba(255,255,255,.08);backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:10px;padding:10px 12px;margin-bottom:10px;
-}
-.share-hero-url-text{
-  flex:1;font-size:11px;color:rgba(255,255,255,.8);font-family:monospace;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;
-}
-.share-hero-copy{
-  border:none;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;
-  font-size:11px;font-weight:700;padding:6px 12px;border-radius:8px;
-  cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0;
-}
-.share-hero-copy:active{transform:scale(.95)}
-.share-hero-btns{display:flex;gap:8px}
-.share-hero-btn{
-  flex:1;padding:12px 8px;border:none;border-radius:10px;
-  font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;
-  display:flex;align-items:center;justify-content:center;gap:4px;
-  transition:.15s;
-}
-.share-hero-btn:active{transform:scale(.97)}
-.share-hero-btn.kakao{background:#FEE500;color:#1a1a1a}
-.share-hero-btn.share-sys{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2)}
-.share-hero-btn.insta{background:linear-gradient(135deg,#833AB4,#FD1D1D,#FCB045);color:#fff}
-
-.correction-info{background:var(--mint-light);border-radius:10px;padding:14px 16px;margin-bottom:12px}.correction-info-title{font-size:12px;font-weight:600;color:var(--mint-dark);margin-bottom:4px}.correction-info-row{font-size:11px;color:var(--t2);line-height:1.5}
 footer{text-align:center;padding:24px 0;margin-top:40px}
-.accuracy-badge{display:inline-flex;align-items:center;gap:4px;background:#E8F5E9;color:#2E7D32;font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;margin-bottom:12px}
-.score-color-high{color:#DC2626}.score-color-mid{color:var(--gold)}.score-color-low{color:var(--blue)}
-
 </style>
 </head>
 <body>
@@ -249,6 +217,7 @@ footer{text-align:center;padding:24px 0;margin-top:40px}
   <div id="result"></div>
   <footer><img src="https://bdsm.tryme.im/logo.png" alt="트라이미" style="height:24px;opacity:.25;display:block;margin:0 auto"></footer>
 </div>
+
 <script>
 const SITE_URL='https://love.tryme.im';
 const HS_KR=['갑','을','병','정','무','기','경','신','임','계'],EB_KR=['자','축','인','묘','진','사','오','미','신','유','술','해'],HS_HJ=['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'],EB_HJ=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'],HS_EL=['목','목','화','화','토','토','금','금','수','수'],EB_EL=['수','토','목','목','토','화','화','토','금','금','토','수'],EL_NAMES=['목','화','토','금','수'],EL_EN={목:'wood',화:'fire',토:'earth',금:'metal',수:'water'};
@@ -281,109 +250,73 @@ function hMok(s){const mm=[11,6,3,8,3,8,5,0,9,2],t=[s.year.b,s.month.b,s.day.b];
 function hYeok(s){const db=s.day.b,g=[[2,6,10],[5,9,1],[8,0,4],[11,3,7]],v=[8,11,2,5],t=[s.year.b,s.month.b];if(s.hour)t.push(s.hour.b);for(let i=0;i<4;i++)if(g[i].includes(db)&&t.includes(v[i]))return true;return false;}
 function calcScores(saju){const el=aEl(saju),c=el.counts,ds=saju.day.s;const seeds=[[30,55,25,20,40],[45,25,60,35,55],[75,30,50,40,25],[55,20,70,45,50],[25,70,20,15,30],[35,60,40,20,45],[50,45,30,35,60],[40,35,45,30,75],[45,30,35,70,40],[35,25,55,65,45]];let[p,st,ex,cu,ch]=seeds[ds];p+=c['화']*10-c['수']*5;st+=c['토']*10+c['금']*5-c['목']*3;ex+=c['화']*6+c['목']*8-c['금']*4;cu+=c['수']*10+c['목']*4-c['토']*6;ch+=c['금']*8+c['수']*4-c['화']*3;if(hDohwa(saju)){p+=18;ch+=14;}if(hHong(saju)){p+=22;ex+=10;}if(hHam(saju)){ex+=16;cu+=8;}if(hMok(saju)){cu+=14;ex+=6;}if(hYeok(saju)){cu+=18;p+=6;}if(saju.hour){const hE=HS_EL[saju.hour.s];if(hE==='화'){p+=8;ex+=4;}if(hE==='수'){cu+=8;st+=4;}if(hE==='금')ch+=8;if(hE==='토')st+=10;if(hE==='목'){ex+=6;cu+=4;}}const cl=v=>Math.max(12,Math.min(98,Math.round(v)));return{passion:cl(p),stamina:cl(st),expression:cl(ex),curiosity:cl(cu),charm:cl(ch)};}
 function sLabel(v){return v>=75?'매우 높음':v>=55?'높은 편':v>=35?'보통':'낮은 편';}
-function sColor(v){return v>=70?'score-color-high':v>=45?'score-color-mid':'score-color-low';}
 function calcTemp(s){const el=aEl(s);let t=50;t+=(el.counts['화']-el.counts['수'])*8+(el.counts['목']-el.counts['금'])*4;if(hDohwa(s))t+=12;if(hHong(s))t+=10;if(hHam(s))t+=8;if(hMok(s))t+=6;return Math.max(10,Math.min(100,t));}
 
-const EL_DATA={목:{emoji:'🌳',name:'교감·성장',color:'#E8F5E9',accent:'#2E7D32',high:'감정이 깊게 통해야 몸도 열리는 타입이에요. 대화와 교감이 가장 강력한 전희가 돼요.',mid:'교감 능력이 균형 잡힌 편이에요. 상대에 따라 감성적으로도, 본능적으로도 잘 맞춰갈 수 있어요.',low:'감정보다 행동이 먼저인 편. 분위기보다 직접적인 자극에 더 잘 반응해요.'},화:{emoji:'🔥',name:'정열·폭발력',color:'#FFEBEE',accent:'#C62828',high:'한번 불붙으면 멈출 수 없는 즉흥적 열정! 강렬하고 기억에 남는 순간을 만들어요.',mid:'평소엔 차분하지만, 스위치가 켜지면 완전 달라지는 잠재력이 있어요.',low:'급하게 불타기보다 천천히 온도를 올리는 스타일. 지속적인 관계에서 더 빛나요.'},토:{emoji:'⛰️',name:'지구력·안정감',color:'#FFF8E1',accent:'#F57F17',high:'시작하면 끝까지 가는 마라토너! 꾸준하고 안정적인 에너지가 매력이에요.',mid:'컨디션 관리만 잘하면 훨씬 좋은 모습을 보여줄 수 있어요.',low:'체력보다 감각과 기술로 승부하는 타입. 짧고 강렬한 걸 선호할 수 있어요.'},금:{emoji:'💎',name:'매력·감각',color:'#F3E5F5',accent:'#6A1B9A',high:'세련된 분위기와 감각적 터치에 강한 타입. 까다롭지만 한번 빠지면 깊어요.',mid:'외적 매력과 내적 깊이가 균형을 이루는 편이에요.',low:'꾸밈없는 솔직한 관계를 선호해요. 겉보다 속이 중요한 타입.'},수:{emoji:'💧',name:'호기심·유연성',color:'#E3F2FD',accent:'#1565C0',high:'새로운 시도를 즐기는 탐험가! 다양한 경험에 열려 있고, 리드도 팔로우도 잘해요.',mid:'적당한 모험심. 익숙한 것과 새로운 것의 밸런스를 잘 맞춰요.',low:'검증된 방식을 선호하는 안정 추구형. 갑작스러운 변화보다 익숙함이 편해요.'}};
+const EL_DATA={목:{emoji:'🌳',name:'교감·성장',color:'el-bg-wood',accent:'el-c-wood',high:'감정이 깊게 통해야 몸도 열리는 타입',mid:'감성적으로도 본능적으로도 잘 맞춰가는 편',low:'감정보다 행동이 먼저인 스타일'},화:{emoji:'🔥',name:'정열·폭발력',color:'el-bg-fire',accent:'el-c-fire',high:'한번 불붙으면 멈출 수 없는 열정',mid:'스위치가 켜지면 완전 달라지는 잠재력',low:'천천히 온도를 올리는 스타일'},토:{emoji:'⛰️',name:'지구력·안정감',color:'el-bg-earth',accent:'el-c-earth',high:'시작하면 끝까지 가는 마라토너',mid:'컨디션 관리로 최상의 모습 가능',low:'짧고 강렬한 경험을 선호'},금:{emoji:'💎',name:'매력·감각',color:'el-bg-metal',accent:'el-c-metal',high:'세련된 감각적 터치에 강한 타입',mid:'외적 매력과 내적 깊이의 균형',low:'꾸밈없는 솔직한 관계 선호'},수:{emoji:'💧',name:'호기심·유연성',color:'el-bg-water',accent:'el-c-water',high:'새로운 시도를 즐기는 탐험가',mid:'적당한 모험심과 안정의 밸런스',low:'검증된 방식을 선호하는 안정형'}};
 const PROF={0:{emoji:'🌳',title:'거목형 리더',desc:'듬직하고 주도적인 에너지. 침대에서도 리드하며 상대를 감싸주는 타입이에요. 느긋하게 시작하지만 한번 불붙으면 끝까지 가요.'},1:{emoji:'🌿',title:'화초형 감성파',desc:'터치 하나, 말 한마디에 온도가 확 달라지는 감성 연인이에요. 상대의 반응을 읽는 능력이 탁월해서 맞춤형 교감에 진심인 타입.'},2:{emoji:'🔥',title:'태양형 열정가',desc:'끌리면 직진! 표현이 직접적이고, 에너지가 폭발적이에요. 상대가 놀랄 수 있지만 그만큼 잊을 수 없는 순간을 선사해요.'},3:{emoji:'🕯️',title:'촛불형 낭만파',desc:'분위기와 무드가 전부인 로맨티스트. 촛불, 음악, 향기를 활용하고 전희에 진심이에요. 천천히 무르익는 과정을 즐기는 타입.'},4:{emoji:'⛰️',title:'대지형 안정파',desc:'묵직한 안정감의 소유자. 화려하진 않지만 꾸준하고 믿음직해요. 체력과 지구력이 뛰어나서 상대가 지칠 때까지 이끌어주는 든든한 타입.'},5:{emoji:'🌾',title:'들판형 포용파',desc:'포용력이 크고 다양한 시도에 열려 있어요. 거부감 없이 상대를 받아주고, 함께하면 편안해지는 특별한 능력이 있는 타입.'},6:{emoji:'⚔️',title:'강철형 정복자',desc:'강한 자신감과 카리스마로 주도권을 잡는 타입. 상대를 압도하지만 그 안에 의외의 다정함이 숨어 있어요.'},7:{emoji:'💎',title:'보석형 완벽파',desc:'세련되고 까다롭지만 한번 열리면 놀라울 정도로 깊게 빠져요. 디테일에 강하고 감각적 경험을 중시하는 타입.'},8:{emoji:'🌊',title:'대해형 탐험가',desc:'호기심과 모험심이 넘쳐요. 새로운 경험, 새로운 방법, 새로운 장소를 좋아하고 틀에 박힌 건 질색! 자유로운 에너지가 매력이에요.'},9:{emoji:'💧',title:'이슬형 교감파',desc:'섬세하고 깊은 교감의 달인. 지적인 대화와 감정적 깊이가 가장 강력한 전희가 되는 사람이에요.'}};
-const BEST_M={0:[5,9],1:[4,8],2:[7,1],3:[6,0],4:[1,9],5:[0,8],6:[3,1],7:[2,0],8:[5,1],9:[4,0]};
-function getMonths(saju){const dE=HS_EL[saju.day.s],mE=['토','토','목','목','토','화','화','토','금','금','토','수'],mN=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];const R={목:{목:['자기 충전기',60,'cold'],화:['표현 폭발기',88,'hot'],토:['정복 욕구기',72,'warm'],금:['긴장·설렘기',65,'cool'],수:['에너지 비축기',55,'cold']},화:{목:['교감 상승기',58,'cool'],화:['최고 절정기',92,'hot'],토:['여유 쾌락기',70,'warm'],금:['자극·밀당기',62,'cool'],수:['에너지 주의보',42,'cold']},토:{목:['변화 시도기',60,'cool'],화:['자신감 UP기',78,'warm'],토:['안정 만족기',65,'warm'],금:['감각 예민기',75,'warm'],수:['욕구 상승기',82,'hot']},금:{목:['정복 본능기',80,'hot'],화:['충돌·화합기',68,'warm'],토:['재충전기',55,'cool'],금:['매력 최고기',72,'warm'],수:['적극 표현기',85,'hot']},수:{목:['대담 해방기',83,'hot'],화:['위험한 끌림기',58,'cool'],토:['절제·정돈기',45,'cold'],금:['감각 충전기',70,'warm'],수:['에너지 만충기',90,'hot']}};return mN.map((n,i)=>{const r=R[dE]?.[mE[i]]||['보통',50,'cool'];return{name:n,keyword:r[0],score:r[1],cls:r[2]};});}
 
 function compat(sA,sB){
-  let sc=50;const f=[];const pA=PROF[sA.day.s],pB=PROF[sB.day.s];
+  let sc=50;const f=[];
   const dhp=[[0,5],[1,6],[2,7],[3,8],[4,9]];const isH=dhp.some(([a,b])=>(sA.day.s===a&&sB.day.s===b)||(sA.day.s===b&&sB.day.s===a));
-  if(isH){sc+=15;f.push({name:'첫 만남의 끌림',emoji:'💫',grade:'최고',bg:'#FFF0F5',gc:'#D63384',desc:`두 사람은 만나면 자석처럼 끌리는 조합이에요. 대화를 나누다 보면 자연스럽게 가까워지고, 스킨십도 어색하지 않게 흘러가요. "왜 이렇게 편하지?" 싶은 느낌, 그게 두 사람의 에너지 궁합이에요.`});}
-  else f.push({name:'첫 만남의 끌림',emoji:'💫',grade:'보통',bg:'#F8F8F5',gc:'#888',desc:`첫 만남에서 번개가 치는 타입은 아니지만, 알아갈수록 깊어지는 관계예요. 처음에 서로를 이해하는 시간이 필요하고, 그 과정이 오히려 관계를 단단하게 만들어줘요.`});
+  if(isH){sc+=15;f.push({name:'첫 만남의 끌림',emoji:'💫',grade:'최고',desc:'만나면 자석처럼 끌리는 조합. 대화만으로 자연스럽게 가까워져요.'});}
+  else f.push({name:'첫 만남의 끌림',emoji:'💫',grade:'보통',desc:'알아갈수록 깊어지는 관계. 시간이 단단함을 만들어요.'});
   const yh=[[0,1],[2,11],[3,10],[4,9],[5,8],[6,7]];const isY=yh.some(([a,b])=>(sA.day.b===a&&sB.day.b===b)||(sA.day.b===b&&sB.day.b===a));
-  if(isY){sc+=12;f.push({name:'몸의 호흡',emoji:'💞',grade:'최고',bg:'#FFF0F0',gc:'#DC2626',desc:`침대 위에서 호흡이 착착 맞는 조합! 한쪽이 빨라지면 다른 쪽도 자연스럽게 따라가고, 서로의 리듬을 굳이 말하지 않아도 느낄 수 있어요. 함께할수록 더 잘 맞게 돼요.`});}
-  else f.push({name:'몸의 호흡',emoji:'💞',grade:'노력형',bg:'#F8F8F5',gc:'#888',desc:`처음엔 서로 속도가 좀 다를 수 있어요. 하지만 "이렇게 해줘", "그거 좋았어" 같은 작은 소통이 쌓이면 어느새 찰떡 호흡이 돼요. 서로 맞춰가는 재미가 있는 조합!`});
+  if(isY){sc+=12;f.push({name:'몸의 호흡',emoji:'💞',grade:'최고',desc:'호흡이 착착 맞아요. 서로의 리듬을 말 없이도 느끼는 조합.'});}
+  else f.push({name:'몸의 호흡',emoji:'💞',grade:'노력형',desc:'작은 소통이 쌓이면 찰떡 호흡이 돼요. 맞춰가는 재미가 있어요.'});
   const cp=[[0,6],[1,7],[2,8],[3,9],[4,10],[5,11]];const isC=cp.some(([a,b])=>(sA.day.b===a&&sB.day.b===b)||(sA.day.b===b&&sB.day.b===a));
-  if(isC){sc-=8;f.push({name:'밀당 에너지',emoji:'⚡',grade:'강렬',bg:'#FFFBEB',gc:'#D97706',desc:`서로 부딪힐 수 있지만, 그만큼 끌림도 강렬한 관계예요. 싸우고 화해하는 과정이 오히려 관계를 뜨겁게 만들어요. 갈등 후에 서로를 꼭 안아주는 게 이 조합의 비밀이에요.`});}
-  else f.push({name:'밀당 에너지',emoji:'⚡',grade:'안정',bg:'#F0FFF4',gc:'#16A34A',desc:`큰 충돌 없이 편안하게 함께할 수 있는 조합이에요. 격한 밀당보다는 부드러운 밀당이 어울려요. 가끔 장난스러운 밀당을 시도해보면 좋은 자극이 될 거예요.`});
+  if(isC){sc-=8;f.push({name:'밀당 에너지',emoji:'⚡',grade:'강렬',desc:'부딪히지만 끌림도 강렬해요. 갈등 후 화해가 관계를 뜨겁게 해요.'});}
+  else f.push({name:'밀당 에너지',emoji:'⚡',grade:'안정',desc:'편안한 조합. 가끔 장난스러운 밀당이 좋은 자극이 돼요.'});
   const eA=HS_EL[sA.day.s],eB=HS_EL[sB.day.s];const ss=[['목','화'],['화','토'],['토','금'],['금','수'],['수','목']];const isS=ss.some(([a,b])=>(eA===a&&eB===b)||(eA===b&&eB===a));
-  if(isS){sc+=10;f.push({name:'에너지 순환',emoji:'🌱',grade:'좋음',bg:'#F0FFF4',gc:'#16A34A',desc:`한쪽이 지치면 다른 쪽이 자연스럽게 채워주는 관계예요. 함께할수록 서로의 에너지가 올라가고, 끝난 뒤에도 둘 다 기분이 좋아지는 선순환이 일어나요.`});}
-  else f.push({name:'에너지 순환',emoji:'🌱',grade:'보통',bg:'#F8F8F5',gc:'#888',desc:`서로 다른 에너지를 가지고 있어요. 차이를 "틀린 것"이 아니라 "다른 것"으로 받아들이면, 오히려 서로에게 새로운 경험을 선물해줄 수 있는 조합이에요.`});
+  if(isS){sc+=10;f.push({name:'에너지 순환',emoji:'🌱',grade:'좋음',desc:'한쪽이 지치면 다른 쪽이 채워주는 선순환 관계.'});}
+  else f.push({name:'에너지 순환',emoji:'🌱',grade:'보통',desc:'다른 에너지가 만나 새로운 경험을 선물해주는 조합.'});
   const bdA=hDohwa(sA),bdB=hDohwa(sB);
-  if(bdA&&bdB){sc+=8;f.push({name:'성적 끌림',emoji:'🌸',grade:'폭발',bg:'#FFF0F5',gc:'#D63384',desc:`둘 다 타고난 매력의 에너지를 가지고 있어요! 서로를 보면 이성적 판단이 잠시 멈추는 강렬한 끌림. 주변 사람들도 둘의 케미를 느낄 수 있을 정도예요.`});}
-  else if(bdA||bdB)f.push({name:'성적 끌림',emoji:'🌸',grade:'좋음',bg:'#FFF8FC',gc:'#D63384',desc:`한쪽이 강한 매력 에너지를 가지고 있어서 자연스럽게 관계를 이끌어요. 매력 에너지가 없는 쪽이 빠져드는 구조인데, 그게 오히려 역할 분담이 명확해서 좋아요.`});
-  else f.push({name:'성적 끌림',emoji:'🌸',grade:'잔잔',bg:'#F8F8F5',gc:'#888',desc:`강렬한 끌림보다는 서서히 깊어지는 관계예요. 처음엔 "그냥 편한 사이"였다가 어느 순간 "이 사람 없으면 안 돼"가 되는 타입. 분위기를 의식적으로 만들어보세요.`});
+  if(bdA&&bdB){sc+=8;f.push({name:'성적 끌림',emoji:'🌸',grade:'폭발',desc:'둘 다 타고난 매력 에너지! 이성적 판단이 멈추는 강렬한 끌림.'});}
+  else if(bdA||bdB)f.push({name:'성적 끌림',emoji:'🌸',grade:'좋음',desc:'한쪽의 강한 매력이 관계를 자연스럽게 이끌어요.'});
+  else f.push({name:'성적 끌림',emoji:'🌸',grade:'잔잔',desc:'서서히 깊어지는 관계. 분위기를 의식적으로 만들어보세요.'});
   sc=Math.max(20,Math.min(99,sc));return{score:sc,factors:f};
 }
-function getBed(sA,sB){const items=[];const ls={0:8,2:7,4:6,6:9,8:5,1:3,3:4,5:5,7:6,9:2};if(Math.abs(ls[sA.day.s]-ls[sB.day.s])>=4){const l=ls[sA.day.s]>ls[sB.day.s]?'첫 번째 사람':'두 번째 사람';items.push({emoji:'👑',title:'리드 밸런스',bg:'#FFF8E1',text:`${l}이 자연스럽게 리드하는 조합이에요. 주도하는 쪽도 가끔은 맡기고 쉬어보세요. 역할을 바꾸면 새로운 재미가 생겨요!`});}else items.push({emoji:'🤝',title:'리드 밸런스',bg:'#F0FFF4',text:'비슷한 에너지의 두 사람! 번갈아 리드하는 게 가장 좋아요. "오늘은 내가 할게"라는 한마디가 관계를 더 재밌게 만들어줘요.'});
+function getBed(sA,sB){const items=[];const ls={0:8,2:7,4:6,6:9,8:5,1:3,3:4,5:5,7:6,9:2};if(Math.abs(ls[sA.day.s]-ls[sB.day.s])>=4){const l=ls[sA.day.s]>ls[sB.day.s]?'첫 번째':'두 번째';items.push({emoji:'👑',title:'리드 밸런스',text:`${l}가 자연스럽게 리드. 가끔 역할을 바꾸면 새로운 재미!`});}else items.push({emoji:'🤝',title:'리드 밸런스',text:'비슷한 에너지! 번갈아 리드하는 게 베스트.'});
   const tA=calcTemp(sA),tB=calcTemp(sB),td=Math.abs(tA-tB);
-  if(td>25)items.push({emoji:'🌡️',title:'온도 차이',bg:'#FFF0F0',text:`온도차가 좀 있는 편이에요. 뜨거운 쪽이 조금 천천히, 차분한 쪽이 조금 적극적으로 다가가면 딱 좋은 온도를 찾을 수 있어요. 전희를 충분히 즐겨보세요.`});
-  else if(td>10)items.push({emoji:'🌡️',title:'온도 차이',bg:'#FFFBEB',text:`살짝의 온도차가 오히려 좋은 밀당을 만들어요. 한쪽이 불을 지피면 다른 쪽이 서서히 타오르는 리듬이 잘 맞아요.`});
-  else items.push({emoji:'🌡️',title:'온도 차이',bg:'#F0FFF4',text:`거의 같은 온도! 같은 타이밍에 달아오르고 같은 강도로 즐길 수 있는 이상적인 조합이에요.`});
+  if(td>25)items.push({emoji:'🌡️',title:'온도 차이',text:'온도차 있는 편. 전희를 충분히 즐기며 맞춰가세요.'});
+  else if(td>10)items.push({emoji:'🌡️',title:'온도 차이',text:'살짝의 온도차가 오히려 좋은 밀당을 만들어요.'});
+  else items.push({emoji:'🌡️',title:'온도 차이',text:'거의 같은 온도! 같은 타이밍에 달아오르는 이상적 조합.'});
   const eA=HS_EL[sA.day.s],eB=HS_EL[sB.day.s],eN={목:'나무',화:'불',토:'땅',금:'쇠',수:'물'};
-  const ssMap={'목화':'서로의 불꽃을 키워주는 관계. 함께할수록 뜨거워져요!','화토':'열정이 안정감으로 이어지는 관계. 불같은 밤 뒤에 따뜻한 아침이 와요.','토금':'편안하면서도 감각적인 관계. 안정감 위에서 세련된 감각이 꽃펴요.','금수':'겉은 쿨하지만 둘만 있으면 놀랍도록 깊은 교감이 가능해요.','수목':'서로에게 자양분이 되는 관계. 함께할수록 성장해요.'};
-  items.push({emoji:'☯️',title:'오행 케미',bg:'#F5F0FF',text:`${eN[eA]} × ${eN[eB]} — ${ssMap[eA+eB]||ssMap[eB+eA]||'서로 다른 에너지가 만나 새로운 경험을 만들어요. 차이를 즐겨보세요!'}`});
+  const ssMap={'목화':'함께할수록 뜨거워지는 관계','화토':'열정이 안정감으로 이어져요','토금':'안정감 위 세련된 감각','금수':'쿨하지만 둘만 있으면 깊은 교감','수목':'함께할수록 성장하는 관계'};
+  items.push({emoji:'☯️',title:'오행 케미',text:`${eN[eA]}×${eN[eB]} — ${ssMap[eA+eB]||ssMap[eB+eA]||'다른 에너지가 만나 새로운 경험을 만들어요'}`});
   return items;
 }
 function getTips(sA,sB){const tips=[];const dsA=sA.day.s,dsB=sB.day.s,eA=HS_EL[dsA],eB=HS_EL[dsB];
-  if(([4,7,9].includes(dsA)&&[2,6,8].includes(dsB))||([4,7,9].includes(dsB)&&[2,6,8].includes(dsA)))tips.push({label:'💬 소통 팁',text:'한 분은 말로, 한 분은 행동으로 표현하는 조합이에요. "좋아?" "이거 해볼까?" 같은 짧은 질문을 자주 해주세요. 작은 확인이 큰 신뢰가 돼요.'});
-  else tips.push({label:'💬 소통 팁',text:'"그때 그거 너무 좋았어"라고 말해주세요. 구체적인 칭찬이 다음을 더 좋게 만들어요. 원하는 게 있으면 가볍게 제안해보는 것도 좋아요.'});
-  if([2,3].includes(dsA)||[2,3].includes(dsB))tips.push({label:'🕯️ 분위기 팁',text:'즉흥적인 순간에 불꽃이 튀는 조합이에요. 갑자기 손을 잡거나, 예상 못한 타이밍의 스킨십을 시도해보세요. 계획보다 즉흥이 더 잘 맞아요.'});
-  else if([8,9].includes(dsA)||[8,9].includes(dsB))tips.push({label:'🕯️ 분위기 팁',text:'새로운 환경에서 에너지가 올라가는 조합! 여행지, 호텔, 평소와 다른 시간대 등 변화를 주면 숨겨진 에너지가 깨어나요.'});
-  else tips.push({label:'🕯️ 분위기 팁',text:'조명을 살짝 어둡게 하고, 좋아하는 음악을 틀어보세요. 서로의 오감을 자극하는 전희가 둘의 온도를 맞추는 데 큰 도움이 돼요.'});
+  if(([4,7,9].includes(dsA)&&[2,6,8].includes(dsB))||([4,7,9].includes(dsB)&&[2,6,8].includes(dsA)))tips.push({label:'💬 소통',text:'"좋아?" "이거 해볼까?" 같은 짧은 질문이 큰 신뢰가 돼요.'});
+  else tips.push({label:'💬 소통',text:'"그때 그거 너무 좋았어" — 구체적 칭찬이 다음을 더 좋게 만들어요.'});
+  if([2,3].includes(dsA)||[2,3].includes(dsB))tips.push({label:'🕯️ 분위기',text:'즉흥적 스킨십이 잘 맞아요. 계획보다 즉흥이 더 좋은 조합.'});
+  else if([8,9].includes(dsA)||[8,9].includes(dsB))tips.push({label:'🕯️ 분위기',text:'여행지, 호텔 등 변화를 주면 숨겨진 에너지가 깨어나요.'});
+  else tips.push({label:'🕯️ 분위기',text:'조명을 어둡게, 좋아하는 음악으로 오감을 자극해보세요.'});
   const sgP=[['목','금'],['화','수'],['토','목'],['금','화'],['수','토']];
-  if(sgP.some(([a,b])=>(eA===a&&eB===b)||(eA===b&&eB===a)))tips.push({label:'⚠️ 이것만 주의',text:'에너지가 부딪힐 수 있어요. 한쪽이 너무 세게 밀면 상대가 움츠러들 수 있으니, "괜찮아?" 한마디가 중요해요. 갈등 후에는 꼭 스킨십으로 마무리해주세요.'});
-  else tips.push({label:'💡 더 좋아지려면',text:'편안한 관계일수록 루틴에 빠지기 쉬워요. 한 달에 한 번은 평소 안 하던 걸 해보세요. 작은 변화가 관계를 계속 신선하게 유지하는 비결이에요.'});
+  if(sgP.some(([a,b])=>(eA===a&&eB===b)||(eA===b&&eB===a)))tips.push({label:'⚠️ 주의',text:'"괜찮아?" 한마디가 중요해요. 갈등 후엔 꼭 스킨십으로 마무리.'});
+  else tips.push({label:'💡 팁',text:'한 달에 한 번 평소 안 하던 걸 해보세요. 작은 변화가 비결!'});
   return tips;
 }
 
-// ═══════════════════════════════════════════
-// UI — 상태 관리 & 마지막 결과 캐싱
-// ═══════════════════════════════════════════
+function gradeFromScore(s){
+  if(s>=90) return {label:'운명의 상대',stars:'★★★★★',msg:'최상의 궁합. 함께할수록 서로의 빛을 끌어내요.'};
+  if(s>=80) return {label:'최고의 케미',stars:'★★★★★',msg:'둘만의 특별한 에너지가 흐르는 조합.'};
+  if(s>=70) return {label:'뜨거운 궁합',stars:'★★★★☆',msg:'강하게 끌리는 관계. 시간이 갈수록 더 깊어져요.'};
+  if(s>=60) return {label:'좋은 궁합',stars:'★★★★☆',msg:'편안하고 안정적. 알아갈수록 잘 맞아요.'};
+  if(s>=50) return {label:'보통 궁합',stars:'★★★☆☆',msg:'소통과 노력이 관계를 발전시켜요.'};
+  if(s>=40) return {label:'노력형 궁합',stars:'★★★☆☆',msg:'서로를 이해하려는 마음이 키포인트.'};
+  return {label:'도전적 궁합',stars:'★★☆☆☆',msg:'진심으로 대하면 의외의 케미가 생겨요.'};
+}
+
+// ═══ UI ═══
 const state={genderMy:null,genderA:null,genderB:null,calMy:'solar',calA:'solar',calB:'solar'};
-let lastMySaju=null, lastCpData=null;
 let toastT=null;
 function showToast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');if(toastT)clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2500);}
 function pickGender(t,g,btn){const w='gw-'+(t==='my'?'my':t);document.querySelectorAll('#'+w+' .gender-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');state['gender'+(t==='my'?'My':t.toUpperCase())]=g;}
 function pickCal(t,c,btn){const w='cw-'+(t==='my'?'my':t);document.querySelectorAll('#'+w+' .cal-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');state['cal'+(t==='my'?'My':t.toUpperCase())]=c;}
 function switchTab(tab){document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(tab==='my'&&i===0)||(tab==='cp'&&i===1)));document.getElementById('panel-my').classList.toggle('active',tab==='my');document.getElementById('panel-cp').classList.toggle('active',tab==='cp');document.getElementById('result').innerHTML='';document.getElementById('hero').style.display='';if(tab==='cp'&&state.genderMy){state.genderA=state.genderMy;state.calA=state.calMy;document.querySelectorAll('#gw-a .gender-btn').forEach(b=>{b.classList.remove('active');if(b.dataset.g===state.genderA)b.classList.add('active');});document.querySelectorAll('#cw-a .cal-btn').forEach(b=>{b.classList.remove('active');if(b.dataset.c===state.calA)b.classList.add('active');});['y','m','d','h'].forEach(f=>document.getElementById('a-'+f).value=document.getElementById('my-'+f).value);refreshDays('a');}}
-
-// ═══ 1번 요청: 월에 따른 일수 동적 계산 ═══
-function daysInMonth(y,m){
-  if(!y||!m) return 31;
-  return new Date(y,m,0).getDate();
-}
-function refreshDays(prefix){
-  const ySel=document.getElementById(prefix+'-y'),
-        mSel=document.getElementById(prefix+'-m'),
-        dSel=document.getElementById(prefix+'-d');
-  const y=parseInt(ySel.value), m=parseInt(mSel.value);
-  const prev=parseInt(dSel.value);
-  const max=daysInMonth(y||2000, m||1);
-  let html='<option value="">일</option>';
-  for(let i=1;i<=max;i++){
-    html+=`<option value="${i}"${prev===i?' selected':''}>${i}일</option>`;
-  }
-  dSel.innerHTML=html;
-  // 기존 값이 범위 밖이면 초기화
-  if(prev && prev>max) dSel.value='';
-}
-
-// ═══ 2번 요청: 만 20~50세로 연도 제한 ═══
-function initSelects(){
-  const currentYear=new Date().getFullYear();
-  const minYear=currentYear-50; // 만 50세
-  const maxYear=currentYear-20; // 만 20세
-  ['my','a','b'].forEach(t=>{
-    const y=document.getElementById(t+'-y'),
-          m=document.getElementById(t+'-m'),
-          d=document.getElementById(t+'-d'),
-          h=document.getElementById(t+'-h');
-    y.innerHTML='<option value="">년도</option>';
-    for(let i=maxYear;i>=minYear;i--) y.innerHTML+=`<option value="${i}">${i}년</option>`;
-    m.innerHTML='<option value="">월</option>';
-    for(let i=1;i<=12;i++) m.innerHTML+=`<option value="${i}">${i}월</option>`;
-    d.innerHTML='<option value="">일</option>';
-    for(let i=1;i<=31;i++) d.innerHTML+=`<option value="${i}">${i}일</option>`;
-    h.innerHTML='<option value="">시간 선택</option><option value="unknown">🤷 모르겠어요</option>';
-    SIJIN.forEach((s,i)=>h.innerHTML+=`<option value="${i}">${s.name} · ${s.range}</option>`);
-  });
-}
-
+function daysInMonth(y,m){if(!y||!m)return 31;return new Date(y,m,0).getDate();}
+function refreshDays(prefix){const ySel=document.getElementById(prefix+'-y'),mSel=document.getElementById(prefix+'-m'),dSel=document.getElementById(prefix+'-d');const y=parseInt(ySel.value),m=parseInt(mSel.value),prev=parseInt(dSel.value),max=daysInMonth(y||2000,m||1);let html='<option value="">일</option>';for(let i=1;i<=max;i++)html+=`<option value="${i}"${prev===i?' selected':''}>${i}일</option>`;dSel.innerHTML=html;if(prev&&prev>max)dSel.value='';}
+function initSelects(){const cy=new Date().getFullYear(),minY=cy-50,maxY=cy-20;['my','a','b'].forEach(t=>{const y=document.getElementById(t+'-y'),m=document.getElementById(t+'-m'),d=document.getElementById(t+'-d'),h=document.getElementById(t+'-h');y.innerHTML='<option value="">년도</option>';for(let i=maxY;i>=minY;i--)y.innerHTML+=`<option value="${i}">${i}년</option>`;m.innerHTML='<option value="">월</option>';for(let i=1;i<=12;i++)m.innerHTML+=`<option value="${i}">${i}월</option>`;d.innerHTML='<option value="">일</option>';for(let i=1;i<=31;i++)d.innerHTML+=`<option value="${i}">${i}일</option>`;h.innerHTML='<option value="">시간 선택</option><option value="unknown">🤷 모르겠어요</option>';SIJIN.forEach((s,i)=>h.innerHTML+=`<option value="${i}">${s.name} · ${s.range}</option>`);});}
 function getVals(p){const y=parseInt(document.getElementById(p+'-y').value),m=parseInt(document.getElementById(p+'-m').value),d=parseInt(document.getElementById(p+'-d').value),hv=document.getElementById(p+'-h').value;if(isNaN(y)||isNaN(m)||isNaN(d)||!hv)return null;if(hv==='unknown')return{y,m,d,ch:12,cm:0,ut:true};const h=parseInt(hv);let ch,cm;if(h===0){ch=0;cm=30;}else{ch=SIJIN[h].hS;cm=SIJIN[h].mS+30;if(cm>=60){ch++;cm-=60;}}return{y,m,d,ch,cm,ut:false};}
 function validate(p,gk){const gl={genderMy:'성별',genderA:'첫 번째 사람의 성별',genderB:'두 번째 사람의 성별'};if(!state[gk]){showToast('🙋 '+gl[gk]+'을 선택해주세요');return false;}if(!document.getElementById(p+'-y').value){showToast('📅 태어난 년도를 선택해주세요');return false;}if(!document.getElementById(p+'-m').value){showToast('📅 태어난 월을 선택해주세요');return false;}if(!document.getElementById(p+'-d').value){showToast('📅 태어난 일을 선택해주세요');return false;}if(!document.getElementById(p+'-h').value){showToast('🕐 태어난 시간을 선택해주세요');return false;}return true;}
 function showLoad(){const el=document.getElementById('loading');el.classList.add('show');const s=document.getElementById('loading-steps');s.innerHTML='';['음양력 확인 중...','서머타임 보정 중...','경도 보정 중...','절기 계산 중...','사주 분석 중...','에너지 해석 중...'].forEach(l=>s.innerHTML+=`<div class="loading-step"><span class="check"></span>${l}</div>`);let i=0;const iv=setInterval(()=>{const se=s.querySelectorAll('.loading-step');if(i<se.length){se[i].classList.add('done');se[i].querySelector('.check').textContent='✓';i++;}if(i>=se.length)clearInterval(iv);},450);return{el,iv};}
@@ -392,427 +325,217 @@ function hideLoad(l){clearInterval(l.iv);l.el.classList.remove('show');}
 function doMyAnalysis(){if(!validate('my','genderMy'))return;const v=getVals('my');if(!v)return;const ld=showLoad();document.getElementById('hero').style.display='none';setTimeout(()=>{const saju=calcSaju(v.y,v.m,v.d,v.ch,v.cm,state.genderMy,state.calMy,v.ut);hideLoad(ld);renderMy(saju);},3200);}
 function doCpAnalysis(){if(!validate('a','genderA'))return;if(!validate('b','genderB'))return;const va=getVals('a'),vb=getVals('b');if(!va||!vb)return;const ld=showLoad();document.getElementById('hero').style.display='none';setTimeout(()=>{const sA=calcSaju(va.y,va.m,va.d,va.ch,va.cm,state.genderA,state.calA,va.ut);const sB=calcSaju(vb.y,vb.m,vb.d,vb.ch,vb.cm,state.genderB,state.calB,vb.ut);hideLoad(ld);renderCp(sA,sB);},3400);}
 
-// ═══════════════════════════════════════════
-// 3번 요청: 궁합 점수 카드 - 새로운 화려한 UI
-// ═══════════════════════════════════════════
-function gradeFromScore(s){
-  if(s>=90) return {label:'운명의 상대',stars:'★★★★★',msg:'사주에서 찾아보기 힘든 최상의 궁합이에요. 함께할수록 서로의 빛을 끌어내는 관계.'};
-  if(s>=80) return {label:'최고의 케미',stars:'★★★★★',msg:'둘만의 특별한 에너지가 흐르는 조합. 침대 위에서든 밖에서든 서로를 완벽하게 이해해요.'};
-  if(s>=70) return {label:'뜨거운 궁합',stars:'★★★★☆',msg:'서로에게 강하게 끌리는 관계. 시간이 지날수록 더 깊어지는 타입이에요.'};
-  if(s>=60) return {label:'좋은 궁합',stars:'★★★★☆',msg:'편안하고 안정적인 관계. 서로를 알아갈수록 잘 맞는 부분을 발견하게 돼요.'};
-  if(s>=50) return {label:'보통 궁합',stars:'★★★☆☆',msg:'소통과 노력이 필요한 관계. 서로의 차이를 인정하면 좋은 관계로 발전할 수 있어요.'};
-  if(s>=40) return {label:'노력형 궁합',stars:'★★★☆☆',msg:'맞춰가야 할 부분이 있어요. 서로를 이해하려는 마음이 관계의 키포인트.'};
-  return {label:'도전적 궁합',stars:'★★☆☆☆',msg:'쉽지 않은 조합이지만, 서로를 진심으로 대하면 의외의 케미가 생길 수 있어요.'};
-}
-
-function renderStarsHTML(){
-  // 랜덤 위치에 별 배치
-  let html='';
-  for(let i=0;i<24;i++){
-    const x=Math.random()*100, y=Math.random()*100;
-    const size=0.8+Math.random()*1.5;
-    const delay=Math.random()*3;
-    const dur=2+Math.random()*2;
-    html+=`<div class="cp-star" style="left:${x}%;top:${y}%;width:${size}px;height:${size}px;animation-delay:${delay}s;animation-duration:${dur}s"></div>`;
-  }
-  // 반짝이
-  const sparkles=['✨','💫','⭐'];
-  for(let i=0;i<6;i++){
-    const x=5+Math.random()*90, y=5+Math.random()*90;
-    const del=Math.random()*4;
-    html+=`<span class="cp-sparkle" style="left:${x}%;top:${y}%;animation-delay:${del}s">${sparkles[i%3]}</span>`;
-  }
-  return html;
-}
+// ═══ 색상 매핑 ═══
+const meterColors={passion:'#FF6B6B',stamina:'#F59E0B',expression:'#A78BFA',curiosity:'#60A5FA',charm:'#2EC4B6'};
 
 function renderMy(saju, isShared){
-  lastMySaju=saju;
-  const els=aEl(saju),sc=calcScores(saju),prof=PROF[saju.day.s],months=getMonths(saju),best=BEST_M[saju.day.s];
-  const mDef=[{name:'정열도 🔥',key:'passion',color:'var(--coral)',h:'불꽃 에너지! 끌리면 직진, 한번 시작하면 멈추기 어려운 타입이에요.',m:'스위치만 켜지면 뜨겁게 달라질 잠재력이 충분해요.',l:'급하게 타오르기보다 천천히 깊게 가는 스타일이에요.'},{name:'지구력 💪',key:'stamina',color:'var(--gold)',h:'마라토너 타입! 체력과 꾸준함이 최고 무기예요.',m:'컨디션만 좋으면 오래 갈 수 있어요. 관리가 곧 실력!',l:'양보다 질! 짧지만 강렬한 경험에 집중하는 게 맞아요.'},{name:'표현력 💋',key:'expression',color:'var(--purple)',h:'원하는 걸 확실히 표현하고 상대를 리드하는 능력이 탁월해요!',m:'편한 상대 앞에서 진짜 모습이 나오는 타입이에요.',l:'말보다 터치와 눈빛으로 소통하는 스타일이에요.'},{name:'호기심 🧭',key:'curiosity',color:'var(--blue)',h:'새로운 시도에 주저함이 없는 탐험가! 다양한 경험이 에너지원이에요.',m:'적당한 모험심. 검증된 새로움을 즐기는 편이에요.',l:'익숙한 패턴에서 편안함을 느끼는 안정 추구형이에요.'},{name:'매력도 ✨',key:'charm',color:'var(--mint)',h:'존재만으로 끌리게 만드는 천생 매력 보유자!',m:'알면 알수록 빠져드는 반전 매력이에요.',l:'가식 없는 솔직함이 가장 큰 무기예요.'}];
+  const els=aEl(saju),sc=calcScores(saju),prof=PROF[saju.day.s];
+  const mDef=[{name:'정열도 🔥',key:'passion',h:'불꽃 에너지! 멈추기 어려운 타입',m:'스위치 켜지면 뜨겁게 달라져요',l:'천천히 깊게 가는 스타일'},{name:'지구력 💪',key:'stamina',h:'마라토너! 꾸준함이 최고 무기',m:'컨디션만 좋으면 오래 갈 수 있어요',l:'양보다 질! 짧고 강렬한 집중형'},{name:'표현력 💋',key:'expression',h:'리드하는 능력이 탁월해요',m:'편한 상대 앞에서 진짜 모습이 나와요',l:'터치와 눈빛으로 소통하는 스타일'},{name:'호기심 🧭',key:'curiosity',h:'새로운 시도에 주저함 없는 탐험가',m:'검증된 새로움을 즐기는 편',l:'안정 추구형. 익숙함이 편해요'},{name:'매력도 ✨',key:'charm',h:'존재만으로 끌리게 하는 매력 보유자',m:'알면 알수록 빠져드는 반전 매력',l:'가식 없는 솔직함이 최고 무기'}];
 
-  // 공유 링크 생성 (입력값 기반)
-  let payload;
-  if(isShared){
-    // 공유링크 접근이면 현재 해시의 데이터 그대로 유지
-    const h=location.hash;
-    if(h&&h.startsWith('#r=')){
-      const json=b64urlDecode(h.slice(3));
-      try{payload=JSON.parse(json);}catch(e){}
-    }
-  }else{
-    payload=encodeMyInput();
-    updateHashForResult(payload);
-  }
-  if(payload) currentShareUrl=buildShareUrl(payload);
-
-  let html='';
-
-  // 1. 나의 사주 유형 (프로필 카드) — 가장 먼저
-  html+=`<div class="profile-card"><div class="profile-emoji">${prof.emoji}</div><div class="profile-title">${prof.title}</div><div class="profile-sub">${prof.emoji} ${HS_EL[saju.day.s]}의 에너지를 가진 사람</div><div class="profile-desc">${prof.desc}</div></div>`;
-
-  // 2. 시간 보정 안내 배너
-  if(!saju.ut){const c=saju.corrected;html+=`<div class="correction-info"><div class="correction-info-title">✨ 더 정확한 결과를 위해 시간 보정을 적용했어요</div><div class="correction-info-row">한국의 실제 위치에 맞춰 시간을 보정했어요${c.dst?' (서머타임 기간이라 추가 보정도 적용!)':''}.${saju.isYaja?' 밤 11시 이후 출생이라 날짜도 함께 조정했어요.':''}</div></div>`;}
-  else html+=`<div class="correction-info"><div class="correction-info-title">ℹ️ 시간 미입력 — 3주 분석</div><div class="correction-info-row">시간을 모르셔서 년·월·일 세 기둥으로 분석했어요. 시간을 알면 더 정확해져요!</div></div>`;
-
-  // 3. 나의 사주 (절기 기반 정밀 계산)
+  // 사주 기둥
   const pils=saju.hour?[['시주',saju.hour],['일주',saju.day],['월주',saju.month],['년주',saju.year]]:[['일주',saju.day],['월주',saju.month],['년주',saju.year]];
-  html+=`<div class="pillar-card"><div class="pillar-card-title">📋 나의 사주</div><div class="accuracy-badge">✓ 절기 기반 정밀 계산</div><div class="pillar-grid" style="grid-template-columns:repeat(${pils.length},1fr)">${pils.map(([l,p])=>{const sE=HS_EL[p.s],bE=EB_EL[p.b];return`<div><div class="pillar-col-label">${l}</div><div class="pillar-char">${HS_KR[p.s]}</div><div class="pillar-hanja">${HS_HJ[p.s]}</div><span class="pillar-element el-${EL_EN[sE]}">${sE}</span><div style="margin-top:8px"><div class="pillar-char">${EB_KR[p.b]}</div><div class="pillar-hanja">${EB_HJ[p.b]}</div><span class="pillar-element el-${EL_EN[bE]}">${bE}</span></div></div>`;}).join('')}</div></div>`;
 
-  // 4. 이후 — 성적 에너지 분석, 특수 에너지, 오행, 최적궁합, 월별 흐름
-  html+=`<div class="meter-card"><div class="meter-card-title">🔥 성적 에너지 분석</div>`;
-  mDef.forEach(m=>{const v=sc[m.key],desc=v>=65?m.h:v>=35?m.m:m.l;html+=`<div class="meter-item"><div class="meter-label"><span class="meter-name">${m.name}</span><span class="meter-val ${sColor(v)}">${v}점 · ${sLabel(v)}</span></div><div class="meter-bar"><div class="meter-fill" style="width:${v}%;background:${m.color}"></div></div><div class="meter-desc">${desc}</div></div>`;});
-  html+=`</div>`;
+  // 특수 에너지 뱃지
   const badges=[];
-  if(hDohwa(saju))badges.push({emoji:'🌸',name:'도화살 — 타고난 이성 매력',bg:'#FFF0F5',color:'#D63384',desc:'이성을 자연스럽게 끌어당기는 매력이 있어요. 외모, 분위기, 말투에서 "묘하게 끌려…"라는 반응을 자주 받는 타입이에요.'});
-  if(hHong(saju))badges.push({emoji:'🔥',name:'홍염살 — 강렬한 성적 에너지',bg:'#FFF0F0',color:'#DC2626',desc:'한번 빠지면 헤어나오기 힘든 중독성의 소유자! 관계에서 정열적이고 대담한 면을 보여줘요.'});
-  if(hHam(saju))badges.push({emoji:'💦',name:'함지살 — 은밀한 판타지',bg:'#F0F8FF',color:'#2563EB',desc:'겉으로는 차분해 보이지만, 속으로 깊은 욕구가 흐르고 있어요. 비밀스러운 판타지에 끌리는 타입.'});
-  if(hMok(saju))badges.push({emoji:'🛁',name:'목욕살 — 열린 스킨십',bg:'#F5F0FF',color:'#7C3AED',desc:'자신을 솔직하게 보여주는 데 거부감이 적고, 스킨십과 신체적 교감 능력이 뛰어나요.'});
-  if(hYeok(saju))badges.push({emoji:'🐎',name:'역마살 — 자유로운 모험가',bg:'#FFFBEB',color:'#D97706',desc:'새로운 장소나 상황에서 에너지가 확 올라가요. 여행지 로맨스, 예상치 못한 만남에서 불꽃이 튀는 타입!'});
-  if(!badges.length)badges.push({emoji:'✨',name:'안정형 에너지',bg:'#F0FFF4',color:'#16A34A',desc:'극적이진 않지만 꾸준하고 건강한 에너지예요. 신뢰 기반의 깊은 관계에서 진가가 발휘돼요.'});
-  html+=`<div class="badge-card"><div class="badge-card-title">⭐ 나만의 특수 에너지</div>`;badges.forEach(b=>html+=`<div class="badge-item" style="background:${b.bg}"><div class="badge-item-header"><span style="font-size:18px">${b.emoji}</span><span class="badge-item-name" style="color:${b.color}">${b.name}</span></div><div class="badge-item-desc">${b.desc}</div></div>`);html+=`</div>`;
+  if(hDohwa(saju))badges.push({emoji:'🌸',name:'도화살 — 타고난 이성 매력',desc:'이성을 자연스럽게 끌어당기는 매력. "묘하게 끌려…"라는 반응을 자주 받아요.'});
+  if(hHong(saju))badges.push({emoji:'🔥',name:'홍염살 — 강렬한 성적 에너지',desc:'빠지면 헤어나오기 힘든 중독성의 소유자. 정열적이고 대담해요.'});
+  if(hHam(saju))badges.push({emoji:'💦',name:'함지살 — 은밀한 판타지',desc:'겉은 차분하지만 속으로 깊은 욕구가 흘러요. 비밀스러운 매력.'});
+  if(hMok(saju))badges.push({emoji:'🛁',name:'목욕살 — 열린 스킨십',desc:'자신을 솔직하게 보여주고 신체적 교감 능력이 뛰어나요.'});
+  if(hYeok(saju))badges.push({emoji:'🐎',name:'역마살 — 자유로운 모험가',desc:'새로운 장소·상황에서 에너지 UP! 여행지 로맨스에 불꽃이 튀어요.'});
+  if(!badges.length)badges.push({emoji:'✨',name:'안정형 에너지',desc:'극적이진 않지만 꾸준하고 건강한 에너지. 신뢰 기반에서 빛나요.'});
+
+  // 오행 정렬
   const elSorted=[...EL_NAMES].sort((a,b)=>els.counts[b]-els.counts[a]);
-  const elEmojis={목:'🌳',화:'🔥',토:'⛰️',금:'💎',수:'💧'};
-  html+=`<div class="el-section"><div class="meter-card-title">☯️ 오행으로 보는 침대 위 스타일</div>`;
-  elSorted.forEach(el=>{const info=EL_DATA[el],cnt=els.counts[el],pct=els.pcts[el];const dots=cnt>0?elEmojis[el].repeat(cnt):'—';const desc=pct>=30?info.high:pct>=15?info.mid:info.low;html+=`<div class="el-item" style="background:${info.color};${cnt===0?'opacity:.45':''}"><div class="el-item-top"><div class="el-item-left"><span class="el-item-name" style="color:${info.accent}">${info.name}</span></div><div class="el-item-dots">${dots}</div></div><div class="el-item-desc" style="color:${info.accent}">${cnt===0?'이 에너지는 사주에 없어요. 부족한 부분을 의식적으로 채워보는 것도 좋아요.':desc}</div></div>`;});
-  html+=`</div>`;
-  const bestProf=PROF[best[0]];
-  html+=`<div class="match-card"><div class="match-emoji">${bestProf.emoji} ❤️ ${prof.emoji}</div><div class="match-title">최적 궁합: ${bestProf.title}</div><div class="match-sub">${bestProf.title} 타입을 만나면<br>서로의 에너지가 극대화되는 폭발적인 조합이에요!</div></div>`;
-  html+=`<div class="month-card"><div class="month-card-title">📅 월별 성적 에너지 흐름</div><div class="month-grid">`;
-  months.forEach(m=>html+=`<div class="month-cell ${m.cls}"><div class="month-cell-emoji">${m.score>=80?'🔥':m.score>=65?'✨':m.score>=50?'🌙':'💤'}</div><div class="month-cell-name">${m.name}</div><div class="month-cell-keyword" style="color:${m.score>=80?'#DC2626':m.score>=65?'#D97706':'#6B7280'}">${m.keyword}</div><div class="month-cell-score">${m.score}점</div></div>`);
-  html+=`</div></div>`;
 
-  // 하단 액션 버튼 — 공유 링크는 상단 share-hero에서 처리하므로 여기는 다시하기만
-  if(isShared){
-    html+=`<div class="action-row">
-      <button class="action-btn share" onclick="goToHome()">✨ 나도 테스트 해보기</button>
-    </div>`;
-  }else{
-    html+=`<div class="action-row">
-      <button class="action-btn reset" onclick="resetAll()">다시하기</button>
-      <button class="action-btn share" onclick="shareViaSystem()">🔗 결과 공유</button>
-    </div>`;
-  }
+  let html=`<div class="result-image-card" id="my-result-card"><div class="ric-inner">`;
 
-  document.getElementById('result').innerHTML=html;window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function renderCp(sA,sB, isShared){
-  const cp=compat(sA,sB),pA=PROF[sA.day.s],pB=PROF[sB.day.s],bed=getBed(sA,sB),tips=getTips(sA,sB);
-  lastCpData={sA,sB,cp,pA,pB};
-  const grade=gradeFromScore(cp.score);
-  const circumference=2*Math.PI*80; // r=80
-  const offset=circumference*(1-cp.score/100);
-
-  // 공유 링크 생성
-  let payload;
-  if(isShared){
-    const h=location.hash;
-    if(h&&h.startsWith('#r=')){
-      const json=b64urlDecode(h.slice(3));
-      try{payload=JSON.parse(json);}catch(e){}
-    }
-  }else{
-    payload=encodeCpInput();
-    updateHashForResult(payload);
-  }
-  if(payload) currentShareUrl=buildShareUrl(payload);
-
-  let html='';
-
-  // ═══ 궁합 점수 카드 ═══
-  html+=`<div class="cp-score-card">
-    <div class="cp-score-bg"></div>
-    <div class="cp-score-stars">${renderStarsHTML()}</div>
-    <div class="cp-score-inner">
-      <div class="cp-top-badge">✦ SAJU COMPATIBILITY ✦</div>
-      <div class="cp-vs-new">
-        <div class="cp-pp">
-          <div class="cp-pp-ring"><div class="cp-pp-ring-inner">${pA.emoji}</div></div>
-          <div class="cp-pp-name">${pA.title}</div>
-          <div class="cp-pp-sub">첫 번째</div>
-        </div>
-        <div class="cp-vs-heart">💕</div>
-        <div class="cp-pp">
-          <div class="cp-pp-ring"><div class="cp-pp-ring-inner">${pB.emoji}</div></div>
-          <div class="cp-pp-name">${pB.title}</div>
-          <div class="cp-pp-sub">두 번째</div>
-        </div>
-      </div>
-
-      <div class="cp-score-ring-wrap">
-        <svg class="cp-ring-svg" viewBox="0 0 180 180">
-          <defs>
-            <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ec4899"/>
-              <stop offset="50%" stop-color="#a78bfa"/>
-              <stop offset="100%" stop-color="#2EC4B6"/>
-            </linearGradient>
-          </defs>
-          <circle class="cp-ring-bg" cx="90" cy="90" r="80"/>
-          <circle class="cp-ring-fill" cx="90" cy="90" r="80"
-            stroke-dasharray="${circumference}"
-            stroke-dashoffset="${circumference}"
-            id="cp-ring-progress"/>
-        </svg>
-        <div class="cp-ring-center">
-          <div class="cp-ring-score">${cp.score}</div>
-          <div class="cp-ring-unit">점</div>
-          <div class="cp-ring-label">SCORE</div>
-        </div>
-      </div>
-
-      <div class="cp-grade-wrap">
-        <div class="cp-grade-badge">✨ ${grade.label} ✨</div>
-        <div class="cp-grade-stars">${grade.stars}</div>
-      </div>
-
-      <div class="cp-bottom-msg">${grade.msg}</div>
-    </div>
+  // 헤더 - 유형
+  html+=`<div class="ric-header">
+    <div class="ric-badge">✦ SEX SAJU ✦</div>
+    <span class="ric-type-emoji">${prof.emoji}</span>
+    <div class="ric-type-title">${prof.title}</div>
+    <div class="ric-type-sub">${HS_EL[saju.day.s]}의 에너지를 가진 사람</div>
+    <div class="ric-type-desc">${prof.desc}</div>
   </div>`;
 
-  html+=`<div class="factor-card"><div class="factor-title">💕 두 사람의 섹스 궁합 해석</div>`;
-  cp.factors.forEach(f=>{html+=`<div class="factor-item" style="background:${f.bg}"><div class="factor-item-header"><span class="factor-name">${f.emoji} ${f.name}</span><span class="factor-grade" style="background:${f.bg};color:${f.gc};border:1px solid ${f.gc}">${f.grade}</span></div><div class="factor-desc">${f.desc}</div></div>`;});
-  html+=`</div>`;
-  html+=`<div class="bed-card"><div class="bed-card-title">🛏️ 침대 위 궁합</div>`;bed.forEach(b=>html+=`<div class="bed-item" style="background:${b.bg}"><div class="bed-item-header">${b.emoji} ${b.title}</div><div class="bed-item-text">${b.text}</div></div>`);html+=`</div>`;
-  html+=`<div class="tip-card"><div class="tip-card-title">💡 더 좋은 관계를 위한 팁</div>`;tips.forEach(t=>html+=`<div class="tip-item"><div class="tip-item-label">${t.label}</div><div class="tip-item-text">${t.text}</div></div>`);html+=`</div>`;
-  [['첫 번째 사람',sA,pA],['두 번째 사람',sB,pB]].forEach(([l,s,p])=>{html+=`<div class="profile-card"><div class="profile-emoji">${p.emoji}</div><div class="profile-title">${l}: ${p.title}</div><div class="profile-sub">${p.emoji} ${HS_EL[s.day.s]}의 에너지를 가진 사람</div><div class="profile-desc">${p.desc}</div></div>`;});
+  // 사주 기둥
+  html+=`<div class="ric-pillars">${pils.map(([l,p])=>{
+    const sE=HS_EL[p.s],bE=EB_EL[p.b];
+    return`<div class="ric-pillar">
+      <div class="ric-pillar-label">${l}</div>
+      <div class="ric-pillar-char">${HS_KR[p.s]}</div>
+      <div class="ric-pillar-hanja">${HS_HJ[p.s]}</div>
+      <span class="ric-pillar-el ${EL_DATA[sE]?.accent||''}" style="background:rgba(255,255,255,.06)">${sE}</span>
+      <div class="ric-pillar-divider"></div>
+      <div class="ric-pillar-char">${EB_KR[p.b]}</div>
+      <div class="ric-pillar-hanja">${EB_HJ[p.b]}</div>
+      <span class="ric-pillar-el ${EL_DATA[bE]?.accent||''}" style="background:rgba(255,255,255,.06)">${bE}</span>
+    </div>`;}).join('')}</div>`;
 
-  if(isShared){
-    html+=`<div class="action-row">
-      <button class="action-btn share" onclick="goToHome()">✨ 나도 테스트 해보기</button>
-    </div>`;
-  }else{
-    html+=`<div class="action-row">
-      <button class="action-btn reset" onclick="resetAll()">다시하기</button>
-      <button class="action-btn share" onclick="shareViaSystem()">🔗 결과 공유</button>
-    </div>`;
-  }
+  // 성적 에너지 분석
+  html+=`<div class="ric-meters"><div class="ric-section-title">🔥 성적 에너지 분석</div>`;
+  mDef.forEach(m=>{const v=sc[m.key],desc=v>=65?m.h:v>=35?m.m:m.l;
+    html+=`<div class="ric-meter">
+      <div class="ric-meter-top"><span class="ric-meter-name">${m.name}</span><span class="ric-meter-val" style="color:${meterColors[m.key]}">${v}점 · ${sLabel(v)}</span></div>
+      <div class="ric-meter-bar"><div class="ric-meter-fill" style="width:${v}%;background:${meterColors[m.key]}"></div></div>
+    </div>`;});
+  html+=`</div>`;
+
+  // 특수 에너지
+  html+=`<div class="ric-badges"><div class="ric-section-title">⭐ 나만의 특수 에너지</div>`;
+  badges.forEach(b=>html+=`<div class="ric-badge-item"><span class="ric-badge-emoji">${b.emoji}</span><div class="ric-badge-text"><div class="ric-badge-name">${b.name}</div><div class="ric-badge-desc">${b.desc}</div></div></div>`);
+  html+=`</div>`;
+
+  // 오행
+  html+=`<div class="ric-elements"><div class="ric-section-title">☯️ 오행으로 보는 침대 위 스타일</div>`;
+  elSorted.forEach(el=>{const info=EL_DATA[el],cnt=els.counts[el],pct=els.pcts[el];
+    const desc=cnt===0?'사주에 없음':pct>=30?info.high:pct>=15?info.mid:info.low;
+    const dots=cnt>0?info.emoji.repeat(cnt):'—';
+    html+=`<div class="ric-el-item ${info.color}" style="${cnt===0?'opacity:.4':''}">
+      <span class="ric-el-name ${info.accent}">${info.name}</span>
+      <span class="ric-el-dots">${dots}</span>
+      <span class="ric-el-desc ${info.accent}">${desc}</span>
+    </div>`;});
+  html+=`</div>`;
+
+  // 워터마크
+  html+=`<div class="ric-footer"><div class="ric-footer-text">LOVE.TRYME.IM · 섹스 사주</div></div>`;
+
+  html+=`</div></div>`; // ric-inner, result-image-card 닫기
+
+  // 액션 버튼 (카드 바깥)
+  html+=`<div class="action-row">
+    <button class="action-btn reset" onclick="resetAll()">다시하기</button>
+    <button class="action-btn save" onclick="saveAsImage('my-result-card')">📸 이미지 저장</button>
+    <button class="action-btn share" onclick="shareResult()">🔗 공유</button>
+  </div>`;
+
+  document.getElementById('result').innerHTML=html;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderCp(sA,sB){
+  const cp=compat(sA,sB),pA=PROF[sA.day.s],pB=PROF[sB.day.s],bed=getBed(sA,sB),tips=getTips(sA,sB);
+  const grade=gradeFromScore(cp.score);
+  const circumference=2*Math.PI*60; // r=60
+  const offset=circumference*(1-cp.score/100);
+
+  let html=`<div class="cp-image-card" id="cp-result-card"><div class="cpic-inner">`;
+
+  // 배지
+  html+=`<div style="text-align:center;margin-bottom:16px"><div class="ric-badge">✦ SEX COMPATIBILITY ✦</div></div>`;
+
+  // VS
+  html+=`<div class="cpic-vs">
+    <div class="cpic-person"><div class="cpic-person-emoji">${pA.emoji}</div><div class="cpic-person-name">${pA.title}</div><div class="cpic-person-sub">첫 번째</div></div>
+    <div class="cpic-heart">💕</div>
+    <div class="cpic-person"><div class="cpic-person-emoji">${pB.emoji}</div><div class="cpic-person-name">${pB.title}</div><div class="cpic-person-sub">두 번째</div></div>
+  </div>`;
+
+  // 점수 원형
+  html+=`<div class="cpic-score-wrap">
+    <div class="cpic-score-ring">
+      <svg class="cpic-ring-svg" viewBox="0 0 140 140">
+        <defs><linearGradient id="cpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ec4899"/><stop offset="50%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#2EC4B6"/>
+        </linearGradient></defs>
+        <circle class="cpic-ring-bg" cx="70" cy="70" r="60"/>
+        <circle class="cpic-ring-fill" cx="70" cy="70" r="60" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}" id="cp-ring-progress"/>
+      </svg>
+      <div class="cpic-ring-center">
+        <div class="cpic-ring-num">${cp.score}</div>
+        <div class="cpic-ring-unit">점</div>
+      </div>
+    </div>
+    <div class="cpic-grade">✨ ${grade.label}</div><br>
+    <div class="cpic-stars">${grade.stars}</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:8px;line-height:1.5">${grade.msg}</div>
+  </div>`;
+
+  // 궁합 팩터
+  html+=`<div class="cpic-factors"><div class="ric-section-title">💕 섹스 궁합 해석</div>`;
+  cp.factors.forEach(f=>{html+=`<div class="cpic-factor">
+    <span class="cpic-factor-left">${f.emoji}</span>
+    <div class="cpic-factor-right">
+      <div class="cpic-factor-header"><span class="cpic-factor-name">${f.name}</span><span class="cpic-factor-grade">${f.grade}</span></div>
+      <div class="cpic-factor-desc">${f.desc}</div>
+    </div>
+  </div>`;});
+  html+=`</div>`;
+
+  // 침대 위 궁합
+  html+=`<div class="cpic-bed"><div class="ric-section-title">🛏️ 침대 위 궁합</div>`;
+  bed.forEach(b=>html+=`<div class="cpic-bed-item"><span class="cpic-bed-emoji">${b.emoji}</span><div class="cpic-bed-right"><div class="cpic-bed-title">${b.title}</div><div class="cpic-bed-text">${b.text}</div></div></div>`);
+  html+=`</div>`;
+
+  // 팁
+  html+=`<div class="cpic-tips"><div class="ric-section-title">💡 관계 팁</div>`;
+  tips.forEach(t=>html+=`<div class="cpic-tip"><div class="cpic-tip-label">${t.label}</div><div class="cpic-tip-text">${t.text}</div></div>`);
+  html+=`</div>`;
+
+  // 워터마크
+  html+=`<div class="ric-footer"><div class="ric-footer-text">LOVE.TRYME.IM · 섹스 궁합</div></div>`;
+
+  html+=`</div></div>`; // cpic-inner, cp-image-card 닫기
+
+  // 액션 버튼
+  html+=`<div class="action-row">
+    <button class="action-btn reset" onclick="resetAll()">다시하기</button>
+    <button class="action-btn save" onclick="saveAsImage('cp-result-card')">📸 이미지 저장</button>
+    <button class="action-btn share" onclick="shareResult()">🔗 공유</button>
+  </div>`;
 
   document.getElementById('result').innerHTML=html;
 
   // 링 애니메이션
-  setTimeout(()=>{
-    const ring=document.getElementById('cp-ring-progress');
-    if(ring) ring.style.strokeDashoffset=offset;
-  },100);
-
+  setTimeout(()=>{const ring=document.getElementById('cp-ring-progress');if(ring)ring.style.strokeDashoffset=offset;},100);
   setTimeout(()=>{document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});},100);
 }
 
-// 공유 링크 수신자가 "나도 테스트 해보기" 클릭 시 홈으로
-function goToHome(){
-  // 해시 제거 후 홈으로 이동 (입력 화면 복귀)
-  location.hash='';
-  location.reload();
+// ═══ 이미지 저장 ═══
+function saveAsImage(cardId){
+  const card=document.getElementById(cardId);
+  if(!card){showToast('결과를 먼저 확인해주세요');return;}
+  showToast('📸 이미지 생성 중...');
+  html2canvas(card,{
+    backgroundColor:null,
+    scale:2,
+    useCORS:true,
+    logging:false,
+    allowTaint:true,
+  }).then(canvas=>{
+    const link=document.createElement('a');
+    link.download=cardId==='my-result-card'?'섹스사주_결과.png':'섹스궁합_결과.png';
+    link.href=canvas.toDataURL('image/png');
+    link.click();
+    showToast('✨ 이미지가 저장되었어요!');
+  }).catch(()=>{
+    showToast('이미지 저장에 실패했어요. 스크린샷을 이용해주세요.');
+  });
+}
+
+function shareResult(){
+  const t='섹스 사주 결과 🔥 확인해봐!';
+  if(navigator.share){
+    navigator.share({title:'섹스 사주 결과',text:t,url:SITE_URL}).catch(()=>{});
+  }else{
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(SITE_URL).then(()=>showToast('✨ 링크가 복사되었어요!')).catch(()=>showToast('복사 실패'));
+    }else showToast('공유 기능을 사용할 수 없어요');
+  }
 }
 
 function resetAll(){
-  // 해시 초기화
-  if(location.hash){
-    history.replaceState(null,'',location.pathname+location.search);
-  }
-  // 공유 모드였다면 숨겨진 UI 복원
-  document.querySelector('.tab-wrap').style.display='';
-  document.getElementById('panel-my').style.display='';
-  document.getElementById('panel-cp').style.display='';
-  // 현재 활성 탭에 맞게 panel 표시 조정
-  const isMyActive=document.querySelectorAll('.tab-btn')[0].classList.contains('active');
-  document.getElementById('panel-my').classList.toggle('active',isMyActive);
-  document.getElementById('panel-cp').classList.toggle('active',!isMyActive);
-
-  document.getElementById('result').innerHTML='';
-  document.getElementById('hero').style.display='';
+  document.getElementById('result').innerHTML='';document.getElementById('hero').style.display='';
   state.genderMy=null;state.genderA=null;state.genderB=null;
   state.calMy='solar';state.calA='solar';state.calB='solar';
-  lastMySaju=null;lastCpData=null;currentShareUrl='';
   document.querySelectorAll('.gender-btn,.cal-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.cal-btn[data-c="solar"]').forEach(b=>b.classList.add('active'));
   ['my','a','b'].forEach(t=>{document.getElementById(t+'-y').selectedIndex=0;document.getElementById(t+'-m').selectedIndex=0;refreshDays(t);document.getElementById(t+'-h').selectedIndex=0;});
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ═══════════════════════════════════════════
-// 결과 공유 시스템 (URL 해시 기반)
-// ═══════════════════════════════════════════
-// 저장 정보는 최소화된 입력값만. 수신자 브라우저에서 재계산.
-// 해시: #r=<base64url>, 데이터 = {t:'my'|'cp', ...}
-
-function b64urlEncode(str){
-  // UTF-8 safe base64url
-  const bytes=new TextEncoder().encode(str);
-  let bin='';
-  bytes.forEach(b=>bin+=String.fromCharCode(b));
-  return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-}
-function b64urlDecode(str){
-  try{
-    str=str.replace(/-/g,'+').replace(/_/g,'/');
-    while(str.length%4)str+='=';
-    const bin=atob(str);
-    const bytes=new Uint8Array(bin.length);
-    for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
-    return new TextDecoder().decode(bytes);
-  }catch(e){return null;}
-}
-
-// 내 사주 → 공유 데이터 객체
-function encodeMyInput(){
-  // 마지막으로 입력한 필드 값들 — document 에서 읽음
-  const y=document.getElementById('my-y').value,
-        m=document.getElementById('my-m').value,
-        d=document.getElementById('my-d').value,
-        h=document.getElementById('my-h').value,
-        g=state.genderMy,c=state.calMy;
-  return {t:'my',y:+y,m:+m,d:+d,h:h==='unknown'?'u':+h,g,c};
-}
-function encodeCpInput(){
-  const getP=(p)=>({
-    y:+document.getElementById(p+'-y').value,
-    m:+document.getElementById(p+'-m').value,
-    d:+document.getElementById(p+'-d').value,
-    h:document.getElementById(p+'-h').value==='unknown'?'u':+document.getElementById(p+'-h').value,
-    g:state['gender'+p.toUpperCase()],
-    c:state['cal'+p.toUpperCase()]
-  });
-  return {t:'cp',a:getP('a'),b:getP('b')};
-}
-
-function buildShareUrl(payload){
-  const json=JSON.stringify(payload);
-  const enc=b64urlEncode(json);
-  return `${SITE_URL}/#r=${enc}`;
-}
-
-// 공유 데이터 → 사주 계산
-function personDataToSaju(p){
-  let ch,cm,ut=false;
-  if(p.h==='u'){ch=12;cm=0;ut=true;}
-  else{
-    const h=p.h;
-    if(h===0){ch=0;cm=30;}
-    else{ch=SIJIN[h].hS;cm=SIJIN[h].mS+30;if(cm>=60){ch++;cm-=60;}}
-  }
-  return calcSaju(p.y,p.m,p.d,ch,cm,p.g,p.c||'solar',ut);
-}
-
-// URL 해시 체크 & 자동 결과 렌더링
-function tryRestoreFromHash(){
-  const h=location.hash;
-  if(!h||!h.startsWith('#r='))return false;
-  const enc=h.slice(3);
-  const json=b64urlDecode(enc);
-  if(!json)return false;
-  let payload;
-  try{payload=JSON.parse(json);}catch(e){return false;}
-  if(!payload||!payload.t)return false;
-
-  // 결과 화면으로 전환 (입력 폼 숨김)
-  enterSharedMode();
-
-  if(payload.t==='my'){
-    const saju=personDataToSaju({y:payload.y,m:payload.m,d:payload.d,h:payload.h,g:payload.g,c:payload.c});
-    renderMy(saju, /*isShared*/ true);
-  }else if(payload.t==='cp'){
-    const sA=personDataToSaju(payload.a);
-    const sB=personDataToSaju(payload.b);
-    renderCp(sA,sB, /*isShared*/ true);
-  }
-  return true;
-}
-
-// 공유된 링크로 접근 시 입력 폼 숨기기
-function enterSharedMode(){
-  document.getElementById('hero').style.display='none';
-  document.querySelector('.tab-wrap').style.display='none';
-  document.getElementById('panel-my').style.display='none';
-  document.getElementById('panel-cp').style.display='none';
-}
-
-// 공유 카드 HTML 생성 (결과 상단에 삽입)
-function renderShareCard(payload){
-  const url=buildShareUrl(payload);
-  const msg = payload.t==='my'
-    ? '내 결과를 친구에게 링크로 공유하세요!'
-    : '이 궁합 결과 링크를 상대에게 보내보세요!';
-  return `
-    <div class="share-hero">
-      <div class="share-hero-inner">
-        <span class="share-hero-emoji">🔗</span>
-        <div class="share-hero-title">결과 링크 공유하기</div>
-        <div class="share-hero-sub">${msg}<br>링크를 열면 이 결과 화면이 그대로 보여져요</div>
-        <div class="share-hero-url">
-          <div class="share-hero-url-text" id="share-url-text">${url}</div>
-          <button class="share-hero-copy" onclick="copyShareUrl()">복사</button>
-        </div>
-        <div class="share-hero-btns">
-          <button class="share-hero-btn share-sys" onclick="shareViaSystem()">📤 공유</button>
-          <button class="share-hero-btn insta" onclick="openInstagram()">📸 인스타</button>
-          <button class="share-hero-btn kakao" onclick="shareKakao()">💬 카톡</button>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-// 현재 공유 URL 저장소
-let currentShareUrl='';
-
-function copyShareUrl(){
-  if(!currentShareUrl){showToast('공유 링크가 없어요');return;}
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(currentShareUrl)
-      .then(()=>showToast('✨ 링크가 복사되었어요!'))
-      .catch(()=>fallbackCopy(currentShareUrl));
-  }else{
-    fallbackCopy(currentShareUrl);
-  }
-}
-function fallbackCopy(text){
-  const ta=document.createElement('textarea');
-  ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';
-  document.body.appendChild(ta);ta.select();
-  try{document.execCommand('copy');showToast('✨ 링크가 복사되었어요!');}
-  catch(e){showToast('복사 실패 — 수동으로 복사해주세요');}
-  document.body.removeChild(ta);
-}
-
-function shareViaSystem(){
-  if(!currentShareUrl){showToast('공유 링크가 없어요');return;}
-  const t='섹스 사주 결과 🔥 내 결과 확인해봐!';
-  if(navigator.share){
-    navigator.share({title:'섹스 사주 결과',text:t,url:currentShareUrl}).catch(()=>{});
-  }else{
-    copyShareUrl();
-  }
-}
-
-function shareKakao(){
-  // Kakao SDK 없이 — 링크 복사 후 안내
-  copyShareUrl();
-  setTimeout(()=>showToast('💬 카톡에서 붙여넣기 해주세요!'),800);
-}
-
-function openInstagram(){
-  // 인스타 공식 공유 API는 외부 앱에서 제한적이라 — 링크 복사 후 안내
-  copyShareUrl();
-  setTimeout(()=>showToast('📸 인스타 스토리에서 붙여넣기 해주세요!'),800);
-}
-
-// 결과 새로 계산 시 호출 — 해시 업데이트 (북마크 등에 유리)
-function updateHashForResult(payload){
-  const enc=b64urlEncode(JSON.stringify(payload));
-  // history.replaceState 로 새로고침 없이 해시 변경
-  const newHash='#r='+enc;
-  if(location.hash!==newHash){
-    history.replaceState(null,'',location.pathname+location.search+newHash);
-  }
-}
-
-document.addEventListener('DOMContentLoaded',()=>{
-  initSelects();
-  // 해시에 결과가 담겨 있으면 자동 복원
-  setTimeout(()=>{tryRestoreFromHash();},0);
-});
+document.addEventListener('DOMContentLoaded',()=>{initSelects();});
 </script>
 </body>
 </html>
