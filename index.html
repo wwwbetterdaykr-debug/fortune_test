@@ -142,10 +142,10 @@ body::before{
 .sj-hangul{padding:0 4px 4px;font-size:11px;font-weight:600;color:var(--t3)}
 .sj-stem{border-bottom:1px solid #EFE8D9}
 .el-c-wood{color:#2E7D32}.el-c-fire{color:#C62828}.el-c-earth{color:#8D6E00}.el-c-metal{color:#5D4037}.el-c-water{color:#1565C0}
-.oh-summary{display:flex;justify-content:center;gap:14px;padding:10px 0;margin-bottom:12px}
-.oh-s-item{display:flex;align-items:center;gap:4px;font-size:14px;font-weight:700}
-.oh-s-emoji{font-size:16px}.oh-s-name{color:var(--t2)}
-.oh-s-cnt{font-family:'Jua',sans-serif;font-size:18px;min-width:16px;text-align:center}
+.oh-summary{display:flex;justify-content:space-between;padding:10px 4px;margin-bottom:12px}
+.oh-s-item{display:flex;align-items:center;gap:3px;font-size:13px;font-weight:700}
+.oh-s-emoji{font-size:14px}.oh-s-name{color:var(--t2)}
+.oh-s-cnt{font-family:'Jua',sans-serif;font-size:16px;min-width:14px;text-align:center}
 .oh-s-cnt.cnt-0{color:var(--t4)}.oh-s-cnt.cnt-hi{color:var(--carrot)}
 .el-interp{padding:16px;background:#FFF8E7;border-radius:var(--r1);display:flex;flex-direction:column;gap:10px}
 .el-ip-row{display:flex;flex-direction:column;gap:4px}
@@ -359,10 +359,32 @@ function compatAnalyze(p1,p2){
   const chem=Math.max(50,95-sd),comm=Math.max(55,Math.min(98,base+(r1.sc.expressive+r2.sc.expressive)/10-10)),phys=Math.max(50,Math.min(99,(r1.sc.sensual+r2.sc.sensual)/2+Math.random()*10)),adv=Math.max(50,Math.min(98,(r1.sc.adventure+r2.sc.adventure)/2+Math.random()*8));
   const ov=Math.round(base*.3+chem*.2+comm*.2+phys*.2+adv*.1);
   let sum='';
-  if(ov>=85)sum=`${p1.name}님과 ${p2.name}님은 눈빛만으로 통하는 환상의 궁합이에요. 말 없이도 원하는 걸 알아채요.`;
-  else if(ov>=70)sum=`${p1.name}님과 ${p2.name}님은 다른 스타일이 절묘하게 어우러져요. 밀당이 관계를 더 뜨겁게 만들어요.`;
-  else if(ov>=55)sum=`${p1.name}님과 ${p2.name}님은 리듬이 조금 달라요. 솔직한 대화로 취향을 탐구하면 케미가 폭발해요.`;
-  else sum=`${p1.name}님과 ${p2.name}님은 에너지 방향이 달라요. 다른 점을 탐구하면 새로운 쾌감을 발견할 수 있어요.`;
+  const t1=r1.type.id,t2=r2.type.id;
+  const hi=[
+    `${p1.name}님과 ${p2.name}님, 이 조합은 진짜 위험해요… 🔥 둘이 같은 방에 있으면 에어컨을 틀어도 실내온도가 올라갑니다. 눈만 마주쳐도 서로 뭘 원하는지 읽히는 텔레파시급 궁합이에요.`,
+    `${p1.name}님 × ${p2.name}님 = 소방서 출동 각 🚒 둘의 케미는 불꽃이 아니라 폭발입니다. 한번 시작하면 시간 개념이 사라지고, 끝나면 "우리 방금 뭐 한 거지…?" 싶을 정도로 몰입해요.`,
+    `이 궁합 실화…? ${p1.name}님과 ${p2.name}님은 전생에 연인이었을 수도 있어요. 몸의 리듬이 기가 막히게 맞고, 상대가 좋아하는 포인트를 본능적으로 찾아내는 천생연분이에요.`,
+    `${p1.name}님과 ${p2.name}님, 둘이 만나면 이불 밖은 위험지대 ⚠️ 서로의 약점을 정확히 아는 조합이라, 한번 빠지면 헤어나올 수 없는 중독성 MAX 궁합이에요.`
+  ];
+  const mid=[
+    `${p1.name}님은 가속 페달, ${p2.name}님은 핸들 🏎️ 스타일은 다르지만 그래서 더 뜨거워요! 한 명이 불을 지르면 다른 한 명이 기름을 부어요. 밀당의 쾌감을 아는 조합이에요.`,
+    `${p1.name}님과 ${p2.name}님은 처음엔 "어…?" 했다가 두세 번째부터 "어어어?!" 하는 조합이에요 😳 서로를 탐색할수록 케미가 폭발하는 늦불형 궁합! 포기하지 마세요.`,
+    `이 둘의 키워드는 '긴장감' ⚡ ${p1.name}님과 ${p2.name}님은 적당한 밀당이 관계를 10배 뜨겁게 만드는 조합이에요. 가끔 주도권을 바꿔보면 새로운 세계가 열려요.`,
+    `${p1.name}님과 ${p2.name}님, 다른 게 매력이에요 💫 한 명이 리드하면 다른 한 명이 반응하는 찰떡 역할분담! 서로의 판타지를 공유하면 궁합이 급상승해요.`
+  ];
+  const low1=[
+    `${p1.name}님과 ${p2.name}님은 지금은 서먹해도 걱정 마세요! 🧪 이 조합은 '대화'가 최고의 전희예요. 서로 좋아하는 거 솔직하게 말해보세요. 반전 케미가 터질 수 있어요.`,
+    `${p1.name}님과 ${p2.name}님, 리듬이 좀 다르긴 한데… 그게 오히려 기회예요! 🎵 서로 맞춰가는 과정 자체가 엄청난 전희가 됩니다. 천천히 탐색해보세요, 숨겨진 궁합이 있어요.`,
+    `${p1.name}님과 ${p2.name}님은 '느리게 타오르는 불' 타입이에요 🕯️ 처음부터 화끈하진 않지만, 서로를 알아갈수록 깊어지는 관계예요. 분위기 세팅에 투자해보세요!`
+  ];
+  const low2=[
+    `${p1.name}님과 ${p2.name}님, 에너지 방향이 정반대라 처음엔 당황할 수 있어요 😅 하지만! 반대라서 오히려 신선한 자극이 될 수 있어요. 상대의 스타일을 하나씩 따라해보면 의외의 쾌감을 발견해요.`,
+    `${p1.name}님과 ${p2.name}님은 '미지의 영역' 조합이에요 🗺️ 서로에겐 경험해보지 못한 스타일이라 어색할 수 있지만, 그만큼 새로운 걸 배울 수 있는 관계! 열린 마음이 최고의 무기예요.`
+  ];
+  if(ov>=85)sum=hi[Math.floor(Math.random()*hi.length)];
+  else if(ov>=70)sum=mid[Math.floor(Math.random()*mid.length)];
+  else if(ov>=55)sum=low1[Math.floor(Math.random()*low1.length)];
+  else sum=low2[Math.floor(Math.random()*low2.length)];
   return{r1,r2,ov,fac:{chem:{s:Math.round(chem),nm:'본능적 끌림',emoji:'⚡',d:'원초적 끌림 정도'},comm:{s:Math.round(comm),nm:'무드 소통력',emoji:'💬',d:'템포를 맞추는 능력'},phys:{s:Math.round(phys),nm:'신체 궁합',emoji:'💋',d:'몸의 리듬이 맞는 정도'},adv:{s:Math.round(adv),nm:'모험 궁합',emoji:'🎲',d:'새로운 시도 호흡'}},sum};
 }
 function elInterp(ep){
