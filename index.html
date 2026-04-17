@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>섹스 사주</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/korean-lunar-calendar@0.3.6/dist/korean-lunar-calendar.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{--bg:#f7f7f3;--card:#fff;--t1:#1a1a1a;--t2:#666;--t3:#999;--mint:#2EC4B6;--mint-light:#e8faf7;--mint-dark:#1da899;--coral:#FF6B6B;--purple:#A78BFA;--gold:#F59E0B;--blue:#60A5FA;--r:14px;--shadow:0 2px 16px rgba(0,0,0,.06)}
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:"Noto Sans KR",sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased}.wrap{max-width:480px;margin:auto;padding:0 20px 80px;min-height:100vh}
@@ -37,29 +38,290 @@
 .el-item-desc{font-size:12px;line-height:1.55;opacity:.85}
 .match-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px;text-align:center}.match-emoji{font-size:40px;margin-bottom:8px}.match-title{font-size:16px;font-weight:700;margin-bottom:4px}.match-sub{font-size:13px;color:var(--t2);line-height:1.5}
 .month-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}.month-card-title{font-size:15px;font-weight:700;margin-bottom:14px}.month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.month-cell{padding:12px 8px;border-radius:10px;background:var(--bg);text-align:center}.month-cell-name{font-size:12px;font-weight:600;margin-bottom:4px}.month-cell-emoji{font-size:18px;margin-bottom:2px}.month-cell-keyword{font-size:11px;font-weight:600;margin-bottom:2px}.month-cell-score{font-size:10px;color:var(--t3)}.month-cell.hot{background:#FFF0F0;border:1px solid #FFD0D0}.month-cell.warm{background:#FFFBEB;border:1px solid #FDE68A}.month-cell.cool{background:#F0F8FF;border:1px solid #D0E8FF}.month-cell.cold{background:#F5F0FF;border:1px solid #E0D5FF}
-.cp-score-card{background:linear-gradient(135deg,var(--mint),var(--mint-dark));border-radius:var(--r);padding:32px 20px;box-shadow:var(--shadow);margin-bottom:12px;text-align:center;color:#fff}.cp-score-num{font-size:56px;font-weight:800;letter-spacing:-2px}.cp-score-label{font-size:14px;margin-top:4px;opacity:.85}.cp-vs{display:flex;align-items:center;gap:12px;justify-content:center;margin:16px 0}.cp-person{text-align:center;flex:1}.cp-person-emoji{font-size:36px}.cp-person-name{font-size:13px;font-weight:600;margin-top:4px}.cp-vs-txt{font-size:18px;font-weight:800;color:rgba(255,255,255,.6)}
+
+/* ═══════════════════════════════════════════
+   NEW 궁합 점수 카드 — 화려한 그래픽
+   ═══════════════════════════════════════════ */
+.cp-score-card{
+  position:relative;
+  border-radius:24px;
+  padding:0;
+  margin-bottom:12px;
+  overflow:hidden;
+  background:#0a0e1a;
+  box-shadow:0 12px 40px rgba(236,72,153,.3),0 8px 24px rgba(139,92,246,.2);
+  isolation:isolate;
+}
+.cp-score-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 20%,rgba(236,72,153,.55) 0%,transparent 60%),
+    radial-gradient(ellipse 70% 60% at 85% 30%,rgba(139,92,246,.5) 0%,transparent 60%),
+    radial-gradient(ellipse 80% 60% at 50% 100%,rgba(46,196,182,.4) 0%,transparent 55%),
+    linear-gradient(135deg,#1a0b2e 0%,#2d1b4e 50%,#0f172a 100%);
+}
+.cp-score-stars{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+.cp-star{position:absolute;background:#fff;border-radius:50%;animation:starTwinkle 3s ease-in-out infinite}
+@keyframes starTwinkle{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+.cp-sparkle{position:absolute;font-size:16px;animation:sparkleFloat 4s ease-in-out infinite;opacity:.8}
+@keyframes sparkleFloat{0%,100%{transform:translateY(0) rotate(0deg);opacity:.8}50%{transform:translateY(-8px) rotate(180deg);opacity:1}}
+
+.cp-score-inner{position:relative;z-index:2;padding:32px 22px 28px;text-align:center}
+
+/* 상단 배지 */
+.cp-top-badge{
+  display:inline-block;padding:5px 14px;border-radius:100px;
+  background:rgba(255,255,255,.12);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.2);
+  font-size:10px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.9);
+  margin-bottom:16px;text-transform:uppercase;
+}
+
+/* VS 영역 — 두 프로필 */
+.cp-vs-new{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:24px}
+.cp-pp{flex:1;text-align:center}
+.cp-pp-ring{
+  width:72px;height:72px;margin:0 auto 8px;
+  border-radius:50%;position:relative;
+  background:linear-gradient(135deg,rgba(236,72,153,.3),rgba(139,92,246,.3));
+  padding:3px;
+}
+.cp-pp-ring-inner{
+  width:100%;height:100%;border-radius:50%;
+  background:rgba(255,255,255,.08);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;border:1.5px solid rgba(255,255,255,.25);
+}
+.cp-pp-name{font-size:12px;font-weight:700;color:#fff;margin-top:4px}
+.cp-pp-sub{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
+.cp-vs-heart{
+  width:48px;height:48px;border-radius:50%;
+  background:linear-gradient(135deg,#ec4899,#8b5cf6);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;box-shadow:0 0 30px rgba(236,72,153,.6);
+  position:relative;margin:0 4px;flex-shrink:0;
+  animation:heartBeat 1.5s ease-in-out infinite;
+}
+@keyframes heartBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.cp-vs-heart::after{
+  content:'';position:absolute;inset:-6px;border-radius:50%;
+  background:linear-gradient(135deg,#ec4899,#8b5cf6);
+  filter:blur(12px);opacity:.5;z-index:-1;
+}
+
+/* 원형 스코어 */
+.cp-score-ring-wrap{position:relative;width:180px;height:180px;margin:0 auto 14px}
+.cp-ring-svg{width:100%;height:100%;transform:rotate(-90deg)}
+.cp-ring-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:8}
+.cp-ring-fill{fill:none;stroke:url(#scoreGrad);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1)}
+.cp-ring-center{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+}
+.cp-ring-score{
+  font-family:"Playfair Display",serif;
+  font-size:64px;font-weight:900;color:#fff;line-height:.9;
+  letter-spacing:-2px;
+  text-shadow:0 0 30px rgba(236,72,153,.5);
+}
+.cp-ring-unit{font-size:14px;color:rgba(255,255,255,.6);font-weight:600;margin-top:2px}
+.cp-ring-label{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-top:4px;text-transform:uppercase}
+
+/* 등급 배지 */
+.cp-grade-wrap{margin-bottom:14px}
+.cp-grade-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 18px;border-radius:100px;
+  background:linear-gradient(135deg,#ec4899,#8b5cf6);
+  font-size:13px;font-weight:700;color:#fff;
+  box-shadow:0 6px 20px rgba(236,72,153,.4);
+}
+.cp-grade-stars{color:#fde047;letter-spacing:2px;font-size:12px;margin-top:6px}
+
+/* 하단 문구 */
+.cp-bottom-msg{
+  font-size:12px;color:rgba(255,255,255,.75);line-height:1.6;
+  padding:12px 16px;border-radius:12px;
+  background:rgba(255,255,255,.05);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.1);
+}
+
 .factor-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}.factor-title{font-size:15px;font-weight:700;margin-bottom:14px}.factor-item{padding:14px 16px;border-radius:12px;margin-bottom:10px}.factor-item:last-child{margin-bottom:0}.factor-item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.factor-name{font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px}.factor-grade{font-size:12px;font-weight:700;padding:3px 10px;border-radius:8px}.factor-desc{font-size:12px;color:var(--t2);line-height:1.6}
 .tip-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}.tip-card-title{font-size:15px;font-weight:700;margin-bottom:14px}.tip-item{padding:12px 14px;border-radius:10px;background:var(--bg);margin-bottom:8px}.tip-item:last-child{margin-bottom:0}.tip-item-label{font-size:12px;font-weight:700;color:var(--mint-dark);margin-bottom:4px}.tip-item-text{font-size:13px;color:var(--t2);line-height:1.6}
 .bed-card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}.bed-card-title{font-size:15px;font-weight:700;margin-bottom:14px}.bed-item{padding:14px 16px;border-radius:12px;margin-bottom:8px}.bed-item:last-child{margin-bottom:0}.bed-item-header{font-size:13px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}.bed-item-text{font-size:12px;color:var(--t2);line-height:1.6}
-.action-row{display:flex;gap:8px;margin-top:16px;margin-bottom:24px}.action-btn{flex:1;padding:14px;border:1.5px solid #e2e0db;border-radius:var(--r);background:#fff;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;transition:.15s}.action-btn:active{transform:scale(.98)}.action-btn.primary{background:var(--t1);color:#fff;border-color:var(--t1)}
+
+.action-row{display:flex;gap:8px;margin-top:16px;margin-bottom:24px}
+.action-btn{flex:1;padding:14px 10px;border:1.5px solid #e2e0db;border-radius:var(--r);background:#fff;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:5px}
+.action-btn:active{transform:scale(.98)}
+.action-btn.save{background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;border:none}
+.action-btn.share{background:var(--t1);color:#fff;border-color:var(--t1)}
+.action-btn.reset{background:#fff;color:var(--t2)}
+
 .correction-info{background:var(--mint-light);border-radius:10px;padding:14px 16px;margin-bottom:12px}.correction-info-title{font-size:12px;font-weight:600;color:var(--mint-dark);margin-bottom:4px}.correction-info-row{font-size:11px;color:var(--t2);line-height:1.5}
 footer{text-align:center;padding:24px 0;margin-top:40px}
 .accuracy-badge{display:inline-flex;align-items:center;gap:4px;background:#E8F5E9;color:#2E7D32;font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;margin-bottom:12px}
 .score-color-high{color:#DC2626}.score-color-mid{color:var(--gold)}.score-color-low{color:var(--blue)}
+
+/* ═══════════════════════════════════════════
+   공유 이미지용 캔버스 (오프스크린)
+   9:16 비율 — 450x800 (화면에서 숨김)
+   ═══════════════════════════════════════════ */
+#share-canvas{
+  position:fixed;left:-99999px;top:0;
+  width:450px;height:800px;
+  background:#0a0e1a;overflow:hidden;
+  font-family:"Noto Sans KR",sans-serif;
+  color:#fff;-webkit-font-smoothing:antialiased;
+}
+.sc-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 20%,rgba(236,72,153,.6) 0%,transparent 55%),
+    radial-gradient(ellipse 80% 55% at 85% 25%,rgba(139,92,246,.55) 0%,transparent 55%),
+    radial-gradient(ellipse 90% 50% at 50% 90%,rgba(46,196,182,.45) 0%,transparent 55%),
+    linear-gradient(135deg,#1a0b2e 0%,#2d1b4e 45%,#0f172a 100%);
+}
+.sc-stars{position:absolute;inset:0;pointer-events:none}
+.sc-stars svg{width:100%;height:100%}
+.sc-inner{position:relative;z-index:2;padding:40px 30px;height:100%;display:flex;flex-direction:column}
+.sc-brand{
+  font-family:"Playfair Display",serif;font-size:11px;letter-spacing:4px;
+  text-transform:uppercase;color:rgba(255,255,255,.55);text-align:center;
+  margin-bottom:4px;
+}
+.sc-title{
+  font-size:26px;font-weight:900;letter-spacing:-1px;text-align:center;
+  color:#fff;margin-bottom:6px;
+}
+.sc-title .accent{background:linear-gradient(135deg,#ec4899,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sc-divider{width:40px;height:2px;background:linear-gradient(90deg,#ec4899,#8b5cf6);margin:8px auto 22px;border-radius:2px}
+
+/* 프로필 카드 (내 사주용) */
+.sc-profile{
+  background:rgba(255,255,255,.08);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:24px;padding:32px 24px;text-align:center;
+  flex:1;display:flex;flex-direction:column;justify-content:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+.sc-profile-emoji{font-size:80px;line-height:1;margin-bottom:18px;filter:drop-shadow(0 8px 24px rgba(236,72,153,.4))}
+.sc-profile-title{font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:6px}
+.sc-profile-sub{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:22px}
+.sc-profile-desc{
+  font-size:13px;line-height:1.8;color:rgba(255,255,255,.85);
+  text-align:left;padding:16px 18px;
+  background:rgba(0,0,0,.2);border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);
+}
+.sc-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.sc-pill{
+  padding:7px 14px;border-radius:100px;
+  background:linear-gradient(135deg,rgba(236,72,153,.2),rgba(139,92,246,.2));
+  border:1px solid rgba(236,72,153,.4);
+  font-size:11px;font-weight:700;color:#fff;
+}
+
+/* 궁합용 */
+.sc-cp-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.sc-cp-persons{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.sc-cp-p{text-align:center;min-width:100px}
+.sc-cp-p-emoji{
+  font-size:52px;line-height:1;margin-bottom:8px;
+  filter:drop-shadow(0 4px 16px rgba(236,72,153,.4));
+}
+.sc-cp-p-name{font-size:12px;font-weight:700;color:#fff}
+.sc-cp-heart{font-size:28px;margin:0 4px}
+.sc-cp-score-circle{
+  width:220px;height:220px;position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.sc-cp-score-num{
+  font-family:"Playfair Display",serif;
+  font-size:88px;font-weight:900;line-height:.9;
+  background:linear-gradient(135deg,#fff 0%,#fde047 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-shadow:0 0 40px rgba(236,72,153,.6);
+}
+.sc-cp-score-unit{font-size:20px;color:rgba(255,255,255,.7);font-weight:700;margin-left:4px}
+.sc-cp-grade{
+  padding:10px 24px;border-radius:100px;
+  background:linear-gradient(135deg,#ec4899,#8b5cf6);
+  font-size:16px;font-weight:800;color:#fff;
+  box-shadow:0 8px 24px rgba(236,72,153,.5);
+  margin-top:4px;
+}
+.sc-cp-stars{color:#fde047;font-size:18px;letter-spacing:4px;margin-top:8px}
+.sc-cp-tag{
+  padding:10px 16px;margin-top:8px;
+  background:rgba(255,255,255,.08);backdrop-filter:blur(10px);
+  border-radius:12px;border:1px solid rgba(255,255,255,.12);
+  font-size:12px;color:rgba(255,255,255,.85);line-height:1.6;text-align:center;
+}
+
+.sc-footer{
+  text-align:center;margin-top:auto;padding-top:20px;
+}
+.sc-footer-url{
+  font-family:"Playfair Display",serif;
+  font-size:14px;font-weight:700;color:#fff;letter-spacing:1px;
+}
+.sc-footer-sub{font-size:10px;color:rgba(255,255,255,.5);margin-top:3px;letter-spacing:2px}
+
+/* 저장중 로딩 */
+.save-loading{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:10000;
+  display:none;align-items:center;justify-content:center;flex-direction:column;color:#fff;
+}
+.save-loading.show{display:flex}
+.save-loading .spin{width:40px;height:40px;border:3px solid rgba(255,255,255,.2);border-top-color:#ec4899;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:14px}
+.save-loading-text{font-size:14px;font-weight:600}
 </style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
+<div class="save-loading" id="save-loading"><div class="spin"></div><div class="save-loading-text">이미지를 만들고 있어요...</div></div>
 <div class="loading-overlay" id="loading"><div class="loading-spinner"></div><div id="loading-text">사주를 분석하고 있어요</div><div id="loading-sub">정밀 보정 적용 중</div><div class="loading-steps" id="loading-steps"></div></div>
+
+<!-- 공유 이미지 생성용 캔버스 -->
+<div id="share-canvas"></div>
+
 <div class="wrap">
   <div class="hero" id="hero"><div class="hero-badge">사주명리학 기반 · 정밀 보정 엔진</div><h1>섹스 <span class="accent">사주</span></h1><p>태어난 순간의 네 기둥에 숨겨진<br>성적 에너지와 관계 패턴을 읽어드려요</p></div>
   <div class="tab-wrap"><button class="tab-btn active" onclick="switchTab('my')">내 사주 보기</button><button class="tab-btn" onclick="switchTab('cp')">궁합 보기</button></div>
-  <div class="panel active" id="panel-my"><div class="form-card"><div class="form-card-title">생년월일시를 알려주세요</div><div class="gender-wrap" id="gw-my"><button class="gender-btn" data-g="M" onclick="pickGender('my','M',this)">♂ 남성</button><button class="gender-btn" data-g="F" onclick="pickGender('my','F',this)">♀ 여성</button></div><div class="cal-wrap" id="cw-my"><button class="cal-btn active" data-c="solar" onclick="pickCal('my','solar',this)">양력</button><button class="cal-btn" data-c="lunar" onclick="pickCal('my','lunar',this)">음력</button></div><div class="sel-row"><select id="my-y"></select><select id="my-m"></select><select id="my-d"></select></div><div class="sel-row"><select id="my-h"></select></div><div class="sijin-info">* 태어난 시간을 모르면 '모름'을 선택하세요</div><button class="cta-btn" onclick="doMyAnalysis()">내 섹스 사주 보기 →</button></div></div>
-  <div class="panel" id="panel-cp"><div class="form-card"><div class="form-card-title">첫 번째 사람</div><div class="gender-wrap" id="gw-a"><button class="gender-btn" data-g="M" onclick="pickGender('a','M',this)">♂ 남성</button><button class="gender-btn" data-g="F" onclick="pickGender('a','F',this)">♀ 여성</button></div><div class="cal-wrap" id="cw-a"><button class="cal-btn active" data-c="solar" onclick="pickCal('a','solar',this)">양력</button><button class="cal-btn" data-c="lunar" onclick="pickCal('a','lunar',this)">음력</button></div><div class="sel-row"><select id="a-y"></select><select id="a-m"></select><select id="a-d"></select></div><div class="sel-row"><select id="a-h"></select></div></div><div class="divider-label">VS</div><div class="form-card"><div class="form-card-title">두 번째 사람</div><div class="gender-wrap" id="gw-b"><button class="gender-btn" data-g="M" onclick="pickGender('b','M',this)">♂ 남성</button><button class="gender-btn" data-g="F" onclick="pickGender('b','F',this)">♀ 여성</button></div><div class="cal-wrap" id="cw-b"><button class="cal-btn active" data-c="solar" onclick="pickCal('b','solar',this)">양력</button><button class="cal-btn" data-c="lunar" onclick="pickCal('b','lunar',this)">음력</button></div><div class="sel-row"><select id="b-y"></select><select id="b-m"></select><select id="b-d"></select></div><div class="sel-row"><select id="b-h"></select></div></div><button class="cta-btn" onclick="doCpAnalysis()">섹스 궁합 보기 →</button></div>
+  <div class="panel active" id="panel-my">
+    <div class="form-card">
+      <div class="form-card-title">생년월일시를 알려주세요</div>
+      <div class="gender-wrap" id="gw-my"><button class="gender-btn" data-g="M" onclick="pickGender('my','M',this)">♂ 남성</button><button class="gender-btn" data-g="F" onclick="pickGender('my','F',this)">♀ 여성</button></div>
+      <div class="cal-wrap" id="cw-my"><button class="cal-btn active" data-c="solar" onclick="pickCal('my','solar',this)">양력</button><button class="cal-btn" data-c="lunar" onclick="pickCal('my','lunar',this)">음력</button></div>
+      <div class="sel-row"><select id="my-y" onchange="refreshDays('my')"></select><select id="my-m" onchange="refreshDays('my')"></select><select id="my-d"></select></div>
+      <div class="sel-row"><select id="my-h"></select></div>
+      <div class="sijin-info">* 태어난 시간을 모르면 '모름'을 선택하세요</div>
+      <button class="cta-btn" onclick="doMyAnalysis()">내 섹스 사주 보기 →</button>
+    </div>
+  </div>
+  <div class="panel" id="panel-cp">
+    <div class="form-card">
+      <div class="form-card-title">첫 번째 사람</div>
+      <div class="gender-wrap" id="gw-a"><button class="gender-btn" data-g="M" onclick="pickGender('a','M',this)">♂ 남성</button><button class="gender-btn" data-g="F" onclick="pickGender('a','F',this)">♀ 여성</button></div>
+      <div class="cal-wrap" id="cw-a"><button class="cal-btn active" data-c="solar" onclick="pickCal('a','solar',this)">양력</button><button class="cal-btn" data-c="lunar" onclick="pickCal('a','lunar',this)">음력</button></div>
+      <div class="sel-row"><select id="a-y" onchange="refreshDays('a')"></select><select id="a-m" onchange="refreshDays('a')"></select><select id="a-d"></select></div>
+      <div class="sel-row"><select id="a-h"></select></div>
+    </div>
+    <div class="divider-label">VS</div>
+    <div class="form-card">
+      <div class="form-card-title">두 번째 사람</div>
+      <div class="gender-wrap" id="gw-b"><button class="gender-btn" data-g="M" onclick="pickGender('b','M',this)">♂ 남성</button><button class="gender-btn" data-g="F" onclick="pickGender('b','F',this)">♀ 여성</button></div>
+      <div class="cal-wrap" id="cw-b"><button class="cal-btn active" data-c="solar" onclick="pickCal('b','solar',this)">양력</button><button class="cal-btn" data-c="lunar" onclick="pickCal('b','lunar',this)">음력</button></div>
+      <div class="sel-row"><select id="b-y" onchange="refreshDays('b')"></select><select id="b-m" onchange="refreshDays('b')"></select><select id="b-d"></select></div>
+      <div class="sel-row"><select id="b-h"></select></div>
+    </div>
+    <button class="cta-btn" onclick="doCpAnalysis()">섹스 궁합 보기 →</button>
+  </div>
   <div id="result"></div>
   <footer><img src="https://bdsm.tryme.im/logo.png" alt="트라이미" style="height:24px;opacity:.25;display:block;margin:0 auto"></footer>
 </div>
 <script>
+const SITE_URL='https://love.tryme.im';
 const HS_KR=['갑','을','병','정','무','기','경','신','임','계'],EB_KR=['자','축','인','묘','진','사','오','미','신','유','술','해'],HS_HJ=['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'],EB_HJ=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'],HS_EL=['목','목','화','화','토','토','금','금','수','수'],EB_EL=['수','토','목','목','토','화','화','토','금','금','토','수'],EL_NAMES=['목','화','토','금','수'],EL_EN={목:'wood',화:'fire',토:'earth',금:'metal',수:'water'};
 const SIJIN=[{branch:0,name:'자시',range:'23:30~01:29',hS:23,mS:30},{branch:1,name:'축시',range:'01:30~03:29',hS:1,mS:30},{branch:2,name:'인시',range:'03:30~05:29',hS:3,mS:30},{branch:3,name:'묘시',range:'05:30~07:29',hS:5,mS:30},{branch:4,name:'진시',range:'07:30~09:29',hS:7,mS:30},{branch:5,name:'사시',range:'09:30~11:29',hS:9,mS:30},{branch:6,name:'오시',range:'11:30~13:29',hS:11,mS:30},{branch:7,name:'미시',range:'13:30~15:29',hS:13,mS:30},{branch:8,name:'신시',range:'15:30~17:29',hS:15,mS:30},{branch:9,name:'유시',range:'17:30~19:29',hS:17,mS:30},{branch:10,name:'술시',range:'19:30~21:29',hS:19,mS:30},{branch:11,name:'해시',range:'21:30~23:29',hS:21,mS:30}];
 const DST_TABLE=[{y:1948,s:[6,1],e:[9,13]},{y:1949,s:[4,3],e:[9,11]},{y:1950,s:[4,1],e:[9,10]},{y:1951,s:[5,6],e:[9,9]},{y:1955,s:[5,5],e:[9,9]},{y:1956,s:[5,20],e:[9,30]},{y:1957,s:[5,5],e:[9,22]},{y:1958,s:[5,4],e:[9,21]},{y:1959,s:[5,3],e:[9,20]},{y:1960,s:[5,1],e:[9,18]},{y:1987,s:[5,10],e:[10,11]},{y:1988,s:[5,8],e:[10,9]}];
@@ -140,14 +402,59 @@ function getTips(sA,sB){const tips=[];const dsA=sA.day.s,dsB=sB.day.s,eA=HS_EL[d
   return tips;
 }
 
-// ═══ UI ═══
+// ═══════════════════════════════════════════
+// UI — 상태 관리 & 마지막 결과 캐싱
+// ═══════════════════════════════════════════
 const state={genderMy:null,genderA:null,genderB:null,calMy:'solar',calA:'solar',calB:'solar'};
+let lastMySaju=null, lastCpData=null;
 let toastT=null;
 function showToast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');if(toastT)clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2500);}
 function pickGender(t,g,btn){const w='gw-'+(t==='my'?'my':t);document.querySelectorAll('#'+w+' .gender-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');state['gender'+(t==='my'?'My':t.toUpperCase())]=g;}
 function pickCal(t,c,btn){const w='cw-'+(t==='my'?'my':t);document.querySelectorAll('#'+w+' .cal-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');state['cal'+(t==='my'?'My':t.toUpperCase())]=c;}
-function switchTab(tab){document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(tab==='my'&&i===0)||(tab==='cp'&&i===1)));document.getElementById('panel-my').classList.toggle('active',tab==='my');document.getElementById('panel-cp').classList.toggle('active',tab==='cp');document.getElementById('result').innerHTML='';document.getElementById('hero').style.display='';if(tab==='cp'&&state.genderMy){state.genderA=state.genderMy;state.calA=state.calMy;document.querySelectorAll('#gw-a .gender-btn').forEach(b=>{b.classList.remove('active');if(b.dataset.g===state.genderA)b.classList.add('active');});document.querySelectorAll('#cw-a .cal-btn').forEach(b=>{b.classList.remove('active');if(b.dataset.c===state.calA)b.classList.add('active');});['y','m','d','h'].forEach(f=>document.getElementById('a-'+f).value=document.getElementById('my-'+f).value);}}
-function initSelects(){['my','a','b'].forEach(t=>{const y=document.getElementById(t+'-y'),m=document.getElementById(t+'-m'),d=document.getElementById(t+'-d'),h=document.getElementById(t+'-h');y.innerHTML='<option value="">년도</option>';for(let i=2010;i>=1940;i--)y.innerHTML+=`<option value="${i}">${i}년</option>`;m.innerHTML='<option value="">월</option>';for(let i=1;i<=12;i++)m.innerHTML+=`<option value="${i}">${i}월</option>`;d.innerHTML='<option value="">일</option>';for(let i=1;i<=31;i++)d.innerHTML+=`<option value="${i}">${i}일</option>`;h.innerHTML='<option value="">시간 선택</option><option value="unknown">🤷 모르겠어요</option>';SIJIN.forEach((s,i)=>h.innerHTML+=`<option value="${i}">${s.name} · ${s.range}</option>`);});}
+function switchTab(tab){document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(tab==='my'&&i===0)||(tab==='cp'&&i===1)));document.getElementById('panel-my').classList.toggle('active',tab==='my');document.getElementById('panel-cp').classList.toggle('active',tab==='cp');document.getElementById('result').innerHTML='';document.getElementById('hero').style.display='';if(tab==='cp'&&state.genderMy){state.genderA=state.genderMy;state.calA=state.calMy;document.querySelectorAll('#gw-a .gender-btn').forEach(b=>{b.classList.remove('active');if(b.dataset.g===state.genderA)b.classList.add('active');});document.querySelectorAll('#cw-a .cal-btn').forEach(b=>{b.classList.remove('active');if(b.dataset.c===state.calA)b.classList.add('active');});['y','m','d','h'].forEach(f=>document.getElementById('a-'+f).value=document.getElementById('my-'+f).value);refreshDays('a');}}
+
+// ═══ 1번 요청: 월에 따른 일수 동적 계산 ═══
+function daysInMonth(y,m){
+  if(!y||!m) return 31;
+  return new Date(y,m,0).getDate();
+}
+function refreshDays(prefix){
+  const ySel=document.getElementById(prefix+'-y'),
+        mSel=document.getElementById(prefix+'-m'),
+        dSel=document.getElementById(prefix+'-d');
+  const y=parseInt(ySel.value), m=parseInt(mSel.value);
+  const prev=parseInt(dSel.value);
+  const max=daysInMonth(y||2000, m||1);
+  let html='<option value="">일</option>';
+  for(let i=1;i<=max;i++){
+    html+=`<option value="${i}"${prev===i?' selected':''}>${i}일</option>`;
+  }
+  dSel.innerHTML=html;
+  // 기존 값이 범위 밖이면 초기화
+  if(prev && prev>max) dSel.value='';
+}
+
+// ═══ 2번 요청: 만 20~50세로 연도 제한 ═══
+function initSelects(){
+  const currentYear=new Date().getFullYear();
+  const minYear=currentYear-50; // 만 50세
+  const maxYear=currentYear-20; // 만 20세
+  ['my','a','b'].forEach(t=>{
+    const y=document.getElementById(t+'-y'),
+          m=document.getElementById(t+'-m'),
+          d=document.getElementById(t+'-d'),
+          h=document.getElementById(t+'-h');
+    y.innerHTML='<option value="">년도</option>';
+    for(let i=maxYear;i>=minYear;i--) y.innerHTML+=`<option value="${i}">${i}년</option>`;
+    m.innerHTML='<option value="">월</option>';
+    for(let i=1;i<=12;i++) m.innerHTML+=`<option value="${i}">${i}월</option>`;
+    d.innerHTML='<option value="">일</option>';
+    for(let i=1;i<=31;i++) d.innerHTML+=`<option value="${i}">${i}일</option>`;
+    h.innerHTML='<option value="">시간 선택</option><option value="unknown">🤷 모르겠어요</option>';
+    SIJIN.forEach((s,i)=>h.innerHTML+=`<option value="${i}">${s.name} · ${s.range}</option>`);
+  });
+}
+
 function getVals(p){const y=parseInt(document.getElementById(p+'-y').value),m=parseInt(document.getElementById(p+'-m').value),d=parseInt(document.getElementById(p+'-d').value),hv=document.getElementById(p+'-h').value;if(isNaN(y)||isNaN(m)||isNaN(d)||!hv)return null;if(hv==='unknown')return{y,m,d,ch:12,cm:0,ut:true};const h=parseInt(hv);let ch,cm;if(h===0){ch=0;cm=30;}else{ch=SIJIN[h].hS;cm=SIJIN[h].mS+30;if(cm>=60){ch++;cm-=60;}}return{y,m,d,ch,cm,ut:false};}
 function validate(p,gk){const gl={genderMy:'성별',genderA:'첫 번째 사람의 성별',genderB:'두 번째 사람의 성별'};if(!state[gk]){showToast('🙋 '+gl[gk]+'을 선택해주세요');return false;}if(!document.getElementById(p+'-y').value){showToast('📅 태어난 년도를 선택해주세요');return false;}if(!document.getElementById(p+'-m').value){showToast('📅 태어난 월을 선택해주세요');return false;}if(!document.getElementById(p+'-d').value){showToast('📅 태어난 일을 선택해주세요');return false;}if(!document.getElementById(p+'-h').value){showToast('🕐 태어난 시간을 선택해주세요');return false;}return true;}
 function showLoad(){const el=document.getElementById('loading');el.classList.add('show');const s=document.getElementById('loading-steps');s.innerHTML='';['음양력 확인 중...','서머타임 보정 중...','경도 보정 중...','절기 계산 중...','사주 분석 중...','에너지 해석 중...'].forEach(l=>s.innerHTML+=`<div class="loading-step"><span class="check"></span>${l}</div>`);let i=0;const iv=setInterval(()=>{const se=s.querySelectorAll('.loading-step');if(i<se.length){se[i].classList.add('done');se[i].querySelector('.check').textContent='✓';i++;}if(i>=se.length)clearInterval(iv);},450);return{el,iv};}
@@ -156,23 +463,52 @@ function hideLoad(l){clearInterval(l.iv);l.el.classList.remove('show');}
 function doMyAnalysis(){if(!validate('my','genderMy'))return;const v=getVals('my');if(!v)return;const ld=showLoad();document.getElementById('hero').style.display='none';setTimeout(()=>{const saju=calcSaju(v.y,v.m,v.d,v.ch,v.cm,state.genderMy,state.calMy,v.ut);hideLoad(ld);renderMy(saju);},3200);}
 function doCpAnalysis(){if(!validate('a','genderA'))return;if(!validate('b','genderB'))return;const va=getVals('a'),vb=getVals('b');if(!va||!vb)return;const ld=showLoad();document.getElementById('hero').style.display='none';setTimeout(()=>{const sA=calcSaju(va.y,va.m,va.d,va.ch,va.cm,state.genderA,state.calA,va.ut);const sB=calcSaju(vb.y,vb.m,vb.d,vb.ch,vb.cm,state.genderB,state.calB,vb.ut);hideLoad(ld);renderCp(sA,sB);},3400);}
 
+// ═══════════════════════════════════════════
+// 3번 요청: 궁합 점수 카드 - 새로운 화려한 UI
+// ═══════════════════════════════════════════
+function gradeFromScore(s){
+  if(s>=90) return {label:'운명의 상대',stars:'★★★★★',msg:'사주에서 찾아보기 힘든 최상의 궁합이에요. 함께할수록 서로의 빛을 끌어내는 관계.'};
+  if(s>=80) return {label:'최고의 케미',stars:'★★★★★',msg:'둘만의 특별한 에너지가 흐르는 조합. 침대 위에서든 밖에서든 서로를 완벽하게 이해해요.'};
+  if(s>=70) return {label:'뜨거운 궁합',stars:'★★★★☆',msg:'서로에게 강하게 끌리는 관계. 시간이 지날수록 더 깊어지는 타입이에요.'};
+  if(s>=60) return {label:'좋은 궁합',stars:'★★★★☆',msg:'편안하고 안정적인 관계. 서로를 알아갈수록 잘 맞는 부분을 발견하게 돼요.'};
+  if(s>=50) return {label:'보통 궁합',stars:'★★★☆☆',msg:'소통과 노력이 필요한 관계. 서로의 차이를 인정하면 좋은 관계로 발전할 수 있어요.'};
+  if(s>=40) return {label:'노력형 궁합',stars:'★★★☆☆',msg:'맞춰가야 할 부분이 있어요. 서로를 이해하려는 마음이 관계의 키포인트.'};
+  return {label:'도전적 궁합',stars:'★★☆☆☆',msg:'쉽지 않은 조합이지만, 서로를 진심으로 대하면 의외의 케미가 생길 수 있어요.'};
+}
+
+function renderStarsHTML(){
+  // 랜덤 위치에 별 배치
+  let html='';
+  for(let i=0;i<24;i++){
+    const x=Math.random()*100, y=Math.random()*100;
+    const size=0.8+Math.random()*1.5;
+    const delay=Math.random()*3;
+    const dur=2+Math.random()*2;
+    html+=`<div class="cp-star" style="left:${x}%;top:${y}%;width:${size}px;height:${size}px;animation-delay:${delay}s;animation-duration:${dur}s"></div>`;
+  }
+  // 반짝이
+  const sparkles=['✨','💫','⭐'];
+  for(let i=0;i<6;i++){
+    const x=5+Math.random()*90, y=5+Math.random()*90;
+    const del=Math.random()*4;
+    html+=`<span class="cp-sparkle" style="left:${x}%;top:${y}%;animation-delay:${del}s">${sparkles[i%3]}</span>`;
+  }
+  return html;
+}
+
 function renderMy(saju){
+  lastMySaju=saju;
   const els=aEl(saju),sc=calcScores(saju),prof=PROF[saju.day.s],months=getMonths(saju),best=BEST_M[saju.day.s];
   const mDef=[{name:'정열도 🔥',key:'passion',color:'var(--coral)',h:'불꽃 에너지! 끌리면 직진, 한번 시작하면 멈추기 어려운 타입이에요.',m:'스위치만 켜지면 뜨겁게 달라질 잠재력이 충분해요.',l:'급하게 타오르기보다 천천히 깊게 가는 스타일이에요.'},{name:'지구력 💪',key:'stamina',color:'var(--gold)',h:'마라토너 타입! 체력과 꾸준함이 최고 무기예요.',m:'컨디션만 좋으면 오래 갈 수 있어요. 관리가 곧 실력!',l:'양보다 질! 짧지만 강렬한 경험에 집중하는 게 맞아요.'},{name:'표현력 💋',key:'expression',color:'var(--purple)',h:'원하는 걸 확실히 표현하고 상대를 리드하는 능력이 탁월해요!',m:'편한 상대 앞에서 진짜 모습이 나오는 타입이에요.',l:'말보다 터치와 눈빛으로 소통하는 스타일이에요.'},{name:'호기심 🧭',key:'curiosity',color:'var(--blue)',h:'새로운 시도에 주저함이 없는 탐험가! 다양한 경험이 에너지원이에요.',m:'적당한 모험심. 검증된 새로움을 즐기는 편이에요.',l:'익숙한 패턴에서 편안함을 느끼는 안정 추구형이에요.'},{name:'매력도 ✨',key:'charm',color:'var(--mint)',h:'존재만으로 끌리게 만드는 천생 매력 보유자!',m:'알면 알수록 빠져드는 반전 매력이에요.',l:'가식 없는 솔직함이 가장 큰 무기예요.'}];
   let html='';
-  // 보정 안내
   if(!saju.ut){const c=saju.corrected;html+=`<div class="correction-info"><div class="correction-info-title">✨ 더 정확한 결과를 위해 시간 보정을 적용했어요</div><div class="correction-info-row">한국의 실제 위치에 맞춰 시간을 보정했어요${c.dst?' (서머타임 기간이라 추가 보정도 적용!)':''}.${saju.isYaja?' 밤 11시 이후 출생이라 날짜도 함께 조정했어요.':''}</div></div>`;}
   else html+=`<div class="correction-info"><div class="correction-info-title">ℹ️ 시간 미입력 — 3주 분석</div><div class="correction-info-row">시간을 모르셔서 년·월·일 세 기둥으로 분석했어요. 시간을 알면 더 정확해져요!</div></div>`;
-  // 사주 팔자
   const pils=saju.hour?[['시주',saju.hour],['일주',saju.day],['월주',saju.month],['년주',saju.year]]:[['일주',saju.day],['월주',saju.month],['년주',saju.year]];
   html+=`<div class="pillar-card"><div class="pillar-card-title">📋 나의 사주</div><div class="accuracy-badge">✓ 절기 기반 정밀 계산</div><div class="pillar-grid" style="grid-template-columns:repeat(${pils.length},1fr)">${pils.map(([l,p])=>{const sE=HS_EL[p.s],bE=EB_EL[p.b];return`<div><div class="pillar-col-label">${l}</div><div class="pillar-char">${HS_KR[p.s]}</div><div class="pillar-hanja">${HS_HJ[p.s]}</div><span class="pillar-element el-${EL_EN[sE]}">${sE}</span><div style="margin-top:8px"><div class="pillar-char">${EB_KR[p.b]}</div><div class="pillar-hanja">${EB_HJ[p.b]}</div><span class="pillar-element el-${EL_EN[bE]}">${bE}</span></div></div>`;}).join('')}</div></div>`;
-  // 프로필
   html+=`<div class="profile-card"><div class="profile-emoji">${prof.emoji}</div><div class="profile-title">${prof.title}</div><div class="profile-sub">${prof.emoji} ${HS_EL[saju.day.s]}의 에너지를 가진 사람</div><div class="profile-desc">${prof.desc}</div></div>`;
-  // 에너지 미터
   html+=`<div class="meter-card"><div class="meter-card-title">🔥 성적 에너지 분석</div>`;
   mDef.forEach(m=>{const v=sc[m.key],desc=v>=65?m.h:v>=35?m.m:m.l;html+=`<div class="meter-item"><div class="meter-label"><span class="meter-name">${m.name}</span><span class="meter-val ${sColor(v)}">${v}점 · ${sLabel(v)}</span></div><div class="meter-bar"><div class="meter-fill" style="width:${v}%;background:${m.color}"></div></div><div class="meter-desc">${desc}</div></div>`;});
   html+=`</div>`;
-  // 신살
   const badges=[];
   if(hDohwa(saju))badges.push({emoji:'🌸',name:'도화살 — 타고난 이성 매력',bg:'#FFF0F5',color:'#D63384',desc:'이성을 자연스럽게 끌어당기는 매력이 있어요. 외모, 분위기, 말투에서 "묘하게 끌려…"라는 반응을 자주 받는 타입이에요.'});
   if(hHong(saju))badges.push({emoji:'🔥',name:'홍염살 — 강렬한 성적 에너지',bg:'#FFF0F0',color:'#DC2626',desc:'한번 빠지면 헤어나오기 힘든 중독성의 소유자! 관계에서 정열적이고 대담한 면을 보여줘요.'});
@@ -181,51 +517,273 @@ function renderMy(saju){
   if(hYeok(saju))badges.push({emoji:'🐎',name:'역마살 — 자유로운 모험가',bg:'#FFFBEB',color:'#D97706',desc:'새로운 장소나 상황에서 에너지가 확 올라가요. 여행지 로맨스, 예상치 못한 만남에서 불꽃이 튀는 타입!'});
   if(!badges.length)badges.push({emoji:'✨',name:'안정형 에너지',bg:'#F0FFF4',color:'#16A34A',desc:'극적이진 않지만 꾸준하고 건강한 에너지예요. 신뢰 기반의 깊은 관계에서 진가가 발휘돼요.'});
   html+=`<div class="badge-card"><div class="badge-card-title">⭐ 나만의 특수 에너지</div>`;badges.forEach(b=>html+=`<div class="badge-item" style="background:${b.bg}"><div class="badge-item-header"><span style="font-size:18px">${b.emoji}</span><span class="badge-item-name" style="color:${b.color}">${b.name}</span></div><div class="badge-item-desc">${b.desc}</div></div>`);html+=`</div>`;
-  // 오행 침대 스타일 — 이모지 반복 + 카드
   const elSorted=[...EL_NAMES].sort((a,b)=>els.counts[b]-els.counts[a]);
   const elEmojis={목:'🌳',화:'🔥',토:'⛰️',금:'💎',수:'💧'};
   html+=`<div class="el-section"><div class="meter-card-title">☯️ 오행으로 보는 침대 위 스타일</div>`;
-  elSorted.forEach(el=>{
-    const info=EL_DATA[el],cnt=els.counts[el],pct=els.pcts[el];
-    const dots=cnt>0?elEmojis[el].repeat(cnt):'—';
-    const desc=pct>=30?info.high:pct>=15?info.mid:info.low;
-    const isTop=el===elSorted[0];
-    html+=`<div class="el-item" style="background:${info.color};${cnt===0?'opacity:.45':''}">
-      <div class="el-item-top"><div class="el-item-left"><span class="el-item-name" style="color:${info.accent}">${info.name}</span></div><div class="el-item-dots">${dots}</div></div>
-      <div class="el-item-desc" style="color:${info.accent}">${cnt===0?'이 에너지는 사주에 없어요. 부족한 부분을 의식적으로 채워보는 것도 좋아요.':desc}</div>
-    </div>`;
-  });
+  elSorted.forEach(el=>{const info=EL_DATA[el],cnt=els.counts[el],pct=els.pcts[el];const dots=cnt>0?elEmojis[el].repeat(cnt):'—';const desc=pct>=30?info.high:pct>=15?info.mid:info.low;html+=`<div class="el-item" style="background:${info.color};${cnt===0?'opacity:.45':''}"><div class="el-item-top"><div class="el-item-left"><span class="el-item-name" style="color:${info.accent}">${info.name}</span></div><div class="el-item-dots">${dots}</div></div><div class="el-item-desc" style="color:${info.accent}">${cnt===0?'이 에너지는 사주에 없어요. 부족한 부분을 의식적으로 채워보는 것도 좋아요.':desc}</div></div>`;});
   html+=`</div>`;
-  // 최적 궁합
   const bestProf=PROF[best[0]];
   html+=`<div class="match-card"><div class="match-emoji">${bestProf.emoji} ❤️ ${prof.emoji}</div><div class="match-title">최적 궁합: ${bestProf.title}</div><div class="match-sub">${bestProf.title} 타입을 만나면<br>서로의 에너지가 극대화되는 폭발적인 조합이에요!</div></div>`;
-  // 월별
   html+=`<div class="month-card"><div class="month-card-title">📅 월별 성적 에너지 흐름</div><div class="month-grid">`;
   months.forEach(m=>html+=`<div class="month-cell ${m.cls}"><div class="month-cell-emoji">${m.score>=80?'🔥':m.score>=65?'✨':m.score>=50?'🌙':'💤'}</div><div class="month-cell-name">${m.name}</div><div class="month-cell-keyword" style="color:${m.score>=80?'#DC2626':m.score>=65?'#D97706':'#6B7280'}">${m.keyword}</div><div class="month-cell-score">${m.score}점</div></div>`);
   html+=`</div></div>`;
-  html+=`<div class="action-row"><button class="action-btn" onclick="resetAll()">다시하기</button><button class="action-btn primary" onclick="shareResult()">공유하기</button></div>`;
+  html+=`<div class="action-row">
+    <button class="action-btn reset" onclick="resetAll()">다시하기</button>
+    <button class="action-btn save" onclick="saveImage('my')">📸 이미지 저장</button>
+    <button class="action-btn share" onclick="shareLink()">🔗 링크 공유</button>
+  </div>`;
   document.getElementById('result').innerHTML=html;window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function renderCp(sA,sB){
   const cp=compat(sA,sB),pA=PROF[sA.day.s],pB=PROF[sB.day.s],bed=getBed(sA,sB),tips=getTips(sA,sB);
+  lastCpData={sA,sB,cp,pA,pB};
+  const grade=gradeFromScore(cp.score);
+  const circumference=2*Math.PI*80; // r=80
+  const offset=circumference*(1-cp.score/100);
   let html='';
-  html+=`<div class="cp-score-card"><div class="cp-vs"><div class="cp-person"><div class="cp-person-emoji">${pA.emoji}</div><div class="cp-person-name">${pA.title}</div></div><div class="cp-vs-txt">×</div><div class="cp-person"><div class="cp-person-emoji">${pB.emoji}</div><div class="cp-person-name">${pB.title}</div></div></div><div class="cp-score-num">${cp.score}<span style="font-size:24px">점</span></div><div class="cp-score-label">섹스 궁합 점수</div></div>`;
-  // 궁합 요소 — 카드형 (점수 대신 등급 뱃지)
+
+  // ═══ 새로운 궁합 점수 카드 ═══
+  html+=`<div class="cp-score-card">
+    <div class="cp-score-bg"></div>
+    <div class="cp-score-stars">${renderStarsHTML()}</div>
+    <div class="cp-score-inner">
+      <div class="cp-top-badge">✦ SAJU COMPATIBILITY ✦</div>
+      <div class="cp-vs-new">
+        <div class="cp-pp">
+          <div class="cp-pp-ring"><div class="cp-pp-ring-inner">${pA.emoji}</div></div>
+          <div class="cp-pp-name">${pA.title}</div>
+          <div class="cp-pp-sub">첫 번째</div>
+        </div>
+        <div class="cp-vs-heart">💕</div>
+        <div class="cp-pp">
+          <div class="cp-pp-ring"><div class="cp-pp-ring-inner">${pB.emoji}</div></div>
+          <div class="cp-pp-name">${pB.title}</div>
+          <div class="cp-pp-sub">두 번째</div>
+        </div>
+      </div>
+
+      <div class="cp-score-ring-wrap">
+        <svg class="cp-ring-svg" viewBox="0 0 180 180">
+          <defs>
+            <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ec4899"/>
+              <stop offset="50%" stop-color="#a78bfa"/>
+              <stop offset="100%" stop-color="#2EC4B6"/>
+            </linearGradient>
+          </defs>
+          <circle class="cp-ring-bg" cx="90" cy="90" r="80"/>
+          <circle class="cp-ring-fill" cx="90" cy="90" r="80"
+            stroke-dasharray="${circumference}"
+            stroke-dashoffset="${circumference}"
+            id="cp-ring-progress"/>
+        </svg>
+        <div class="cp-ring-center">
+          <div class="cp-ring-score">${cp.score}</div>
+          <div class="cp-ring-unit">점</div>
+          <div class="cp-ring-label">SCORE</div>
+        </div>
+      </div>
+
+      <div class="cp-grade-wrap">
+        <div class="cp-grade-badge">✨ ${grade.label} ✨</div>
+        <div class="cp-grade-stars">${grade.stars}</div>
+      </div>
+
+      <div class="cp-bottom-msg">${grade.msg}</div>
+    </div>
+  </div>`;
+
   html+=`<div class="factor-card"><div class="factor-title">💕 두 사람의 섹스 궁합 해석</div>`;
   cp.factors.forEach(f=>{html+=`<div class="factor-item" style="background:${f.bg}"><div class="factor-item-header"><span class="factor-name">${f.emoji} ${f.name}</span><span class="factor-grade" style="background:${f.bg};color:${f.gc};border:1px solid ${f.gc}">${f.grade}</span></div><div class="factor-desc">${f.desc}</div></div>`;});
   html+=`</div>`;
   html+=`<div class="bed-card"><div class="bed-card-title">🛏️ 침대 위 궁합</div>`;bed.forEach(b=>html+=`<div class="bed-item" style="background:${b.bg}"><div class="bed-item-header">${b.emoji} ${b.title}</div><div class="bed-item-text">${b.text}</div></div>`);html+=`</div>`;
   html+=`<div class="tip-card"><div class="tip-card-title">💡 더 좋은 관계를 위한 팁</div>`;tips.forEach(t=>html+=`<div class="tip-item"><div class="tip-item-label">${t.label}</div><div class="tip-item-text">${t.text}</div></div>`);html+=`</div>`;
   [['첫 번째 사람',sA,pA],['두 번째 사람',sB,pB]].forEach(([l,s,p])=>{html+=`<div class="profile-card"><div class="profile-emoji">${p.emoji}</div><div class="profile-title">${l}: ${p.title}</div><div class="profile-sub">${p.emoji} ${HS_EL[s.day.s]}의 에너지를 가진 사람</div><div class="profile-desc">${p.desc}</div></div>`;});
-  html+=`<div class="action-row"><button class="action-btn" onclick="resetAll()">다시하기</button><button class="action-btn primary" onclick="shareResult()">공유하기</button></div>`;
+
+  html+=`<div class="action-row">
+    <button class="action-btn reset" onclick="resetAll()">다시하기</button>
+    <button class="action-btn save" onclick="saveImage('cp')">📸 이미지 저장</button>
+    <button class="action-btn share" onclick="shareLink()">🔗 링크 공유</button>
+  </div>`;
+
   document.getElementById('result').innerHTML=html;
-  // 결과로 자동 스크롤
+
+  // 링 애니메이션
+  setTimeout(()=>{
+    const ring=document.getElementById('cp-ring-progress');
+    if(ring) ring.style.strokeDashoffset=offset;
+  },100);
+
   setTimeout(()=>{document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});},100);
 }
 
-function resetAll(){document.getElementById('result').innerHTML='';document.getElementById('hero').style.display='';state.genderMy=null;state.genderA=null;state.genderB=null;state.calMy='solar';state.calA='solar';state.calB='solar';document.querySelectorAll('.gender-btn,.cal-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.cal-btn[data-c="solar"]').forEach(b=>b.classList.add('active'));['my','a','b'].forEach(t=>{document.getElementById(t+'-y').selectedIndex=0;document.getElementById(t+'-m').selectedIndex=0;document.getElementById(t+'-d').selectedIndex=0;document.getElementById(t+'-h').selectedIndex=0;});window.scrollTo({top:0,behavior:'smooth'});}
-function shareResult(){const t='섹스 사주 — 사주명리학으로 읽는 나의 성적 에너지 🔥\nhttps://saju.tryme.im';if(navigator.share)navigator.share({title:'섹스 사주',text:t,url:'https://saju.tryme.im'}).catch(()=>{});else navigator.clipboard.writeText(t).then(()=>showToast('링크가 복사되었어요!')).catch(()=>showToast('공유 기능을 사용할 수 없어요'));}
+function resetAll(){document.getElementById('result').innerHTML='';document.getElementById('hero').style.display='';state.genderMy=null;state.genderA=null;state.genderB=null;state.calMy='solar';state.calA='solar';state.calB='solar';lastMySaju=null;lastCpData=null;document.querySelectorAll('.gender-btn,.cal-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.cal-btn[data-c="solar"]').forEach(b=>b.classList.add('active'));['my','a','b'].forEach(t=>{document.getElementById(t+'-y').selectedIndex=0;document.getElementById(t+'-m').selectedIndex=0;refreshDays(t);document.getElementById(t+'-h').selectedIndex=0;});window.scrollTo({top:0,behavior:'smooth'});}
+
+// ═══════════════════════════════════════════
+// 4번 요청: 링크 공유 (love.tryme.im)
+// ═══════════════════════════════════════════
+function shareLink(){
+  const t='섹스 사주 — 사주명리학으로 읽는 나의 성적 에너지 🔥\n'+SITE_URL;
+  if(navigator.share){
+    navigator.share({title:'섹스 사주',text:t,url:SITE_URL}).catch(()=>{});
+  }else{
+    navigator.clipboard.writeText(t).then(()=>showToast('🔗 링크가 복사되었어요!')).catch(()=>showToast('공유 기능을 사용할 수 없어요'));
+  }
+}
+
+// ═══════════════════════════════════════════
+// 3번 요청: 결과를 9:16 이미지로 저장
+// ═══════════════════════════════════════════
+function buildStars(){
+  let s='';
+  for(let i=0;i<40;i++){
+    const x=Math.random()*100, y=Math.random()*100, r=0.5+Math.random()*1.5, op=0.3+Math.random()*0.7;
+    s+=`<circle cx="${x}%" cy="${y}%" r="${r}" fill="white" opacity="${op}"/>`;
+  }
+  return `<svg>${s}</svg>`;
+}
+
+function buildMyShareCard(saju){
+  const prof=PROF[saju.day.s];
+  const badges=[];
+  if(hDohwa(saju)) badges.push('🌸 도화살');
+  if(hHong(saju)) badges.push('🔥 홍염살');
+  if(hHam(saju)) badges.push('💦 함지살');
+  if(hMok(saju)) badges.push('🛁 목욕살');
+  if(hYeok(saju)) badges.push('🐎 역마살');
+  if(!badges.length) badges.push('✨ 안정형 에너지');
+  // 최대 3개
+  const shownBadges=badges.slice(0,3);
+  return `
+    <div class="sc-bg"></div>
+    <div class="sc-stars">${buildStars()}</div>
+    <div class="sc-inner">
+      <div class="sc-brand">SEX SAJU</div>
+      <div class="sc-title">나의 <span class="accent">섹스 사주</span></div>
+      <div class="sc-divider"></div>
+
+      <div class="sc-profile">
+        <div class="sc-profile-emoji">${prof.emoji}</div>
+        <div class="sc-profile-title">${prof.title}</div>
+        <div class="sc-profile-sub">${HS_EL[saju.day.s]}의 에너지를 가진 사람</div>
+        <div class="sc-profile-desc">${prof.desc}</div>
+        <div class="sc-pills">
+          ${shownBadges.map(b=>`<div class="sc-pill">${b}</div>`).join('')}
+        </div>
+      </div>
+
+      <div class="sc-footer">
+        <div class="sc-footer-url">love.tryme.im</div>
+        <div class="sc-footer-sub">나만의 섹스 사주 보기</div>
+      </div>
+    </div>`;
+}
+
+function buildCpShareCard(d){
+  const grade=gradeFromScore(d.cp.score);
+  return `
+    <div class="sc-bg"></div>
+    <div class="sc-stars">${buildStars()}</div>
+    <div class="sc-inner">
+      <div class="sc-brand">SEX SAJU × COMPATIBILITY</div>
+      <div class="sc-title">우리의 <span class="accent">섹스 궁합</span></div>
+      <div class="sc-divider"></div>
+
+      <div class="sc-cp-hero">
+        <div class="sc-cp-persons">
+          <div class="sc-cp-p">
+            <div class="sc-cp-p-emoji">${d.pA.emoji}</div>
+            <div class="sc-cp-p-name">${d.pA.title}</div>
+          </div>
+          <div class="sc-cp-heart">💕</div>
+          <div class="sc-cp-p">
+            <div class="sc-cp-p-emoji">${d.pB.emoji}</div>
+            <div class="sc-cp-p-name">${d.pB.title}</div>
+          </div>
+        </div>
+
+        <div class="sc-cp-score-circle">
+          <div>
+            <span class="sc-cp-score-num">${d.cp.score}</span><span class="sc-cp-score-unit">점</span>
+          </div>
+        </div>
+
+        <div class="sc-cp-grade">✨ ${grade.label} ✨</div>
+        <div class="sc-cp-stars">${grade.stars}</div>
+        <div class="sc-cp-tag">${grade.msg}</div>
+      </div>
+
+      <div class="sc-footer">
+        <div class="sc-footer-url">love.tryme.im</div>
+        <div class="sc-footer-sub">우리만의 섹스 궁합 보기</div>
+      </div>
+    </div>`;
+}
+
+async function saveImage(type){
+  const data = type==='my'? lastMySaju : lastCpData;
+  if(!data){showToast('결과를 먼저 생성해주세요');return;}
+
+  document.getElementById('save-loading').classList.add('show');
+
+  // 공유 캔버스 준비
+  const canvas=document.getElementById('share-canvas');
+  canvas.innerHTML = type==='my' ? buildMyShareCard(data) : buildCpShareCard(data);
+
+  // 렌더링 시간 확보
+  await new Promise(r=>setTimeout(r,300));
+
+  try{
+    const result=await html2canvas(canvas,{
+      width:450,
+      height:800,
+      scale:2,
+      backgroundColor:'#0a0e1a',
+      useCORS:true,
+      logging:false
+    });
+
+    const fileName = type==='my' ? `섹스사주_결과_${Date.now()}.png` : `섹스궁합_결과_${Date.now()}.png`;
+
+    // Web Share API가 파일을 지원하면 공유, 아니면 다운로드
+    result.toBlob(async (blob)=>{
+      document.getElementById('save-loading').classList.remove('show');
+      if(!blob){showToast('이미지 생성 실패');return;}
+
+      const file=new File([blob], fileName, {type:'image/png'});
+
+      // 모바일: Web Share API로 공유/저장
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        try{
+          await navigator.share({files:[file], title:'섹스 사주', text:'내 결과 확인하기 '+SITE_URL});
+          showToast('✨ 공유되었어요!');
+        }catch(e){
+          // 사용자가 취소하면 다운로드로 fallback
+          if(e.name!=='AbortError') downloadBlob(blob,fileName);
+        }
+      }else{
+        // PC: 다운로드
+        downloadBlob(blob,fileName);
+        showToast('📸 이미지가 저장되었어요!');
+      }
+    },'image/png',0.95);
+  }catch(err){
+    console.error(err);
+    document.getElementById('save-loading').classList.remove('show');
+    showToast('이미지 생성 중 오류가 발생했어요');
+  }
+}
+
+function downloadBlob(blob,name){
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=name;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},100);
+}
+
 document.addEventListener('DOMContentLoaded',()=>{initSelects();});
 </script>
 </body>
