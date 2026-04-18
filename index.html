@@ -402,46 +402,48 @@ function buildShareCardSaju(){
     {k:'dominant',l:'주도력',emoji:'👑'},{k:'expressive',l:'표현력',emoji:'💕'}
   ].sort((a,b)=>sc[b.k]-sc[a.k]);
   
-  const starTags=stars.slice(0,2).map(s=>`<span style="display:inline-block;background:${mainColor}18;color:${mainColor};padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800">${s.emoji} ${s.nm}</span>`).join(' ');
+  const starTags=stars.map(s=>`<span style="display:inline-block;background:${mainColor}18;color:${mainColor};padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800">${s.emoji} ${s.nm}</span>`).join(' ');
 
   return`<div class="sc9" style="background:${cardBg};color:#1A1A1A;overflow:hidden;position:relative;border-radius:28px">
-  <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:24px 24px 18px">
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:24px 24px 20px">
     
-    <div style="display:flex;justify-content:space-between;align-items:center;height:20px;margin-bottom:14px;flex-shrink:0">
-      <div style="font-size:12px;font-weight:700;color:#999">🫣 19금 사주풀이</div>
-      <div style="font-size:12px;font-weight:700;color:${mainColor}">${p.name}님</div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-size:12px;font-weight:700;color:#999">🫣 19금 사주풀이</div>
+        <div style="font-size:12px;font-weight:700;color:${mainColor}">${p.name}님</div>
+      </div>
+      
+      <div style="margin-bottom:4px">
+        <div style="font-size:64px;line-height:1;margin-bottom:6px">${type.emoji}</div>
+        <div style="font-family:'Jua',sans-serif;font-size:32px;line-height:1.15;color:#1A1A1A">${type.nm}</div>
+      </div>
+      <div style="font-size:14px;font-weight:600;color:#666;line-height:1.4;margin-bottom:8px">${type.tag}</div>
+      
+      <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:12px">
+        <div style="font-family:'Jua',sans-serif;font-size:44px;line-height:1;color:${mainColor}">${type.pct}%</div>
+        <div style="font-size:12px;font-weight:700;color:#999;margin-left:4px">만 이 유형</div>
+      </div>
     </div>
     
-    <div style="flex-shrink:0;margin-bottom:8px">
-      <div style="font-size:64px;line-height:1;margin-bottom:8px">${type.emoji}</div>
-      <div style="font-family:'Jua',sans-serif;font-size:32px;line-height:1.15;color:#1A1A1A">${type.nm}</div>
-    </div>
-    <div style="font-size:14px;font-weight:600;color:#666;line-height:1.4;margin-bottom:10px;flex-shrink:0">${type.tag}</div>
-    
-    <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:12px;flex-shrink:0">
-      <div style="font-family:'Jua',sans-serif;font-size:44px;line-height:1;color:${mainColor}">${type.pct}%</div>
-      <div style="font-size:12px;font-weight:700;color:#999;margin-left:4px">만 이 유형</div>
-    </div>
-    
-    <div style="background:#fff;border-radius:16px;padding:12px 14px;margin-bottom:10px;flex-shrink:0">
-      <div style="font-size:13px;font-weight:700;color:#333;line-height:1.55">${type.cardLine}</div>
-    </div>
-    
-    ${starTags?`<div style="margin-bottom:8px;flex-shrink:0">${starTags}</div>`:''}
-    
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;flex-shrink:0">
-      ${allStats.map(s=>`<div style="background:#fff;border-radius:12px;padding:8px 6px;text-align:center">
-        <div style="font-size:13px">${s.emoji}</div>
-        <div style="font-family:'Jua',sans-serif;font-size:20px;line-height:1;color:${mainColor}">${sc[s.k]}</div>
-        <div style="font-size:9px;font-weight:700;color:#AAA;margin-top:1px">${s.l}</div>
-      </div>`).join('')}
-    </div>
-    
-    <div style="flex:1"></div>
-    
-    <div style="text-align:center;flex-shrink:0;padding-top:8px">
-      <div style="font-size:10px;font-weight:700;color:#BBB;margin-bottom:5px;letter-spacing:0.3px">섹슈얼 웰니스 매거진</div>
-      <img src="https://bdsm.tryme.im/logo.png" alt="tryme" style="height:18px;opacity:0.3;display:block;margin:0 auto" crossorigin="anonymous">
+    <div>
+      <div style="background:#fff;border-radius:16px;padding:12px 14px;margin-bottom:8px">
+        <div style="font-size:13px;font-weight:700;color:#333;line-height:1.55">${type.cardLine}</div>
+      </div>
+      
+      ${starTags?`<div style="margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px">${starTags}</div>`:''}
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:12px">
+        ${allStats.map(s=>`<div style="background:#fff;border-radius:12px;padding:8px 6px;text-align:center">
+          <div style="font-size:13px">${s.emoji}</div>
+          <div style="font-family:'Jua',sans-serif;font-size:20px;line-height:1;color:${mainColor}">${sc[s.k]}</div>
+          <div style="font-size:9px;font-weight:700;color:#AAA;margin-top:1px">${s.l}</div>
+        </div>`).join('')}
+      </div>
+      
+      <div style="text-align:center">
+        <div style="font-size:10px;font-weight:700;color:#BBB;margin-bottom:5px;letter-spacing:0.3px">섹슈얼 웰니스 매거진</div>
+        <img src="https://bdsm.tryme.im/logo.png" alt="tryme" style="height:18px;opacity:0.3;display:block;margin:0 auto" crossorigin="anonymous">
+      </div>
     </div>
     
   </div>
@@ -458,59 +460,61 @@ function buildShareCardCompat(){
   const barBg=ov>=80?'#FFD0DA':ov>=65?'#FFE0C8':'#C8DCFF';
 
   return`<div class="sc9" style="background:${cardBg};color:#1A1A1A;overflow:hidden;position:relative;border-radius:28px">
-  <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:24px 22px 18px">
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:24px 22px 20px">
     
-    <div style="text-align:center;margin-bottom:12px;flex-shrink:0">
-      <div style="font-size:12px;font-weight:700;color:#999">🫣 19금 사주풀이 · 잠자리 궁합</div>
-    </div>
-    
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;flex-shrink:0">
-      <div style="font-family:'Jua',sans-serif;font-size:20px;color:#1A1A1A">${p1.name}</div>
-      <div style="font-size:24px">💕</div>
-      <div style="font-family:'Jua',sans-serif;font-size:20px;color:#1A1A1A">${p2.name}</div>
-    </div>
-    
-    <div style="text-align:center;margin-bottom:14px;flex-shrink:0">
-      <div style="font-family:'Jua',sans-serif;font-size:80px;line-height:1;color:${mainColor};letter-spacing:-3px">${ov}<span style="font-size:26px;color:#999;letter-spacing:0">점</span></div>
-      <div style="font-size:12px;font-weight:700;color:#AAA;margin-top:2px">잠자리 궁합 점수</div>
-    </div>
-    
-    <div style="display:flex;gap:7px;margin-bottom:10px;flex-shrink:0">
-      <div style="flex:1;background:#fff;border-radius:14px;padding:10px 8px;text-align:center">
-        <div style="font-size:9px;font-weight:700;color:#BBB;margin-bottom:3px">${p1.name}</div>
-        <div style="font-size:26px;margin-bottom:2px">${r1.type.emoji}</div>
-        <div style="font-size:13px;font-weight:900;color:#1A1A1A">${r1.type.nm}</div>
+    <div>
+      <div style="text-align:center;margin-bottom:10px">
+        <div style="font-size:12px;font-weight:700;color:#999">🫣 19금 사주풀이 · 잠자리 궁합</div>
       </div>
-      <div style="flex:1;background:#fff;border-radius:14px;padding:10px 8px;text-align:center">
-        <div style="font-size:9px;font-weight:700;color:#BBB;margin-bottom:3px">${p2.name}</div>
-        <div style="font-size:26px;margin-bottom:2px">${r2.type.emoji}</div>
-        <div style="font-size:13px;font-weight:900;color:#1A1A1A">${r2.type.nm}</div>
+      
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px">
+        <div style="font-family:'Jua',sans-serif;font-size:20px;color:#1A1A1A">${p1.name}</div>
+        <div style="font-size:24px">💕</div>
+        <div style="font-family:'Jua',sans-serif;font-size:20px;color:#1A1A1A">${p2.name}</div>
+      </div>
+      
+      <div style="text-align:center;margin-bottom:12px">
+        <div style="font-family:'Jua',sans-serif;font-size:80px;line-height:1;color:${mainColor};letter-spacing:-3px">${ov}<span style="font-size:26px;color:#999;letter-spacing:0">점</span></div>
+        <div style="font-size:12px;font-weight:700;color:#AAA;margin-top:2px">잠자리 궁합 점수</div>
       </div>
     </div>
     
-    <div style="background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:10px;flex-shrink:0">
-      ${facArr.map((f,i)=>`<div style="display:flex;align-items:center;gap:6px;${i<facArr.length-1?'margin-bottom:8px':''}">
-        <div style="display:flex;align-items:center;gap:3px;width:74px;flex-shrink:0">
-          <span style="font-size:12px">${f.emoji}</span>
-          <span style="font-size:11px;font-weight:800;color:#555">${f.nm}</span>
+    <div>
+      <div style="display:flex;gap:7px;margin-bottom:8px">
+        <div style="flex:1;background:#fff;border-radius:14px;padding:10px 8px;text-align:center">
+          <div style="font-size:9px;font-weight:700;color:#BBB;margin-bottom:3px">${p1.name}</div>
+          <div style="font-size:26px;margin-bottom:2px">${r1.type.emoji}</div>
+          <div style="font-size:13px;font-weight:900;color:#1A1A1A">${r1.type.nm}</div>
         </div>
-        <div style="flex:1;height:8px;background:${barBg};border-radius:4px;overflow:hidden">
-          <div style="height:100%;width:${f.s}%;border-radius:4px;background:${mainColor}"></div>
+        <div style="flex:1;background:#fff;border-radius:14px;padding:10px 8px;text-align:center">
+          <div style="font-size:9px;font-weight:700;color:#BBB;margin-bottom:3px">${p2.name}</div>
+          <div style="font-size:26px;margin-bottom:2px">${r2.type.emoji}</div>
+          <div style="font-size:13px;font-weight:900;color:#1A1A1A">${r2.type.nm}</div>
         </div>
-        <div style="font-family:'Jua',sans-serif;font-size:14px;width:28px;text-align:right;color:${mainColor}">${f.s}</div>
-      </div>`).join('')}
-    </div>
-    
-    <div style="background:#fff;border-radius:14px;padding:10px 14px;flex-shrink:0">
-      <div style="font-size:10px;font-weight:800;color:${mainColor};margin-bottom:4px">💌 종합 한마디</div>
-      <div style="font-size:12px;font-weight:600;color:#555;line-height:1.5">${sumShort}</div>
-    </div>
-    
-    <div style="flex:1"></div>
-    
-    <div style="text-align:center;flex-shrink:0;padding-top:8px">
-      <div style="font-size:10px;font-weight:700;color:#BBB;margin-bottom:5px;letter-spacing:0.3px">섹슈얼 웰니스 매거진</div>
-      <img src="https://bdsm.tryme.im/logo.png" alt="tryme" style="height:18px;opacity:0.3;display:block;margin:0 auto" crossorigin="anonymous">
+      </div>
+      
+      <div style="background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:8px">
+        ${facArr.map((f,i)=>`<div style="display:flex;align-items:center;gap:6px;${i<facArr.length-1?'margin-bottom:8px':''}">
+          <div style="display:flex;align-items:center;gap:3px;width:74px;flex-shrink:0">
+            <span style="font-size:12px">${f.emoji}</span>
+            <span style="font-size:11px;font-weight:800;color:#555">${f.nm}</span>
+          </div>
+          <div style="flex:1;height:8px;background:${barBg};border-radius:4px;overflow:hidden">
+            <div style="height:100%;width:${f.s}%;border-radius:4px;background:${mainColor}"></div>
+          </div>
+          <div style="font-family:'Jua',sans-serif;font-size:14px;width:28px;text-align:right;color:${mainColor}">${f.s}</div>
+        </div>`).join('')}
+      </div>
+      
+      <div style="background:#fff;border-radius:14px;padding:10px 14px;margin-bottom:12px">
+        <div style="font-size:10px;font-weight:800;color:${mainColor};margin-bottom:4px">💌 종합 한마디</div>
+        <div style="font-size:12px;font-weight:600;color:#555;line-height:1.5">${sumShort}</div>
+      </div>
+      
+      <div style="text-align:center">
+        <div style="font-size:10px;font-weight:700;color:#BBB;margin-bottom:5px;letter-spacing:0.3px">섹슈얼 웰니스 매거진</div>
+        <img src="https://bdsm.tryme.im/logo.png" alt="tryme" style="height:18px;opacity:0.3;display:block;margin:0 auto" crossorigin="anonymous">
+      </div>
     </div>
     
   </div>
