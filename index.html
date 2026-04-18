@@ -410,7 +410,6 @@ function renderComp(p1,p2,r, isShared=false){
     <div class="rc-sec"><div class="sec-t"><span class="sec-t-emoji">✨</span><span class="sec-t-title">상세 궁합</span></div><div class="cstat-list">${fi.map(x=>{const f=fac[x.k];return`<div><div class="cstat-top"><div class="cstat-left"><span class="cstat-emoji">${f.emoji}</span><span class="cstat-label">${f.nm}</span><span class="cstat-desc">${f.d}</span></div><div class="cstat-val">${f.s}</div></div><div class="cstat-track"><div class="cstat-fill ${x.cls}" style="width:${f.s}%"></div></div></div>`}).join('')}</div></div>
     <div class="rc-sec"><div class="cp-sum"><div class="cp-sum-t"><span class="cp-sum-emoji">💌</span>종합 풀이</div><div class="cp-sum-txt">${sum}</div></div></div>
   </div>
-  </div>
   ${isShared 
     ? `<div class="acts"><button class="act act-s" onclick="window.location.href=window.location.pathname">✨ 나도 사주 보러가기</button></div>` 
     : `<div class="acts"><button class="act act-s" onclick="doNativeShare()">📤 공유하기</button><button class="act act-r" onclick="goBack()">🔄 다시하기</button></div>`}`;
