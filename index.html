@@ -380,120 +380,90 @@ function goBack(){$('result-area').style.display='none';$('input-area').style.di
 
 /* ═══ NEW 9:16 공유 카드 빌더 ═══ */
 
-function getGradient(hc){
-  const g={
-    'rh-fire':'linear-gradient(160deg,#1A0A00 0%,#3D0800 30%,#8B1A00 60%,#FF4D4D 100%)',
-    'rh-water':'linear-gradient(160deg,#0A0E1F 0%,#0D2040 30%,#1A4A7A 60%,#4A90E2 100%)',
-    'rh-wood':'linear-gradient(160deg,#0A1A10 0%,#0D3020 30%,#1A5A3C 60%,#3D8B6C 100%)',
-    'rh-metal':'linear-gradient(160deg,#1A1008 0%,#2E1A0A 30%,#5A3520 60%,#8B5A3C 100%)',
-    'rh-earth':'linear-gradient(160deg,#1A1500 0%,#3D2E00 30%,#7A5A10 60%,#E5AB2E 100%)',
-    'rh-mix1':'linear-gradient(160deg,#1A0020 0%,#3D0040 30%,#7A1060 60%,#FF4D6A 100%)',
-    'rh-mix2':'linear-gradient(160deg,#1A0800 0%,#4A1000 30%,#8B2A10 60%,#FF6A3D 100%)',
-    'rh-mix3':'linear-gradient(160deg,#0A1020 0%,#102840 30%,#1A5060 60%,#4ABBA0 100%)',
-    'rh-mix4':'linear-gradient(160deg,#0A1A08 0%,#1A3A10 30%,#3A6A20 60%,#8BC040 100%)',
-    'rh-mix5':'linear-gradient(160deg,#101020 0%,#1A2050 30%,#304080 60%,#5AB8FF 100%)',
-    'rh-mix6':'linear-gradient(160deg,#1A1000 0%,#3A2200 30%,#6A4010 60%,#B88560 100%)',
-    'rh-balanced':'linear-gradient(160deg,#1A0A10 0%,#3D1030 30%,#8B2050 60%,#FF6B8A 100%)',
-    'rh-balanced2':'linear-gradient(160deg,#100A20 0%,#201040 30%,#4A2080 60%,#9A70E0 100%)'
+function getCardBg(hc){
+  const m={
+    'rh-fire':['#FFF0EC','#FF6B4A'],'rh-water':['#ECF3FF','#4A90E2'],'rh-wood':['#ECFFF4','#3D8B6C'],
+    'rh-metal':['#F5F0EB','#8B5A3C'],'rh-earth':['#FFF8E0','#C48A00'],
+    'rh-mix1':['#FFECF0','#E8365A'],'rh-mix2':['#FFF0E8','#D45A20'],'rh-mix3':['#E8FFF6','#2A9A7A'],
+    'rh-mix4':['#F0FFE8','#5A9A20'],'rh-mix5':['#ECF0FF','#4070D0'],'rh-mix6':['#F5EFE5','#9A7040'],
+    'rh-balanced':['#FFF0F4','#E84A70'],'rh-balanced2':['#F0ECFF','#7A50D0']
   };
-  return g[hc]||'linear-gradient(160deg,#1A0A00 0%,#3D1020 30%,#8B2040 60%,#FF6F0F 100%)';
-}
-
-function getAccent(hc){
-  const a={
-    'rh-fire':'#FF6B4A','rh-water':'#72BCFD','rh-wood':'#6DD49A','rh-metal':'#D4A574',
-    'rh-earth':'#FFD84D','rh-mix1':'#FF8DA1','rh-mix2':'#FFB070','rh-mix3':'#72D4C0',
-    'rh-mix4':'#B8E060','rh-mix5':'#72BCFD','rh-mix6':'#E5C080',
-    'rh-balanced':'#FFB0C4','rh-balanced2':'#C4A8FF'
-  };
-  return a[hc]||'#FF8A3D';
+  return m[hc]||['#FFF0EC','#FF6F0F'];
 }
 
 function buildShareCardSaju(){
   const{p,r}=_lastResult;
   const{type,sc,dayEl,stars}=r;
   const bestT=TYPES[type.bestMatch],worstT=type.worstMatch?TYPES[type.worstMatch]:null;
-  const bg=getGradient(type.hc);
-  const accent=getAccent(type.hc);
+  const[cardBg,mainColor]=getCardBg(type.hc);
   
-  // pick top 3 stats
-  const statEntries=[
+  // top 1 stat for big number
+  const allStats=[
     {k:'passion',l:'열정',emoji:'🔥'},{k:'sensual',l:'감각',emoji:'💋'},
     {k:'adventure',l:'모험',emoji:'🎲'},{k:'romantic',l:'감성',emoji:'💖'},
     {k:'dominant',l:'주도력',emoji:'👑'},{k:'expressive',l:'표현력',emoji:'💕'}
   ].sort((a,b)=>sc[b.k]-sc[a.k]);
-  const top3=statEntries.slice(0,3);
   
-  // star tags
-  const starLine=stars.length?stars.map(s=>s.emoji+s.nm).join(' · '):'';
+  // star names
+  const starTags=stars.length?stars.map(s=>`<span style="display:inline-block;background:${mainColor}18;color:${mainColor};padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800;margin:0 2px">${s.emoji} ${s.nm}</span>`).join(''):'';
   
-  // short bedroom text
-  const bedroomShort=type.bedroom.length>60?type.bedroom.substring(0,58)+'…':type.bedroom;
+  // bedroom short
+  const bed=type.bedroom.length>55?type.bedroom.substring(0,53)+'…':type.bedroom;
 
-  return`<div class="sc9" style="background:${bg};color:#fff;overflow:hidden;position:relative">
-  <!-- decorative elements -->
-  <div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:${accent};opacity:0.06"></div>
-  <div style="position:absolute;bottom:80px;left:-60px;width:200px;height:200px;border-radius:50%;background:${accent};opacity:0.04"></div>
-  <div style="position:absolute;top:50%;right:-20px;width:100px;height:100px;border-radius:50%;background:#fff;opacity:0.03"></div>
+  return`<div class="sc9" style="background:${cardBg};color:#1A1A1A;overflow:hidden;position:relative;border-radius:28px">
   
-  <div style="position:relative;z-index:1;height:100%;display:flex;flex-direction:column;padding:24px 22px 18px">
+  <div style="position:relative;z-index:1;height:100%;display:flex;flex-direction:column;padding:28px 26px 22px">
     
-    <!-- top badge -->
-    <div style="text-align:center;margin-bottom:16px">
-      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.3px">🫣 19금 사주풀이</div>
+    <!-- top: badge + name -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <div style="font-size:13px;font-weight:700;color:#999;letter-spacing:-0.02em">🫣 19금 사주풀이</div>
+      <div style="font-size:13px;font-weight:700;color:${mainColor}">${p.name}님</div>
     </div>
     
-    <!-- main type area -->
-    <div style="text-align:center;margin-bottom:16px">
-      <div style="font-size:60px;line-height:1;margin-bottom:6px;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3))">${type.emoji}</div>
-      <div style="font-size:12px;font-weight:600;opacity:0.6;margin-bottom:4px">${p.name}님의 잠자리 유형</div>
-      <div style="font-family:'Jua',sans-serif;font-size:32px;line-height:1.15;margin-bottom:6px;text-shadow:0 2px 12px rgba(0,0,0,0.3)">${type.nm}</div>
-      <div style="font-size:13px;font-weight:600;opacity:0.75;margin-bottom:10px">${type.tag}</div>
-      <div style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.12);padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700">🏷️ 상위 ${type.pct}%</div>
+    <!-- hero: big emoji + type name -->
+    <div style="text-align:left;margin-bottom:6px">
+      <div style="font-size:72px;line-height:1;margin-bottom:10px">${type.emoji}</div>
+      <div style="font-family:'Jua',sans-serif;font-size:36px;line-height:1.15;color:#1A1A1A;letter-spacing:-0.02em">${type.nm}</div>
+    </div>
+    <div style="font-size:15px;font-weight:600;color:#666;line-height:1.5;margin-bottom:16px">${type.tag}</div>
+    
+    <!-- rarity percent - big -->
+    <div style="display:inline-flex;align-items:baseline;gap:2px;margin-bottom:20px">
+      <div style="font-family:'Jua',sans-serif;font-size:48px;line-height:1;color:${mainColor}">${type.pct}%</div>
+      <div style="font-size:13px;font-weight:700;color:#999;margin-left:6px">만 이 유형</div>
     </div>
     
-    <!-- bedroom quote -->
-    <div style="background:rgba(255,255,255,0.08);border-radius:16px;padding:14px 16px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.06)">
-      <div style="font-size:10px;font-weight:800;opacity:0.5;margin-bottom:6px;letter-spacing:0.5px">😈 BEDROOM STYLE</div>
-      <div style="font-size:13px;font-weight:600;line-height:1.55;opacity:0.9">${bedroomShort}</div>
+    <!-- bedroom style card -->
+    <div style="background:#fff;border-radius:18px;padding:16px 18px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.04)">
+      <div style="font-size:11px;font-weight:800;color:${mainColor};margin-bottom:6px">😈 침대 위 스타일</div>
+      <div style="font-size:13px;font-weight:600;color:#444;line-height:1.6">${bed}</div>
     </div>
     
-    <!-- top 3 stats as hexagon-style badges -->
-    <div style="display:flex;justify-content:center;gap:10px;margin-bottom:12px">
-      ${top3.map(s=>`<div style="flex:1;background:rgba(255,255,255,0.08);border-radius:14px;padding:12px 6px;text-align:center;border:1px solid rgba(255,255,255,0.06)">
-        <div style="font-size:18px;margin-bottom:2px">${s.emoji}</div>
-        <div style="font-family:'Jua',sans-serif;font-size:26px;line-height:1;color:${accent}">${sc[s.k]}</div>
-        <div style="font-size:10px;font-weight:700;opacity:0.5;margin-top:2px">${s.l}</div>
+    <!-- star tags (나만의 매력) -->
+    ${starTags?`<div style="margin-bottom:12px">${starTags}</div>`:''}
+    
+    <!-- 6 stats in 2x3 grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:auto">
+      ${allStats.map(s=>`<div style="background:#fff;border-radius:14px;padding:10px 8px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.03)">
+        <div style="font-size:14px;margin-bottom:1px">${s.emoji}</div>
+        <div style="font-family:'Jua',sans-serif;font-size:22px;line-height:1;color:${mainColor}">${sc[s.k]}</div>
+        <div style="font-size:9px;font-weight:700;color:#AAA;margin-top:2px">${s.l}</div>
       </div>`).join('')}
     </div>
     
-    <!-- ON / OFF -->
-    <div style="display:flex;gap:8px;margin-bottom:12px">
-      <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:12px;padding:10px 12px;border:1px solid rgba(255,255,255,0.06)">
-        <div style="font-size:9px;font-weight:900;color:#6DFF6D;opacity:0.8;margin-bottom:4px;letter-spacing:0.5px">🟢 ON</div>
-        <div style="font-size:11px;font-weight:600;line-height:1.4;opacity:0.85">${type.turnOn.length>30?type.turnOn.substring(0,28)+'…':type.turnOn}</div>
-      </div>
-      <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:12px;padding:10px 12px;border:1px solid rgba(255,255,255,0.06)">
-        <div style="font-size:9px;font-weight:900;color:#FF6B6B;opacity:0.8;margin-bottom:4px;letter-spacing:0.5px">🔴 OFF</div>
-        <div style="font-size:11px;font-weight:600;line-height:1.4;opacity:0.85">${type.turnOff.length>30?type.turnOff.substring(0,28)+'…':type.turnOff}</div>
-      </div>
-    </div>
-    
-    ${starLine?`<div style="text-align:center;margin-bottom:10px"><div style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.08);padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;opacity:0.8;border:1px solid rgba(255,255,255,0.06)">${starLine}</div></div>`:''}
-    
     <!-- spacer -->
-    <div style="flex:1;min-height:4px"></div>
+    <div style="flex:1;min-height:8px"></div>
     
-    <!-- best/worst match -->
-    <div style="display:flex;justify-content:center;gap:20px;margin-bottom:12px">
-      ${bestT?`<div style="text-align:center"><div style="font-size:9px;font-weight:800;opacity:0.45;margin-bottom:3px">💖 최고 궁합</div><div style="font-size:22px">${bestT.emoji}</div><div style="font-size:11px;font-weight:700;opacity:0.8">${bestT.nm}</div></div>`:''}
-      ${worstT?`<div style="text-align:center"><div style="font-size:9px;font-weight:800;opacity:0.45;margin-bottom:3px">💀 최악 궁합</div><div style="font-size:22px">${worstT.emoji}</div><div style="font-size:11px;font-weight:700;opacity:0.8">${worstT.nm}</div></div>`:''}
-    </div>
-    
-    <!-- footer CTA + tryme branding -->
-    <div style="text-align:center;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08)">
-      <div style="font-size:14px;font-weight:800;margin-bottom:3px">나도 해보기 → love.tryme.im</div>
-      <div style="font-size:10px;opacity:0.4;font-weight:600">섹슈얼 웰니스 매거진 트라이미 · tryme.im</div>
+    <!-- footer -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-end">
+      <div>
+        <div style="font-size:15px;font-weight:900;color:#1A1A1A;margin-bottom:2px">나도 해보기 →</div>
+        <div style="font-size:11px;font-weight:600;color:#BBB">love.tryme.im</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:9px;font-weight:700;color:#CCC;margin-bottom:1px">섹슈얼 웰니스 매거진</div>
+        <div style="font-size:12px;font-weight:800;color:#999">트라이미</div>
+      </div>
     </div>
     
   </div>
@@ -504,77 +474,83 @@ function buildShareCardCompat(){
   const{p1,p2,r}=_lastResult;
   const{ov,fac,sum,r1,r2}=r;
   const facArr=[fac.chem,fac.comm,fac.phys,fac.adv];
-  const sumShort=sum.length>80?sum.substring(0,78)+'…':sum;
+  const sumShort=sum.length>70?sum.substring(0,68)+'…':sum;
+  const mainColor=ov>=80?'#E84A70':ov>=65?'#FF8A3D':'#4A90E2';
+  const cardBg=ov>=80?'#FFF0F4':ov>=65?'#FFF5EC':'#ECF3FF';
+  const barBg=ov>=80?'#FFD0DA':ov>=65?'#FFE0C8':'#C8DCFF';
+  const barFill=mainColor;
+
+  return`<div class="sc9" style="background:${cardBg};color:#1A1A1A;overflow:hidden;position:relative;border-radius:28px">
   
-  // score color
-  const scoreColor=ov>=85?'#FF6B8A':ov>=70?'#FFB070':'#72BCFD';
-  
-  return`<div class="sc9" style="background:linear-gradient(160deg,#1A0810 0%,#2A0A20 25%,#4A1040 50%,#8A2060 75%,#FF4D80 100%);color:#fff;overflow:hidden;position:relative">
-  <!-- deco -->
-  <div style="position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;background:#FF6B8A;opacity:0.06"></div>
-  <div style="position:absolute;bottom:60px;left:-40px;width:160px;height:160px;border-radius:50%;background:#FFB070;opacity:0.05"></div>
-  
-  <div style="position:relative;z-index:1;height:100%;display:flex;flex-direction:column;padding:22px 20px 16px">
+  <div style="position:relative;z-index:1;height:100%;display:flex;flex-direction:column;padding:28px 26px 22px">
     
-    <!-- badge -->
-    <div style="text-align:center;margin-bottom:14px">
-      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.3px">🫣 19금 사주풀이 · 잠자리 궁합</div>
+    <!-- top badge -->
+    <div style="text-align:center;margin-bottom:18px">
+      <div style="font-size:13px;font-weight:700;color:#999">🫣 19금 사주풀이 · 잠자리 궁합</div>
     </div>
     
-    <!-- names + score -->
-    <div style="text-align:center;margin-bottom:14px">
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px">
-        <div style="font-family:'Jua',sans-serif;font-size:20px">${p1.name}</div>
-        <div style="font-size:22px">💕</div>
-        <div style="font-family:'Jua',sans-serif;font-size:20px">${p2.name}</div>
-      </div>
-      <div style="font-family:'Jua',sans-serif;font-size:72px;line-height:1;color:${scoreColor};text-shadow:0 4px 20px rgba(255,107,138,0.4)">${ov}<span style="font-size:24px;opacity:0.7">점</span></div>
-      <div style="font-size:12px;font-weight:700;opacity:0.6;margin-top:3px">잠자리 궁합 점수</div>
+    <!-- names -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:14px">
+      <div style="font-family:'Jua',sans-serif;font-size:22px;color:#1A1A1A">${p1.name}</div>
+      <div style="font-size:28px">💕</div>
+      <div style="font-family:'Jua',sans-serif;font-size:22px;color:#1A1A1A">${p2.name}</div>
     </div>
     
-    <!-- two type cards -->
-    <div style="display:flex;gap:8px;margin-bottom:12px">
-      <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:14px;padding:12px 10px;text-align:center;border:1px solid rgba(255,255,255,0.06)">
-        <div style="font-size:10px;opacity:0.5;font-weight:600;margin-bottom:3px">${p1.name}</div>
-        <div style="font-size:26px;margin-bottom:2px">${r1.type.emoji}</div>
-        <div style="font-size:13px;font-weight:800">${r1.type.nm}</div>
-        <div style="font-size:10px;opacity:0.6;font-weight:500;margin-top:3px;line-height:1.3">${r1.type.tag}</div>
+    <!-- big score -->
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-family:'Jua',sans-serif;font-size:88px;line-height:1;color:${mainColor};letter-spacing:-3px">${ov}<span style="font-size:28px;color:#999;letter-spacing:0">점</span></div>
+      <div style="font-size:13px;font-weight:700;color:#AAA;margin-top:2px">잠자리 궁합 점수</div>
+    </div>
+    
+    <!-- two type cards side by side -->
+    <div style="display:flex;gap:8px;margin-bottom:14px">
+      <div style="flex:1;background:#fff;border-radius:16px;padding:14px 10px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.04)">
+        <div style="font-size:10px;font-weight:700;color:#BBB;margin-bottom:4px">${p1.name}</div>
+        <div style="font-size:30px;margin-bottom:4px">${r1.type.emoji}</div>
+        <div style="font-size:14px;font-weight:900;color:#1A1A1A">${r1.type.nm}</div>
+        <div style="font-size:10px;font-weight:600;color:#999;margin-top:4px;line-height:1.35">${r1.type.tag}</div>
       </div>
-      <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:14px;padding:12px 10px;text-align:center;border:1px solid rgba(255,255,255,0.06)">
-        <div style="font-size:10px;opacity:0.5;font-weight:600;margin-bottom:3px">${p2.name}</div>
-        <div style="font-size:26px;margin-bottom:2px">${r2.type.emoji}</div>
-        <div style="font-size:13px;font-weight:800">${r2.type.nm}</div>
-        <div style="font-size:10px;opacity:0.6;font-weight:500;margin-top:3px;line-height:1.3">${r2.type.tag}</div>
+      <div style="flex:1;background:#fff;border-radius:16px;padding:14px 10px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.04)">
+        <div style="font-size:10px;font-weight:700;color:#BBB;margin-bottom:4px">${p2.name}</div>
+        <div style="font-size:30px;margin-bottom:4px">${r2.type.emoji}</div>
+        <div style="font-size:14px;font-weight:900;color:#1A1A1A">${r2.type.nm}</div>
+        <div style="font-size:10px;font-weight:600;color:#999;margin-top:4px;line-height:1.35">${r2.type.tag}</div>
       </div>
     </div>
     
     <!-- factor bars -->
-    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
-      ${facArr.map(f=>`<div style="display:flex;align-items:center;gap:8px">
-        <div style="display:flex;align-items:center;gap:4px;width:82px;flex-shrink:0">
+    <div style="background:#fff;border-radius:16px;padding:14px 16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,0.04)">
+      ${facArr.map(f=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:${f===facArr[facArr.length-1]?'0':'10px'}">
+        <div style="display:flex;align-items:center;gap:4px;width:78px;flex-shrink:0">
           <span style="font-size:13px">${f.emoji}</span>
-          <span style="font-size:12px;font-weight:700">${f.nm}</span>
+          <span style="font-size:12px;font-weight:800;color:#555">${f.nm}</span>
         </div>
-        <div style="flex:1;height:8px;background:rgba(255,255,255,0.12);border-radius:4px;overflow:hidden">
-          <div style="height:100%;width:${f.s}%;border-radius:4px;background:linear-gradient(90deg,rgba(255,255,255,0.3),rgba(255,255,255,0.7))"></div>
+        <div style="flex:1;height:10px;background:${barBg};border-radius:5px;overflow:hidden">
+          <div style="height:100%;width:${f.s}%;border-radius:5px;background:${barFill}"></div>
         </div>
-        <div style="font-family:'Jua',sans-serif;font-size:15px;width:30px;text-align:right;color:${scoreColor}">${f.s}</div>
+        <div style="font-family:'Jua',sans-serif;font-size:16px;width:30px;text-align:right;color:${mainColor}">${f.s}</div>
       </div>`).join('')}
     </div>
     
     <!-- summary -->
-    <div style="background:rgba(255,255,255,0.08);border-radius:14px;padding:12px 14px;margin-bottom:auto;border:1px solid rgba(255,255,255,0.06)">
-      <div style="font-size:10px;font-weight:800;opacity:0.5;margin-bottom:5px;letter-spacing:0.5px">💌 종합 풀이</div>
-      <div style="font-size:12px;font-weight:600;line-height:1.55;opacity:0.9">${sumShort}</div>
+    <div style="background:#fff;border-radius:16px;padding:14px 16px;margin-bottom:auto;box-shadow:0 2px 10px rgba(0,0,0,0.04)">
+      <div style="font-size:11px;font-weight:800;color:${mainColor};margin-bottom:5px">💌 종합 한마디</div>
+      <div style="font-size:12.5px;font-weight:600;color:#555;line-height:1.6">${sumShort}</div>
     </div>
     
     <!-- spacer -->
     <div style="flex:1;min-height:6px"></div>
     
     <!-- footer -->
-    <div style="text-align:center;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08)">
-      <div style="font-size:14px;font-weight:800;margin-bottom:3px">나도 해보기 → love.tryme.im</div>
-      <div style="font-size:10px;opacity:0.4;font-weight:600">섹슈얼 웰니스 매거진 트라이미 · tryme.im</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end">
+      <div>
+        <div style="font-size:15px;font-weight:900;color:#1A1A1A;margin-bottom:2px">나도 해보기 →</div>
+        <div style="font-size:11px;font-weight:600;color:#BBB">love.tryme.im</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:9px;font-weight:700;color:#CCC;margin-bottom:1px">섹슈얼 웰니스 매거진</div>
+        <div style="font-size:12px;font-weight:800;color:#999">트라이미</div>
+      </div>
     </div>
     
   </div>
