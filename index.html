@@ -455,15 +455,9 @@ function buildShareCardSaju(){
     <div style="flex:1;min-height:8px"></div>
     
     <!-- footer -->
-    <div style="display:flex;justify-content:space-between;align-items:flex-end">
-      <div>
-        <div style="font-size:15px;font-weight:900;color:#1A1A1A;margin-bottom:2px">나도 해보기 →</div>
-        <div style="font-size:11px;font-weight:600;color:#BBB">love.tryme.im</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:9px;font-weight:700;color:#CCC;margin-bottom:1px">섹슈얼 웰니스 매거진</div>
-        <div style="font-size:12px;font-weight:800;color:#999">트라이미</div>
-      </div>
+    <div style="text-align:center">
+      <div style="font-size:11px;font-weight:700;color:#BBB;margin-bottom:6px;letter-spacing:0.3px">섹슈얼 웰니스 매거진</div>
+      <img src="https://bdsm.tryme.im/logo.png" alt="tryme" style="height:20px;opacity:0.35;display:block;margin:0 auto" crossorigin="anonymous">
     </div>
     
   </div>
@@ -542,15 +536,9 @@ function buildShareCardCompat(){
     <div style="flex:1;min-height:6px"></div>
     
     <!-- footer -->
-    <div style="display:flex;justify-content:space-between;align-items:flex-end">
-      <div>
-        <div style="font-size:15px;font-weight:900;color:#1A1A1A;margin-bottom:2px">나도 해보기 →</div>
-        <div style="font-size:11px;font-weight:600;color:#BBB">love.tryme.im</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:9px;font-weight:700;color:#CCC;margin-bottom:1px">섹슈얼 웰니스 매거진</div>
-        <div style="font-size:12px;font-weight:800;color:#999">트라이미</div>
-      </div>
+    <div style="text-align:center">
+      <div style="font-size:11px;font-weight:700;color:#BBB;margin-bottom:6px;letter-spacing:0.3px">섹슈얼 웰니스 매거진</div>
+      <img src="https://bdsm.tryme.im/logo.png" alt="tryme" style="height:20px;opacity:0.35;display:block;margin:0 auto" crossorigin="anonymous">
     </div>
     
   </div>
@@ -562,11 +550,14 @@ async function captureShareCard(){
   wrap.style.cssText='position:fixed;left:0;top:0;z-index:-1;opacity:1;pointer-events:none';
   wrap.innerHTML=_lastResult.mode==='saju'?buildShareCardSaju():buildShareCardCompat();
   document.body.appendChild(wrap);
-  await new Promise(r=>setTimeout(r,200));
+  // wait for logo image to load
+  const imgs=wrap.querySelectorAll('img');
+  await Promise.all([...imgs].map(img=>new Promise(r=>{if(img.complete)r();else{img.onload=r;img.onerror=r}})));
+  await new Promise(r=>setTimeout(r,300));
   document.documentElement.classList.add('capturing');
   const card=wrap.firstElementChild;
   try{
-    return await html2canvas(card,{backgroundColor:null,scale:3,useCORS:true,logging:false,allowTaint:true,width:360,height:640});
+    return await html2canvas(card,{backgroundColor:null,scale:5,useCORS:true,logging:false,allowTaint:true,width:360,height:640});
   }finally{
     document.documentElement.classList.remove('capturing');
     document.body.removeChild(wrap);
@@ -578,7 +569,7 @@ async function doNativeShare(){
   toast('이미지 만드는 중...');
   try{
     const canvas=await captureShareCard();
-    const blob=await new Promise(r=>canvas.toBlob(r,'image/png'));
+    const blob=await new Promise(r=>canvas.toBlob(r,'image/png',1.0));
     if(!blob){toast('이미지 생성 실패');return}
     const file=new File([blob],'19yas-saju.png',{type:'image/png'});
     if(navigator.canShare&&navigator.canShare({files:[file]})){
