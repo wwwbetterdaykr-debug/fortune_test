@@ -349,11 +349,11 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(d){
       if(d.m==='s'&&d.p){
         const r=sajuAnalyze(d.p);
-        renderSaju(d.p,r);
+        renderSaju(d.p,r, true);
       }else if(d.m==='c'&&d.p1&&d.p2){
         mode='compat';
         const r=compatAnalyze(d.p1,d.p2);
-        renderComp(d.p1,d.p2,r);
+        renderComp(d.p1,d.p2,r, true);
       }
     }
   }
@@ -373,7 +373,7 @@ function buildOH(ec){const order=['목','화','토','금','수'];const emojis={'
 
 let _lastResult=null;
 
-function renderSaju(p,r){
+function renderSaju(p,r, isShared=false){
   _lastResult={mode:'saju',p,r};
   history.replaceState(null,'',('#'+encodeResult())||'');
   const{pil,type,ec,ep,stars,sc,dayEl}=r;
@@ -393,11 +393,13 @@ function renderSaju(p,r){
     <div class="rc-sec"><div class="sec-t"><span class="sec-t-emoji">💘</span><span class="sec-t-title">궁합 유형</span></div><div class="match-row">${bestT?`<div class="match-card best"><div class="mc-label">💖 최고의 궁합</div><div class="mc-emoji">${bestT.emoji}</div><div class="mc-type">${bestT.nm}</div></div>`:''}<div class="match-card worst"><div class="mc-label">💀 최악의 궁합</div><div class="mc-emoji">${worstT?worstT.emoji:'🤷'}</div><div class="mc-type">${worstT?worstT.nm:'없음'}</div></div></div></div>
     <div class="rc-sec"><div class="fortune-box"><div class="fortune-t">🔮 2026년 섹스 운세</div><div class="fortune-txt">${YEAR_FORTUNE[dayEl]}</div></div></div>
   </div>
-  <div class="acts"><button class="act act-s" onclick="doNativeShare()">📤 공유하기</button><button class="act act-r" onclick="goBack()">🔄 다시하기</button></div>`;
+  ${isShared 
+    ? `<div class="acts"><button class="act act-s" onclick="window.location.href=window.location.pathname">✨ 나도 사주 보러가기</button></div>` 
+    : `<div class="acts"><button class="act act-s" onclick="doNativeShare()">📤 공유하기</button><button class="act act-r" onclick="goBack()">🔄 다시하기</button></div>`}`;
   showR(h);animateBars();
 }
 
-function renderComp(p1,p2,r){
+function renderComp(p1,p2,r, isShared=false){
   _lastResult={mode:'compat',p1,p2,r};
   history.replaceState(null,'',('#'+encodeResult())||'');
   const{ov,fac,sum,r1,r2}=r;
@@ -408,7 +410,10 @@ function renderComp(p1,p2,r){
     <div class="rc-sec"><div class="sec-t"><span class="sec-t-emoji">✨</span><span class="sec-t-title">상세 궁합</span></div><div class="cstat-list">${fi.map(x=>{const f=fac[x.k];return`<div><div class="cstat-top"><div class="cstat-left"><span class="cstat-emoji">${f.emoji}</span><span class="cstat-label">${f.nm}</span><span class="cstat-desc">${f.d}</span></div><div class="cstat-val">${f.s}</div></div><div class="cstat-track"><div class="cstat-fill ${x.cls}" style="width:${f.s}%"></div></div></div>`}).join('')}</div></div>
     <div class="rc-sec"><div class="cp-sum"><div class="cp-sum-t"><span class="cp-sum-emoji">💌</span>종합 풀이</div><div class="cp-sum-txt">${sum}</div></div></div>
   </div>
-  <div class="acts"><button class="act act-s" onclick="doNativeShare()">📤 공유하기</button><button class="act act-r" onclick="goBack()">🔄 다시하기</button></div>`;
+  </div>
+  ${isShared 
+    ? `<div class="acts"><button class="act act-s" onclick="window.location.href=window.location.pathname">✨ 나도 사주 보러가기</button></div>` 
+    : `<div class="acts"><button class="act act-s" onclick="doNativeShare()">📤 공유하기</button><button class="act act-r" onclick="goBack()">🔄 다시하기</button></div>`}`;
   showR(h);animateBars();
 }
 
