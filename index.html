@@ -695,11 +695,14 @@ function updateDays(p){const y=+$('year'+p).value,m=+$('month'+p).value,d=$('day
 function popD(p){
   const y=$('year'+p),m=$('month'+p),d=$('day'+p);
   y.innerHTML='<option value="">년</option>';
-  for(let i=2025;i>=1940;i--)y.innerHTML+=`<option value="${i}">${i}년</option>`;
+  
+  // 수정된 부분: 2025 대신 2007(또는 2008)부터 시작하도록 변경하여 미성년자 선택 방지
+  for(let i=2007; i>=1940; i--) y.innerHTML+=`<option value="${i}">${i}년</option>`;
+  
   m.innerHTML='<option value="">월</option>';
-  for(let i=1;i<=12;i++)m.innerHTML+=`<option value="${i}">${i}월</option>`;
+  for(let i=1;i<=12;i++) m.innerHTML+=`<option value="${i}">${i}월</option>`;
   d.innerHTML='<option value="">일</option>';
-  for(let i=1;i<=31;i++)d.innerHTML+=`<option value="${i}">${i}일</option>`;
+  for(let i=1;i<=31;i++) d.innerHTML+=`<option value="${i}">${i}일</option>`;
   y.addEventListener('change',()=>updateDays(p));
   m.addEventListener('change',()=>updateDays(p));
 }
