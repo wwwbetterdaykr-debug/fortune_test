@@ -249,15 +249,15 @@ html.capturing .fade-in{animation:none!important;opacity:1!important;transform:n
   </div>
   <button class="mbtn" onclick="start()">✨ 사주 보기</button>
   <div class="main-ftr">
-    <a href="https://tryme.im?utm_source=saju_test&utm_medium=viral&utm_campaign=19yas" target="_blank" rel="noopener" class="ftr-bub">💌 섹슈얼 웰니스 매거진 구독하기</a><br>
-    <a href="https://tryme.im?utm_source=saju_test&utm_medium=viral&utm_campaign=19yas" target="_blank" rel="noopener"><img src="https://bdsm.tryme.im/logo.png" alt="트라이미" style="height:24px;opacity:.25;display:block;margin:0 auto"></a>
+    <a href="https://tryme.im?utm_source=saju_test&utm_medium=viral&utm_campaign=19yas" target="_blank" rel="noopener" class="ftr-bub" onclick="gtag('event', 'fortune_매거진링크_클릭');">💌 섹슈얼 웰니스 매거진 구독하기</a><br>
+    <a href="https://tryme.im?utm_source=saju_test&utm_medium=viral&utm_campaign=19yas" target="_blank" rel="noopener" onclick="gtag('event', 'fortune_하단로고_클릭');"><img src="https://bdsm.tryme.im/logo.png" alt="트라이미" style="height:24px;opacity:.25;display:block;margin:0 auto"></a>
   </div>
 </div>
 <div class="ld-ov" id="ld-ov"><div class="ld-emoji">🔮</div><div class="ld-t" id="ld-t">사주를 분석하고 있어요</div><div class="ld-s" id="ld-s">네 기둥을 살펴보는 중...</div><div class="ld-bar"><div class="ld-fill" id="ld-bar"></div></div></div>
 <div class="wrap" id="result-area"><div id="rc"></div>
   <div class="main-ftr">
-    <a href="https://tryme.im?utm_source=saju_test&utm_medium=viral&utm_campaign=19yas" target="_blank" rel="noopener" class="ftr-bub">💌 섹슈얼 웰니스 매거진 구독하기</a><br>
-    <a href="https://tryme.im?utm_source=saju_test&utm_medium=viral&utm_campaign=19yas" target="_blank" rel="noopener"><img src="https://bdsm.tryme.im/logo.png" alt="트라이미" style="height:24px;opacity:.25;display:block;margin:0 auto"></a>
+    <a href="https://tryme.im?utm_source=saju_test&utm_medium=viral&utm_campaign=19yas" target="_blank" rel="noopener" class="ftr-bub" onclick="gtag('event', 'fortune_매거진링크_클릭');">💌 섹슈얼 웰니스 매거진 구독하기</a><br>
+    <a href="https://tryme.im?utm_source=saju_test&utm_medium=viral&utm_campaign=19yas" target="_blank" rel="noopener" onclick="gtag('event', 'fortune_하단로고_클릭');"><img src="https://bdsm.tryme.im/logo.png" alt="트라이미" style="height:24px;opacity:.25;display:block;margin:0 auto"></a>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -364,7 +364,17 @@ function popD(p){const y=$('year'+p),m=$('month'+p),d=$('day'+p);y.innerHTML='<o
 function setMode(m){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.querySelector(`[data-mode="${m}"]`).classList.add('on');if(m==='compat'){$('person2-section').style.display='block';$('vs-div').classList.remove('hidden');document.querySelector('.mbtn').innerHTML='💕 궁합 보기'}else{$('person2-section').style.display='none';$('vs-div').classList.add('hidden');document.querySelector('.mbtn').innerHTML='✨ 사주 보기'}}
 function setG(p,g,el){gen[p]=g;el.parentElement.querySelectorAll('.gp-b').forEach(b=>b.classList.remove('on'));el.classList.add('on')}
 function getPD(n){const name=$('name'+n).value.trim(),year=$('year'+n).value,month=$('month'+n).value,day=$('day'+n).value,hour=$('hour'+n).value,g=gen[n];const pf=(mode==='compat')?(n===1?'첫 번째 사람의 ':'두 번째 사람의 '):'';if(!name)return{e:pf+'이름을 입력해주세요'};if(!year||!month||!day)return{e:pf+'생년월일을 선택해주세요'};if(!g)return{e:pf+'성별을 선택해주세요'};return{name,sY:+year,sM:+month,sD:+day,hour:hour?+hour:null,gender:g}}
-function start(){const p1=getPD(1);if(p1.e)return toast(p1.e);if(mode==='compat'){const p2=getPD(2);if(p2.e)return toast(p2.e);load(true,()=>renderComp(p1,p2,compatAnalyze(p1,p2)))}else{load(false,()=>renderSaju(p1,sajuAnalyze(p1)))}}
+function start(){
+  const p1=getPD(1);if(p1.e)return toast(p1.e);
+  if(mode==='compat'){
+    const p2=getPD(2);if(p2.e)return toast(p2.e);
+    gtag('event', 'fortune_궁합보기_시작');
+    load(true,()=>renderComp(p1,p2,compatAnalyze(p1,p2)))
+  }else{
+    gtag('event', 'fortune_사주보기_시작');
+    load(false,()=>renderSaju(p1,sajuAnalyze(p1)))
+  }
+}
 function load(ic,cb){const ov=$('ld-ov'),bar=$('ld-bar'),sub=$('ld-s'),title=$('ld-t');ov.classList.add('show');title.textContent=ic?'궁합을 분석하고 있어요':'사주를 분석하고 있어요';const ms=ic?['두 사람의 기운을 읽는 중...','오행 궁합을 비교해요...','잠자리 케미를 계산해요...','거의 다 됐어요! ✨']:['네 기둥을 살펴보는 중...','음양의 기운을 읽어요...','성적 에너지를 분석해요...','거의 다 됐어요! ✨'];let p=0;const iv=setInterval(()=>{p+=Math.random()*22+12;if(p>100)p=100;bar.style.width=p+'%';sub.textContent=ms[Math.min(Math.floor(p/25),ms.length-1)];if(p>=100){clearInterval(iv);setTimeout(()=>{ov.classList.remove('show');bar.style.width='0%';cb()},500)}},420)}
 
 function elCC(e){return{'목':'el-c-wood','화':'el-c-fire','토':'el-c-earth','금':'el-c-metal','수':'el-c-water'}[e]||''}
@@ -575,8 +585,15 @@ async function captureShareCard(){
 }
 
 async function doNativeShare(){
-  if(!_lastResult)return;
-  toast('이미지 만드는 중...');
+  if(!_lastResult)return;
+  
+  if(_lastResult.mode === 'saju') {
+    gtag('event', 'fortune_사주결과_공유');
+  } else {
+    gtag('event', 'fortune_궁합결과_공유');
+  }
+
+  toast('이미지 만드는 중...');
   const shareUrl=getShareUrl();
   const shareText=_lastResult.mode==='saju'
     ?`🫣 ${_lastResult.p.name}님의 잠자리 유형: ${_lastResult.r.type.nm} ${_lastResult.r.type.emoji}\n내 상세 결과 보기 👉 ${shareUrl}`
