@@ -321,7 +321,43 @@ function elInterp(ep){const sorted=Object.entries(ep).sort((a,b)=>b[1]-a[1]),top
 
 let mode='saju',gen={1:'',2:''};
 const $=id=>document.getElementById(id);
-document.addEventListener('DOMContentLoaded',()=>{popD(1);popD(2)});
+
+function encodeResult(){
+  if(!_lastResult)return'';
+  const d=_lastResult.mode==='saju'
+    ?{m:'s',p:_lastResult.p}
+    :{m:'c',p1:_lastResult.p1,p2:_lastResult.p2};
+  try{return btoa(unescape(encodeURIComponent(JSON.stringify(d))))}catch(e){return''}
+}
+function decodeResult(hash){
+  try{
+    const json=decodeURIComponent(escape(atob(hash)));
+    return JSON.parse(json);
+  }catch(e){return null}
+}
+function getShareUrl(){
+  const code=encodeResult();
+  if(!code)return'https://love.tryme.im';
+  return'https://love.tryme.im#'+code;
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  popD(1);popD(2);
+  const hash=window.location.hash.slice(1);
+  if(hash){
+    const d=decodeResult(hash);
+    if(d){
+      if(d.m==='s'&&d.p){
+        const r=sajuAnalyze(d.p);
+        renderSaju(d.p,r);
+      }else if(d.m==='c'&&d.p1&&d.p2){
+        mode='compat';
+        const r=compatAnalyze(d.p1,d.p2);
+        renderComp(d.p1,d.p2,r);
+      }
+    }
+  }
+});
 function getDays(y,m){if(!y||!m)return 31;if([4,6,9,11].includes(m))return 30;if(m===2)return(y%4===0&&(y%100!==0||y%400===0))?29:28;return 31}
 function updateDays(p){const y=+$('year'+p).value,m=+$('month'+p).value,d=$('day'+p),prev=d.value;const mx=getDays(y,m);d.innerHTML='<option value="">일</option>';for(let i=1;i<=mx;i++)d.innerHTML+=`<option value="${i}">${i}일</option>`;if(prev&&+prev<=mx)d.value=prev}
 function popD(p){const y=$('year'+p),m=$('month'+p),d=$('day'+p);y.innerHTML='<option value="">년</option>';for(let i=2007;i>=1940;i--)y.innerHTML+=`<option value="${i}">${i}년</option>`;m.innerHTML='<option value="">월</option>';for(let i=1;i<=12;i++)m.innerHTML+=`<option value="${i}">${i}월</option>`;d.innerHTML='<option value="">일</option>';for(let i=1;i<=31;i++)d.innerHTML+=`<option value="${i}">${i}일</option>`;y.addEventListener('change',()=>updateDays(p));m.addEventListener('change',()=>updateDays(p))}
@@ -339,6 +375,7 @@ let _lastResult=null;
 
 function renderSaju(p,r){
   _lastResult={mode:'saju',p,r};
+  history.replaceState(null,'',('#'+encodeResult())||'');
   const{pil,type,ec,ep,stars,sc,dayEl}=r;
   const bestT=TYPES[type.bestMatch],worstT=type.worstMatch?TYPES[type.worstMatch]:null;
   const stats=[{k:'passion',l:'열정',emoji:'🔥',cls:'sf-red',d:'달아오르는 정도'},{k:'sensual',l:'감각',emoji:'💋',cls:'sf-pink',d:'터치 반응'},{k:'adventure',l:'모험',emoji:'🎲',cls:'sf-blue',d:'새로운 시도'},{k:'romantic',l:'감성',emoji:'💖',cls:'sf-yellow',d:'감정교감'},{k:'dominant',l:'주도력',emoji:'👑',cls:'sf-green',d:'리드하는 힘'},{k:'expressive',l:'표현력',emoji:'💕',cls:'sf-purple',d:'욕구 전달'}];
@@ -362,6 +399,7 @@ function renderSaju(p,r){
 
 function renderComp(p1,p2,r){
   _lastResult={mode:'compat',p1,p2,r};
+  history.replaceState(null,'',('#'+encodeResult())||'');
   const{ov,fac,sum,r1,r2}=r;
   const fi=[{k:'chem',cls:'cf-red'},{k:'comm',cls:'cf-yellow'},{k:'phys',cls:'cf-pink'},{k:'adv',cls:'cf-blue'}];
   let h=`<div class="result-card fade-in" id="cap">
@@ -376,7 +414,7 @@ function renderComp(p1,p2,r){
 
 function animateBars(){setTimeout(()=>{document.querySelectorAll('.stat-fill,.cstat-fill').forEach(el=>{const w=el.style.width;el.style.width='0%';requestAnimationFrame(()=>{requestAnimationFrame(()=>{el.style.width=w})})})},100)}
 function showR(h){$('input-area').style.display='none';$('rc').innerHTML=h;$('result-area').style.display='block';window.scrollTo({top:0,behavior:'smooth'})}
-function goBack(){$('result-area').style.display='none';$('input-area').style.display='block';window.scrollTo({top:0,behavior:'smooth'})}
+function goBack(){$('result-area').style.display='none';$('input-area').style.display='block';history.replaceState(null,'',window.location.pathname);window.scrollTo({top:0,behavior:'smooth'})}
 
 /* ═══ NEW 9:16 공유 카드 빌더 ═══ */
 
@@ -535,15 +573,19 @@ async function captureShareCard(){
 async function doNativeShare(){
   if(!_lastResult)return;
   toast('이미지 만드는 중...');
+  const shareUrl=getShareUrl();
+  const shareText=_lastResult.mode==='saju'
+    ?`🫣 ${_lastResult.p.name}님의 잠자리 유형: ${_lastResult.r.type.nm} ${_lastResult.r.type.emoji}\n내 상세 결과 보기 👉 ${shareUrl}`
+    :`🫣 ${_lastResult.p1.name} × ${_lastResult.p2.name} 잠자리 궁합: ${_lastResult.r.ov}점!\n상세 결과 보기 👉 ${shareUrl}`;
   try{
     const canvas=await captureShareCard();
     const blob=await new Promise(r=>canvas.toBlob(r,'image/png',1.0));
     if(!blob){toast('이미지 생성 실패');return}
     const file=new File([blob],'19yas-saju.png',{type:'image/png'});
     if(navigator.canShare&&navigator.canShare({files:[file]})){
-      try{await navigator.share({files:[file],title:'🫣 19금 사주풀이',text:'사주로 보는 나의 잠자리 유형 → love.tryme.im'})}catch(e){if(e.name==='AbortError')return;fallbackSave(blob)}
+      try{await navigator.share({files:[file],title:'🫣 19금 사주풀이',text:shareText})}catch(e){if(e.name==='AbortError')return;fallbackSave(blob)}
     }else if(navigator.share){
-      try{await navigator.share({title:'🫣 19금 사주풀이',text:'사주로 보는 나의 잠자리 유형 → love.tryme.im',url:'https://love.tryme.im'})}catch(e){if(e.name==='AbortError')return;fallbackSave(blob)}
+      try{await navigator.share({title:'🫣 19금 사주풀이',text:shareText,url:shareUrl})}catch(e){if(e.name==='AbortError')return;fallbackSave(blob)}
     }else{fallbackSave(blob)}
   }catch(e){toast('공유 실패 — 스크린샷을 이용해주세요')}
 }
