@@ -298,25 +298,272 @@ html.capturing .fade-in{animation:none!important;opacity:1!important;transform:n
   </div>
 </div>
 <div class="toast" id="toast"></div>
+
 <script>
+/* ══════════════════════════════════════════════
+   기초 데이터
+   ══════════════════════════════════════════════ */
 const ST=['갑','을','병','정','무','기','경','신','임','계'];
 const BR=['자','축','인','묘','진','사','오','미','신','유','술','해'];
 const FM={'갑':'목','을':'목','병':'화','정':'화','무':'토','기':'토','경':'금','신':'금','임':'수','계':'수'};
 const BM={'자':'수','축':'토','인':'목','묘':'목','진':'토','사':'화','오':'화','미':'토','신':'금','유':'금','술':'토','해':'수'};
 const HJ_S={'갑':'甲','을':'乙','병':'丙','정':'丁','무':'戊','기':'己','경':'庚','신':'辛','임':'壬','계':'癸'};
 const HJ_B={'자':'子','축':'丑','인':'寅','묘':'卯','진':'辰','사':'巳','오':'午','미':'未','신':'申','유':'酉','술':'戌','해':'亥'};
-const SOLAR_TERMS={1940:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,9,11,7,12,7,1,6],1941:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],1942:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],1943:[2,5,3,6,4,6,5,6,6,7,7,8,8,9,9,9,10,9,11,8,12,8,1,6],1944:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6],1945:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],1946:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],1947:[2,5,3,6,4,6,5,6,6,7,7,8,8,9,9,9,10,9,11,8,12,8,1,6],1948:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6],1949:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],1950:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],1951:[2,4,3,6,4,5,5,6,6,7,7,8,8,8,9,8,10,9,11,8,12,8,1,6],1952:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6],1953:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],1954:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],1955:[2,4,3,6,4,5,5,6,6,7,7,8,8,8,9,8,10,9,11,8,12,8,1,6],1956:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6],1957:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],1958:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],1959:[2,4,3,6,4,5,5,6,6,7,7,8,8,8,9,8,10,9,11,8,12,8,1,6],1960:[2,5,3,5,4,5,5,5,6,6,7,7,8,7,9,7,10,8,11,7,12,7,1,6],1961:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],1962:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],1963:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],1964:[2,5,3,5,4,5,5,5,6,6,7,7,8,7,9,7,10,8,11,7,12,7,1,6],1965:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,7,10,8,11,7,12,7,1,5],1966:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],1967:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],1968:[2,5,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],1969:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,7,10,8,11,7,12,7,1,5],1970:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],1971:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],1972:[2,5,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],1973:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,7,10,8,11,7,12,7,1,5],1974:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],1975:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,9,11,8,12,7,1,6],1976:[2,5,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],1977:[2,4,3,5,4,5,5,6,6,6,7,7,8,7,9,7,10,8,11,7,12,7,1,5],1978:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],1979:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,9,11,8,12,7,1,6],1980:[2,5,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],1981:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],1982:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],1983:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,9,11,8,12,7,1,6],1984:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],1985:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],1986:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],1987:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],1988:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],1989:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],1990:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],1991:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],1992:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],1993:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],1994:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],1995:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],1996:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],1997:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],1998:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],1999:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],2000:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],2001:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],2002:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],2003:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],2004:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],2005:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],2006:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],2007:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],2008:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],2009:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],2010:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5]};
-const TB=['인','묘','진','사','오','미','신','유','술','해','자','축'];
-function gMB(y,m,d){const t=SOLAR_TERMS[y]||[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6];for(let i=11;i>=0;i--){const tm=t[i*2],td=t[i*2+1];if(i===11){if(m===1&&d>=td)return TB[i]}else{if(m>tm||(m===tm&&d>=td))return TB[i]}}return m===1?'자':'축'}
-function yP(y,m,d){const t=SOLAR_TERMS[y]||[2,4];let yr=y;if(m<t[0]||(m===t[0]&&d<t[1]))yr--;const si=(yr-4)%10,bi=(yr-4)%12;return{s:ST[((si%10)+10)%10],b:BR[((bi%12)+12)%12]}}
-function mP(ys,y,m,d){const mb=gMB(y,m,d);const mi={'인':0,'묘':1,'진':2,'사':3,'오':4,'미':5,'신':6,'유':7,'술':8,'해':9,'자':10,'축':11}[mb];const ss=[2,4,6,8,0][ST.indexOf(ys)%5];return{s:ST[(ss+mi)%10],b:mb}}
-function dP(y,m,d){const df=Math.floor((new Date(y,m-1,d)-new Date(2000,0,7))/864e5);return{s:ST[((df%10)+10)%10],b:BR[((df%12)+12)%12]}}
-function hP(ds,h){if(h==null)return null;const hb={23:0,1:1,3:2,5:3,7:4,9:5,11:6,13:7,15:8,17:9,19:10,21:11};const bi=hb[h];if(bi===undefined)return null;const ss=[0,2,4,6,8][ST.indexOf(ds)%5];return{s:ST[(ss+bi)%10],b:BR[bi]}}
-function fP(d){const y=yP(d.sY,d.sM,d.sD),m=mP(y.s,d.sY,d.sM,d.sD),dy=dP(d.sY,d.sM,d.sD),h=hP(dy.s,d.hour);return{year:y,month:m,day:dy,hour:h}}
-function cE(p){const c={'목':0,'화':0,'토':0,'금':0,'수':0},a=[p.year,p.month,p.day];if(p.hour)a.push(p.hour);a.forEach(x=>{c[FM[x.s]]++;c[BM[x.b]]++});return c}
-function eP(c){const t=Object.values(c).reduce((a,b)=>a+b,0)||1;const r={};for(const[k,v] of Object.entries(c))r[k]=Math.round(v/t*100);return r}
-function cSS(pil){const s=[],ds=pil.day.s,db=pil.day.b,yb=pil.year.b,all=[pil.year.b,pil.month.b,pil.day.b];if(pil.hour)all.push(pil.hour.b);const dm={'해':'자','묘':'자','미':'자','인':'묘','오':'묘','술':'묘','사':'오','유':'오','축':'오','신':'유','자':'유','진':'유'};if((dm[yb]&&all.includes(dm[yb]))||(dm[db]&&all.includes(dm[db])))s.push({nm:'도화살',emoji:'🌸',d:'눈빛만으로 상대를 설레게 하는 타고난 섹시함',c:'s-pk'});const hm={'갑':'오','을':'신','병':'인','정':'미','무':'진','기':'진','경':'술','신':'유','임':'자','계':'신'};if(hm[ds]&&all.includes(hm[ds]))s.push({nm:'홍염살',emoji:'🔥',d:'불붙으면 상대를 녹이는 강렬한 성적 에너지',c:'s-rd'});const mm={'갑':'자','을':'사','병':'묘','정':'신','무':'묘','기':'신','경':'오','신':'해','임':'유','계':'인'};if(mm[ds]&&all.includes(mm[ds]))s.push({nm:'목욕살',emoji:'🛁',d:'가벼운 스킨십에도 전율이 오는 예민한 감각',c:'s-gn'});const ym={'갑':'묘','병':'오','무':'오','경':'유','임':'자'};if(ym[ds]&&all.includes(ym[ds]))s.push({nm:'양인살',emoji:'⚔️',d:'상대를 내 페이스로 끌고 가는 강한 주도욕',c:'s-bl'});return s}
 
+/* ══════════════════════════════════════════════
+   [수정1] 절기 테이블 — 1940~2025 확장
+   ══════════════════════════════════════════════ */
+const SOLAR_TERMS={
+1940:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,9,11,7,12,7,1,6],
+1941:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+1942:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+1943:[2,5,3,6,4,6,5,6,6,7,7,8,8,9,9,9,10,9,11,8,12,8,1,6],
+1944:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6],
+1945:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+1946:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+1947:[2,5,3,6,4,6,5,6,6,7,7,8,8,9,9,9,10,9,11,8,12,8,1,6],
+1948:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6],
+1949:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+1950:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+1951:[2,4,3,6,4,5,5,6,6,7,7,8,8,8,9,8,10,9,11,8,12,8,1,6],
+1952:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6],
+1953:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+1954:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+1955:[2,4,3,6,4,5,5,6,6,7,7,8,8,8,9,8,10,9,11,8,12,8,1,6],
+1956:[2,5,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6],
+1957:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+1958:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+1959:[2,4,3,6,4,5,5,6,6,7,7,8,8,8,9,8,10,9,11,8,12,8,1,6],
+1960:[2,5,3,5,4,5,5,5,6,6,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+1961:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+1962:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+1963:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+1964:[2,5,3,5,4,5,5,5,6,6,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+1965:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,7,10,8,11,7,12,7,1,5],
+1966:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+1967:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+1968:[2,5,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+1969:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,7,10,8,11,7,12,7,1,5],
+1970:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+1971:[2,4,3,6,4,5,5,6,6,6,7,8,8,8,9,8,10,9,11,8,12,7,1,6],
+1972:[2,5,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+1973:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,7,10,8,11,7,12,7,1,5],
+1974:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+1975:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,9,11,8,12,7,1,6],
+1976:[2,5,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+1977:[2,4,3,5,4,5,5,6,6,6,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+1978:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+1979:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,9,11,8,12,7,1,6],
+1980:[2,5,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+1981:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+1982:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,5],
+1983:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,9,11,8,12,7,1,6],
+1984:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+1985:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+1986:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+1987:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+1988:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+1989:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+1990:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+1991:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+1992:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+1993:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+1994:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+1995:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+1996:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+1997:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+1998:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+1999:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+2000:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+2001:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+2002:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+2003:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+2004:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+2005:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+2006:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+2007:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+2008:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+2009:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+2010:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+2011:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+2012:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+2013:[2,4,3,5,4,5,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+2014:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+2015:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+2016:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+2017:[2,3,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+2018:[2,4,3,6,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+2019:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+2020:[2,4,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,6],
+2021:[2,3,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5],
+2022:[2,4,3,5,4,5,5,5,6,6,7,7,8,7,9,8,10,8,11,7,12,7,1,5],
+2023:[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,8,12,7,1,6],
+2024:[2,4,3,5,4,4,5,5,6,5,7,6,8,7,9,7,10,8,11,7,12,7,1,6],
+2025:[2,3,3,5,4,4,5,5,6,5,7,7,8,7,9,7,10,8,11,7,12,7,1,5]
+};
+
+const TB=['인','묘','진','사','오','미','신','유','술','해','자','축'];
+
+/* ══════════════════════════════════════════════
+   [수정2] 지장간(地藏干) 가중치 매핑
+   ══════════════════════════════════════════════ */
+const JIJANGGAN={
+  '자':[['수',1.0]],
+  '축':[['토',0.6],['수',0.2],['금',0.2]],
+  '인':[['목',0.6],['화',0.2],['토',0.2]],
+  '묘':[['목',1.0]],
+  '진':[['토',0.6],['목',0.2],['수',0.2]],
+  '사':[['화',0.6],['금',0.2],['토',0.2]],
+  '오':[['화',0.7],['토',0.3]],
+  '미':[['토',0.6],['화',0.2],['목',0.2]],
+  '신':[['금',0.6],['수',0.2],['토',0.2]],
+  '유':[['금',1.0]],
+  '술':[['토',0.6],['금',0.2],['화',0.2]],
+  '해':[['수',0.7],['목',0.3]]
+};
+
+/* ══════════════════════════════════════════════
+   [수정4] 결정적 해시 함수 (Math.random 제거)
+   ══════════════════════════════════════════════ */
+function stableHash(str){
+  let h=0;
+  for(let i=0;i<str.length;i++){
+    h=((h<<5)-h)+str.charCodeAt(i);
+    h|=0;
+  }
+  return h;
+}
+function stableRand(seed,index){
+  const h=stableHash(seed+'_'+index);
+  return((h&0x7FFFFFFF)%10000)/10000;
+}
+
+/* ══════════════════════════════════════════════
+   사주 산출 함수
+   ══════════════════════════════════════════════ */
+function gMB(y,m,d){
+  const t=SOLAR_TERMS[y]||[2,4,3,6,4,5,5,6,6,6,7,7,8,8,9,8,10,8,11,7,12,7,1,6];
+  for(let i=11;i>=0;i--){
+    const tm=t[i*2],td=t[i*2+1];
+    if(i===11){if(m===1&&d>=td)return TB[i]}
+    else{if(m>tm||(m===tm&&d>=td))return TB[i]}
+  }
+  return m===1?'자':'축';
+}
+
+function yP(y,m,d){
+  const t=SOLAR_TERMS[y]||[2,4];
+  let yr=y;
+  if(m<t[0]||(m===t[0]&&d<t[1]))yr--;
+  const si=(yr-4)%10,bi=(yr-4)%12;
+  return{s:ST[((si%10)+10)%10],b:BR[((bi%12)+12)%12]};
+}
+
+function mP(ys,y,m,d){
+  const mb=gMB(y,m,d);
+  const mi={'인':0,'묘':1,'진':2,'사':3,'오':4,'미':5,'신':6,'유':7,'술':8,'해':9,'자':10,'축':11}[mb];
+  const ss=[2,4,6,8,0][ST.indexOf(ys)%5];
+  return{s:ST[(ss+mi)%10],b:mb};
+}
+
+function dP(y,m,d){
+  const df=Math.floor((new Date(y,m-1,d)-new Date(2000,0,7))/864e5);
+  return{s:ST[((df%10)+10)%10],b:BR[((df%12)+12)%12]};
+}
+
+function hP(ds,h){
+  if(h==null)return null;
+  const hb={23:0,1:1,3:2,5:3,7:4,9:5,11:6,13:7,15:8,17:9,19:10,21:11};
+  const bi=hb[h];
+  if(bi===undefined)return null;
+  const ss=[0,2,4,6,8][ST.indexOf(ds)%5];
+  return{s:ST[(ss+bi)%10],b:BR[bi]};
+}
+
+function fP(d){
+  const y=yP(d.sY,d.sM,d.sD);
+  const m=mP(y.s,d.sY,d.sM,d.sD);
+  const dy=dP(d.sY,d.sM,d.sD);
+  const h=hP(dy.s,d.hour);
+  return{year:y,month:m,day:dy,hour:h};
+}
+
+/* ══════════════════════════════════════════════
+   [수정2] 오행 집계 — 지장간 가중치 반영
+   ══════════════════════════════════════════════ */
+function cE(p){
+  const c={'목':0,'화':0,'토':0,'금':0,'수':0};
+  const a=[p.year,p.month,p.day];
+  if(p.hour)a.push(p.hour);
+  a.forEach(x=>{
+    c[FM[x.s]]+=1.0;
+    const jj=JIJANGGAN[x.b];
+    if(jj) jj.forEach(([el,w])=>{ c[el]+=w; });
+  });
+  return c;
+}
+
+function eP(c){
+  const t=Object.values(c).reduce((a,b)=>a+b,0)||1;
+  const r={};
+  for(const[k,v] of Object.entries(c)) r[k]=Math.round(v/t*100);
+  return r;
+}
+
+/* ══════════════════════════════════════════════
+   [수정3] 신살 판별 — 도화살 자기참조 수정
+   ══════════════════════════════════════════════ */
+function cSS(pil){
+  const s=[];
+  const ds=pil.day.s;
+  const yb=pil.year.b,mb=pil.month.b,db=pil.day.b;
+  const hb=pil.hour?pil.hour.b:null;
+
+  const allBranches=[yb,mb,db];
+  if(hb)allBranches.push(hb);
+
+  // 도화살
+  const dm={
+    '해':'자','묘':'자','미':'자',
+    '인':'묘','오':'묘','술':'묘',
+    '사':'오','유':'오','축':'오',
+    '신':'유','자':'유','진':'유'
+  };
+  // 년지 기준: 년지 제외한 나머지에서 검색
+  const othersFromYear=[mb,db];
+  if(hb)othersFromYear.push(hb);
+  // 일지 기준: 일지 제외한 나머지에서 검색
+  const othersFromDay=[yb,mb];
+  if(hb)othersFromDay.push(hb);
+
+  if((dm[yb]&&othersFromYear.includes(dm[yb]))||(dm[db]&&othersFromDay.includes(dm[db]))){
+    s.push({nm:'도화살',emoji:'🌸',d:'눈빛만으로 상대를 설레게 하는 타고난 섹시함',c:'s-pk'});
+  }
+
+  // 홍염살
+  const hm={'갑':'오','을':'신','병':'인','정':'미','무':'진','기':'진','경':'술','신':'유','임':'자','계':'신'};
+  if(hm[ds]&&allBranches.includes(hm[ds])){
+    s.push({nm:'홍염살',emoji:'🔥',d:'불붙으면 상대를 녹이는 강렬한 성적 에너지',c:'s-rd'});
+  }
+
+  // 목욕살
+  const mm={'갑':'자','을':'사','병':'묘','정':'신','무':'묘','기':'신','경':'오','신':'해','임':'유','계':'인'};
+  if(mm[ds]&&allBranches.includes(mm[ds])){
+    s.push({nm:'목욕살',emoji:'🛁',d:'가벼운 스킨십에도 전율이 오는 예민한 감각',c:'s-gn'});
+  }
+
+  // 양인살
+  const ym={'갑':'묘','병':'오','무':'오','경':'유','임':'자'};
+  if(ym[ds]&&allBranches.includes(ym[ds])){
+    s.push({nm:'양인살',emoji:'⚔️',d:'상대를 내 페이스로 끌고 가는 강한 주도욕',c:'s-bl'});
+  }
+
+  return s;
+}
+
+/* ══════════════════════════════════════════════
+   유형 데이터 & 판별
+   ══════════════════════════════════════════════ */
 const TYPES={
 'yang-fire':{id:'yang-fire',nm:'불도저 체력왕',emoji:'🔥',hc:'rh-fire',tag:'무한체력 강도파',sc:{passion:95,sensual:65,adventure:80,romantic:55,dominant:75,expressive:90}},
 'yin-fire':{id:'yin-fire',nm:'은근 중독녀(남)',emoji:'🕯️',hc:'rh-fire',tag:'한번 맛보면 잊지 못하는 중독형',sc:{passion:75,sensual:85,adventure:60,romantic:80,dominant:55,expressive:70}},
@@ -343,24 +590,50 @@ const AVG={passion:75,sensual:76,adventure:67,romantic:72,dominant:63,expressive
 function dT(ep,pil){
   const ds=pil.day.s,sorted=Object.entries(ep).sort((a,b)=>b[1]-a[1]),spread=sorted[0][1]-sorted[4][1];
   if(spread<=12)return sorted[0][1]>=22?TYPES['all-high']:TYPES['all-mild'];
-  if(sorted[0][1]>=25&&sorted[1][1]>=25){const c=sorted[0][0]+sorted[1][0];const cm={'화수':'fire-water','수화':'fire-water','화금':'fire-metal','금화':'fire-metal','수목':'water-wood','목수':'water-wood','목화':'wood-fire','화목':'wood-fire','토수':'earth-water','수토':'earth-water','금토':'metal-earth','토금':'metal-earth'};if(cm[c])return TYPES[cm[c]]}
+  if(sorted[0][1]>=25&&sorted[1][1]>=25){
+    const c=sorted[0][0]+sorted[1][0];
+    const cm={'화수':'fire-water','수화':'fire-water','화금':'fire-metal','금화':'fire-metal','수목':'water-wood','목수':'water-wood','목화':'wood-fire','화목':'wood-fire','토수':'earth-water','수토':'earth-water','금토':'metal-earth','토금':'metal-earth'};
+    if(cm[c])return TYPES[cm[c]];
+  }
   return TYPES[{'병':'yang-fire','정':'yin-fire','임':'yang-water','계':'yin-water','갑':'yang-wood','을':'yin-wood','경':'yang-metal','신':'yin-metal','무':'yang-earth','기':'yin-earth'}[ds]];
 }
+
 function sajuAnalyze(p){
   const pil=fP(p),ec=cE(pil),ep=eP(ec),type=dT(ep,pil),stars=cSS(pil),sc={...type.sc};
   const de=FM[pil.day.s];
-  if(de==='화')sc.passion=Math.min(99,sc.passion+3);if(de==='수')sc.romantic=Math.min(99,sc.romantic+3);if(de==='목')sc.adventure=Math.min(99,sc.adventure+3);if(de==='금')sc.dominant=Math.min(99,sc.dominant+3);if(de==='토')sc.sensual=Math.min(99,sc.sensual+3);
-  stars.forEach(st=>{if(st.nm==='도화살'){sc.passion=Math.min(99,sc.passion+3);sc.expressive=Math.min(99,sc.expressive+3)}if(st.nm==='홍염살')sc.passion=Math.min(99,sc.passion+5);if(st.nm==='목욕살')sc.sensual=Math.min(99,sc.sensual+5);if(st.nm==='양인살')sc.dominant=Math.min(99,sc.dominant+5)});
+  if(de==='화')sc.passion=Math.min(99,sc.passion+3);
+  if(de==='수')sc.romantic=Math.min(99,sc.romantic+3);
+  if(de==='목')sc.adventure=Math.min(99,sc.adventure+3);
+  if(de==='금')sc.dominant=Math.min(99,sc.dominant+3);
+  if(de==='토')sc.sensual=Math.min(99,sc.sensual+3);
+  stars.forEach(st=>{
+    if(st.nm==='도화살'){sc.passion=Math.min(99,sc.passion+3);sc.expressive=Math.min(99,sc.expressive+3)}
+    if(st.nm==='홍염살')sc.passion=Math.min(99,sc.passion+5);
+    if(st.nm==='목욕살')sc.sensual=Math.min(99,sc.sensual+5);
+    if(st.nm==='양인살')sc.dominant=Math.min(99,sc.dominant+5);
+  });
   return{pil,ec,ep,type,stars,sc};
 }
+
+/* ══════════════════════════════════════════════
+   [수정4] 궁합 분석 — 결정적 해시 적용
+   ══════════════════════════════════════════════ */
 function compatAnalyze(p1,p2){
-  const r1=sajuAnalyze(p1),r2=sajuAnalyze(p2),de1=FM[r1.pil.day.s],de2=FM[r2.pil.day.s];
+  const r1=sajuAnalyze(p1),r2=sajuAnalyze(p2);
+  const de1=FM[r1.pil.day.s],de2=FM[r2.pil.day.s];
+  const seed=`${p1.sY}${p1.sM}${p1.sD}_${p2.sY}${p2.sM}${p2.sD}`;
+
   const ecm={'목화':90,'화목':85,'화토':88,'토화':82,'토금':86,'금토':80,'금수':88,'수금':82,'수목':92,'목수':85,'목토':55,'토목':58,'화금':52,'금화':56,'토수':48,'수토':52,'목금':60,'금목':62,'화수':50,'수화':54,'목목':72,'화화':78,'토토':70,'금금':68,'수수':75};
-  const base=ecm[de1+de2]||70,sd=Math.abs(r1.sc.passion-r2.sc.passion);
-  const chem=Math.max(50,95-sd),comm=Math.max(55,Math.min(98,base+(r1.sc.expressive+r2.sc.expressive)/10-10)),phys=Math.max(50,Math.min(99,(r1.sc.sensual+r2.sc.sensual)/2+Math.random()*10)),adv=Math.max(50,Math.min(98,(r1.sc.adventure+r2.sc.adventure)/2+Math.random()*8));
+  const base=ecm[de1+de2]||70;
+  const sd=Math.abs(r1.sc.passion-r2.sc.passion);
+
+  const chem=Math.max(50,95-sd);
+  const comm=Math.max(55,Math.min(98,base+(r1.sc.expressive+r2.sc.expressive)/10-10));
+  const phys=Math.max(50,Math.min(99,(r1.sc.sensual+r2.sc.sensual)/2+stableRand(seed,1)*10));
+  const adv=Math.max(50,Math.min(98,(r1.sc.adventure+r2.sc.adventure)/2+stableRand(seed,2)*8));
   const ov=Math.round(base*.3+chem*.2+comm*.2+phys*.2+adv*.1);
+
   let sum='';
-  const t1=r1.type.id,t2=r2.type.id;
   const hi=[
     `${p1.name}님과 ${p2.name}님, 이 조합은 진짜 위험해요… 🔥 둘이 같은 방에 있으면 에어컨을 틀어도 실내온도가 올라갑니다. 눈만 마주쳐도 서로 뭘 원하는지 읽히는 텔레파시급 궁합이에요.`,
     `${p1.name}님 × ${p2.name}님 = 소방서 출동 각 🚒 둘의 케미는 불꽃이 아니라 폭발입니다. 한번 시작하면 시간 개념이 사라지고, 끝나면 "우리 방금 뭐 한 거지…?" 싶을 정도로 몰입해요.`,
@@ -382,12 +655,24 @@ function compatAnalyze(p1,p2){
     `${p1.name}님과 ${p2.name}님, 에너지 방향이 정반대라 처음엔 당황할 수 있어요 😅 하지만! 반대라서 오히려 신선한 자극이 될 수 있어요. 상대의 스타일을 하나씩 따라해보면 의외의 쾌감을 발견해요.`,
     `${p1.name}님과 ${p2.name}님은 '미지의 영역' 조합이에요 🗺️ 서로에겐 경험해보지 못한 스타일이라 어색할 수 있지만, 그만큼 새로운 걸 배울 수 있는 관계! 열린 마음이 최고의 무기예요.`
   ];
-  if(ov>=85)sum=hi[Math.floor(Math.random()*hi.length)];
-  else if(ov>=70)sum=mid[Math.floor(Math.random()*mid.length)];
-  else if(ov>=55)sum=low1[Math.floor(Math.random()*low1.length)];
-  else sum=low2[Math.floor(Math.random()*low2.length)];
-  return{r1,r2,ov,fac:{chem:{s:Math.round(chem),nm:'본능적 끌림',emoji:'⚡',d:'원초적 끌림 정도'},comm:{s:Math.round(comm),nm:'무드 소통력',emoji:'💬',d:'템포를 맞추는 능력'},phys:{s:Math.round(phys),nm:'신체 궁합',emoji:'💋',d:'몸의 리듬이 맞는 정도'},adv:{s:Math.round(adv),nm:'모험 궁합',emoji:'🎲',d:'새로운 시도 호흡'}},sum};
+
+  const cr=stableRand(seed,3);
+  if(ov>=85) sum=hi[Math.floor(cr*hi.length)];
+  else if(ov>=70) sum=mid[Math.floor(cr*mid.length)];
+  else if(ov>=55) sum=low1[Math.floor(cr*low1.length)];
+  else sum=low2[Math.floor(cr*low2.length)];
+
+  return{r1,r2,ov,fac:{
+    chem:{s:Math.round(chem),nm:'본능적 끌림',emoji:'⚡',d:'원초적 끌림 정도'},
+    comm:{s:Math.round(comm),nm:'무드 소통력',emoji:'💬',d:'템포를 맞추는 능력'},
+    phys:{s:Math.round(phys),nm:'신체 궁합',emoji:'💋',d:'몸의 리듬이 맞는 정도'},
+    adv:{s:Math.round(adv),nm:'모험 궁합',emoji:'🎲',d:'새로운 시도 호흡'}
+  },sum};
 }
+
+/* ══════════════════════════════════════════════
+   오행 해석
+   ══════════════════════════════════════════════ */
 function elInterp(ep){
   const sorted=Object.entries(ep).sort((a,b)=>b[1]-a[1]),top=sorted[0],low=sorted[sorted.length-1];
   const tD={'목':'매번 다른 플레이를 시도해야 흥분돼요','화':'성욕이 불타서 관계에 매우 적극적이에요','토':'촉감과 온도에 예민하게 반응해요','금':'내가 주도하는 관계에서 쾌감이 극대화돼요','수':'감정이 통해야 몸도 제대로 열려요'};
@@ -395,17 +680,40 @@ function elInterp(ep){
   return`<div class="el-ip-row"><div class="el-ip-head"><span class="el-ip-tag hi">가장 강한 기운</span> ${top[0]}</div><div class="el-ip-desc">${tD[top[0]]}</div></div><div class="el-ip-row"><div class="el-ip-head"><span class="el-ip-tag lo">가장 약한 기운</span> ${low[0]}</div><div class="el-ip-desc">${lD[low[0]]}</div></div>`;
 }
 
+/* ══════════════════════════════════════════════
+   UI 로직
+   ══════════════════════════════════════════════ */
 let mode='saju',calT={1:'solar',2:'solar'},gen={1:'',2:''};
 const $=id=>document.getElementById(id);
+
 document.addEventListener('DOMContentLoaded',()=>{popD(1);popD(2)});
+
 function getDays(y,m){if(!y||!m)return 31;const m30=[4,6,9,11];if(m30.includes(m))return 30;if(m===2){if(y%4===0&&(y%100!==0||y%400===0))return 29;return 28}return 31}
+
 function updateDays(p){const y=+$('year'+p).value,m=+$('month'+p).value,d=$('day'+p),prev=d.value;const max=getDays(y,m);d.innerHTML='<option value="">일</option>';for(let i=1;i<=max;i++)d.innerHTML+=`<option value="${i}">${i}일</option>`;if(prev&&+prev<=max)d.value=prev}
-function popD(p){const y=$('year'+p),m=$('month'+p),d=$('day'+p);y.innerHTML='<option value="">년</option>';for(let i=2010;i>=1950;i--)y.innerHTML+=`<option value="${i}">${i}년</option>`;m.innerHTML='<option value="">월</option>';for(let i=1;i<=12;i++)m.innerHTML+=`<option value="${i}">${i}월</option>`;d.innerHTML='<option value="">일</option>';for(let i=1;i<=31;i++)d.innerHTML+=`<option value="${i}">${i}일</option>`;y.addEventListener('change',()=>updateDays(p));m.addEventListener('change',()=>updateDays(p))}
+
+function popD(p){
+  const y=$('year'+p),m=$('month'+p),d=$('day'+p);
+  y.innerHTML='<option value="">년</option>';
+  for(let i=2025;i>=1940;i--)y.innerHTML+=`<option value="${i}">${i}년</option>`;
+  m.innerHTML='<option value="">월</option>';
+  for(let i=1;i<=12;i++)m.innerHTML+=`<option value="${i}">${i}월</option>`;
+  d.innerHTML='<option value="">일</option>';
+  for(let i=1;i<=31;i++)d.innerHTML+=`<option value="${i}">${i}일</option>`;
+  y.addEventListener('change',()=>updateDays(p));
+  m.addEventListener('change',()=>updateDays(p));
+}
+
 function setMode(m){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.querySelector(`[data-mode="${m}"]`).classList.add('on');if(m==='compat'){$('person2-section').style.display='block';$('vs-div').classList.remove('hidden');document.querySelector('.mbtn').innerHTML='💕 궁합 보기'}else{$('person2-section').style.display='none';$('vs-div').classList.add('hidden');document.querySelector('.mbtn').innerHTML='✨ 사주 보기'}}
+
 function setCal(p,t,el){calT[p]=t;el.parentElement.querySelectorAll('.ct-b').forEach(b=>b.classList.remove('on'));el.classList.add('on')}
+
 function setG(p,g,el){gen[p]=g;el.parentElement.querySelectorAll('.gp-b').forEach(b=>b.classList.remove('on'));el.classList.add('on')}
+
 function l2s(y,m,d){try{if(typeof KoreanLunarCalendar==='undefined')return{error:'음력 변환 라이브러리를 불러오지 못했어요'};const lc=new KoreanLunarCalendar();let ok=lc.setLunarDate(y,m,d,false);if(ok===false){ok=lc.setLunarDate(y,m,d,true);if(ok===false)return{error:'음력 날짜가 올바르지 않아요'}}return{sY:lc.getSolarYear(),sM:lc.getSolarMonth(),sD:lc.getSolarDay()}}catch(e){return{error:'음력 변환 실패'}}}
+
 function getPD(n){const name=$('name'+n).value.trim(),year=$('year'+n).value,month=$('month'+n).value,day=$('day'+n).value,hour=$('hour'+n).value,g=gen[n],cal=calT[n];const pf=(mode==='compat')?(n===1?'첫 번째 사람의 ':'두 번째 사람의 '):'';if(!name)return{e:pf+'이름을 입력해주세요'};if(!year||!month||!day)return{e:pf+'생년월일을 선택해주세요'};if(!g)return{e:pf+'성별을 선택해주세요'};let sY=+year,sM=+month,sD=+day;if(cal==='lunar'){const r=l2s(sY,sM,sD);if(r.error)return{e:r.error};sY=r.sY;sM=r.sM;sD=r.sD}return{name,sY,sM,sD,hour:hour?+hour:null,gender:g}}
+
 function start(){
   const p1=getPD(1);if(p1.e)return toast(p1.e);
   if(mode==='compat'){
@@ -417,14 +725,28 @@ function start(){
     load(false,()=>renderSaju(p1,sajuAnalyze(p1)));
   }
 }
+
 function load(ic,cb){const ov=$('ld-ov'),bar=$('ld-bar'),sub=$('ld-s'),title=$('ld-t');ov.classList.add('show');title.textContent=ic?'궁합을 분석하고 있어요':'사주를 분석하고 있어요';const ms=ic?['두 사람의 기운을 읽는 중...','오행 궁합을 비교해요...','잠자리 케미를 계산해요...','거의 다 됐어요! ✨']:['네 기둥을 살펴보는 중...','음양의 기운을 읽어요...','성적 에너지를 분석해요...','거의 다 됐어요! ✨'];let p=0;const iv=setInterval(()=>{p+=Math.random()*22+12;if(p>100)p=100;bar.style.width=p+'%';sub.textContent=ms[Math.min(Math.floor(p/25),ms.length-1)];if(p>=100){clearInterval(iv);setTimeout(()=>{ov.classList.remove('show');bar.style.width='0%';cb()},500)}},420)}
 
+/* ══════════════════════════════════════════════
+   렌더링
+   ══════════════════════════════════════════════ */
 function elCC(e){return{'목':'el-c-wood','화':'el-c-fire','토':'el-c-earth','금':'el-c-metal','수':'el-c-water'}[e]||''}
+
 function buildTable(pil){
   const cols=[];if(pil.hour)cols.push({l:'시주',s:pil.hour.s,b:pil.hour.b});cols.push({l:'일주',s:pil.day.s,b:pil.day.b},{l:'월주',s:pil.month.s,b:pil.month.b},{l:'년주',s:pil.year.s,b:pil.year.b});
   return`<div class="saju-table${pil.hour?'':' no-hour'}">${cols.map(c=>`<div class="sj-col"><div class="sj-header">${c.l}</div><div class="sj-stem"><div class="sj-hanja ${elCC(FM[c.s])}">${HJ_S[c.s]}</div><div class="sj-hangul">${c.s}(${FM[c.s]})</div></div><div class="sj-branch"><div class="sj-hanja ${elCC(BM[c.b])}">${HJ_B[c.b]}</div><div class="sj-hangul">${c.b}(${BM[c.b]})</div></div></div>`).join('')}</div>`;
 }
-function buildOH(ec){const order=['목','화','토','금','수'],emojis={'목':'🌳','화':'🔥','토':'⛰️','금':'⚡','수':'💧'},mx=Math.max(...Object.values(ec));return`<div class="oh-summary">${order.map(k=>`<div class="oh-s-item"><span class="oh-s-emoji">${emojis[k]}</span><span class="oh-s-name">${k}</span><span class="oh-s-cnt${ec[k]===0?' cnt-0':ec[k]===mx?' cnt-hi':''}">${ec[k]}</span></div>`).join('')}</div>`}
+
+function buildOH(ec){
+  const order=['목','화','토','금','수'];
+  const emojis={'목':'🌳','화':'🔥','토':'⛰️','금':'⚡','수':'💧'};
+  const mx=Math.max(...Object.values(ec));
+  return`<div class="oh-summary">${order.map(k=>{
+    const display=Math.round(ec[k]*10)/10;
+    return`<div class="oh-s-item"><span class="oh-s-emoji">${emojis[k]}</span><span class="oh-s-name">${k}</span><span class="oh-s-cnt${ec[k]===0?' cnt-0':ec[k]===mx?' cnt-hi':''}">${display}</span></div>`;
+  }).join('')}</div>`;
+}
 
 function renderSaju(p,r){
   const{pil,type,ec,ep,stars,sc}=r;
@@ -462,6 +784,7 @@ function renderSaju(p,r){
   <div class="acts"><button class="act act-s" onclick="doShareSaju()">📤 공유하기</button><button class="act act-r" onclick="goBack()">🔄 다시하기</button></div>`;
   showR(h);animateBars();
 }
+
 function renderComp(p1,p2,r){
   const{ov,fac,sum,r1,r2}=r;
   gtag('event','view_compat_result',{event_category:'result',event_label:'score_'+ov,compat_score:ov});
@@ -484,22 +807,35 @@ function renderComp(p1,p2,r){
   <div class="acts"><button class="act act-s" onclick="doShareCompat()">📤 공유하기</button><button class="act act-r" onclick="goBack()">🔄 다시하기</button></div>`;
   showR(h);animateBars();
 }
+
 function animateBars(){setTimeout(()=>{document.querySelectorAll('.stat-fill,.cstat-fill').forEach(el=>{const w=el.style.width;el.style.width='0%';requestAnimationFrame(()=>{requestAnimationFrame(()=>{el.style.width=w})})})},100)}
+
 function showR(h){$('input-area').style.display='none';$('rc').innerHTML=h;$('result-area').style.display='block';window.scrollTo({top:0,behavior:'smooth'})}
+
 function goBack(){$('result-area').style.display='none';$('input-area').style.display='block';window.scrollTo({top:0,behavior:'smooth'})}
+
+/* ══════════════════════════════════════════════
+   공유 / 저장
+   ══════════════════════════════════════════════ */
 function closeShare(){$('share-sheet').classList.remove('show')}
+
 async function captureCanvas(){const card=$('cap');document.documentElement.classList.add('capturing');const ps=window.scrollY;window.scrollTo(0,0);await new Promise(r=>setTimeout(r,120));try{return await html2canvas(card,{backgroundColor:'#FFF8E7',scale:2,useCORS:true,logging:false,allowTaint:true,foreignObjectRendering:false,imageTimeout:0,scrollX:0,scrollY:0,windowWidth:document.documentElement.clientWidth,windowHeight:document.documentElement.clientHeight})}finally{document.documentElement.classList.remove('capturing');window.scrollTo(0,ps)}}
+
 async function doSave(){
-  gtag('event', mode === 'compat' ? 'share_compat' : 'share_saju', { method: 'save_image' });
+  gtag('event',mode==='compat'?'share_compat':'share_saju',{method:'save_image'});
   try{toast('이미지 만드는 중...');const c=await captureCanvas();c.toBlob(b=>{if(!b){toast('저장 실패');return}const u=URL.createObjectURL(b),a=document.createElement('a');a.download='19yas-saju.png';a.href=u;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(u),1e3);toast('이미지가 저장되었어요 📸');closeShare()},'image/png')}catch(e){toast('스크린샷을 이용해주세요')}
 }
+
 function doShareSaju(){gtag('event','share_saju',{event_category:'share',event_label:'saju_result'});doShare()}
 function doShareCompat(){gtag('event','share_compat',{event_category:'share',event_label:'compat_result'});doShare()}
+
 async function doShare(){try{toast('공유 준비 중...');const c=await captureCanvas();c.toBlob(async b=>{if(!b){toast('공유 실패');return}const f=new File([b],'19yas-saju.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'🫣 19야스 사주풀이',text:'사주로 보는 나의 섹스 유형과 잠자리 궁합'});closeShare()}catch(e){if(e.name!=='AbortError')toast('공유가 취소되었어요')}}else if(navigator.share){try{await navigator.share({title:'🫣 19야스 사주풀이',text:'사주로 보는 나의 섹스 유형과 잠자리 궁합',url:'https://love.tryme.im'});closeShare()}catch(e){if(e.name!=='AbortError')toast('공유가 취소되었어요')}}else doSave()},'image/png')}catch(e){toast('공유 실패')}}
+
 async function doCopyLink(){
-  gtag('event', mode === 'compat' ? 'share_compat' : 'share_saju', { method: 'copy_link' });
+  gtag('event',mode==='compat'?'share_compat':'share_saju',{method:'copy_link'});
   try{if(navigator.clipboard)await navigator.clipboard.writeText('https://love.tryme.im');else{const t=document.createElement('textarea');t.value='https://love.tryme.im';document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t)}toast('링크가 복사되었어요 🔗');closeShare()}catch(e){toast('복사 실패')}
 }
+
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.classList.remove('show'),2500)}
 </script>
 </body>
